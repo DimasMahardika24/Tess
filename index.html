@@ -67,13 +67,14 @@
             object-fit: cover; box-shadow: 0 0 15px var(--accent-glow);
         }
 
-        .balance-info { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+        /* Update balance-info untuk box tunggal */
+        .balance-info { margin-top: 12px; }
         .b-box {
-            background: rgba(0,0,0,0.3); padding: 10px; border-radius: 14px;
+            background: rgba(0,0,0,0.3); padding: 15px; border-radius: 14px;
             border: 1px solid rgba(255,255,255,0.03);
         }
         .b-box label { display: block; font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; }
-        .b-box span { display: block; color: var(--text-main); font-weight: 800; font-size: 13px; margin-top: 2px; }
+        .b-box span { display: block; color: var(--text-main); font-weight: 800; font-size: 18px; margin-top: 2px; }
 
         .game-menu { margin-top: 25px; text-align: left; }
         .menu-label { font-size: 11px; font-weight: 700; color: var(--text-dim); letter-spacing: 1.5px; margin-bottom: 15px; display: block; }
@@ -128,7 +129,6 @@
         .step { display: none; }
         .active { display: block; animation: fadeIn 0.5s ease forwards; }
         
-        /* CLASS HIDE-GAME-UI: Sangat Penting */
         .hide-game-ui { 
             opacity: 0 !important; 
             pointer-events: none !important; 
@@ -167,8 +167,7 @@
                 <img id="pImg" src="" class="profile-img">
                 <h3 id="pName" style="margin:0; font-size: 18px;">...</h3>
                 <div class="balance-info">
-                    <div class="b-box"><label>SALDO</label><span id="pUang">Rp 0</span></div>
-                    <div class="b-box"><label>LIMIT</label><span id="pLimit">0</span></div>
+                    <div class="b-box"><label>SALDO AKTIF</label><span id="pUang">Rp 0</span></div>
                 </div>
             </div>
             
@@ -290,7 +289,6 @@
             document.getElementById('pName').innerText = profile?.name || "User Miwa";
             userUang = profile?.uang || 0;
             document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
-            document.getElementById('pLimit').innerText = profile?.limit || 0;
             document.getElementById('pImg').src = profile?.img || "https://img1.pixhost.to/images/11480/682392173_dhikzxcloud.jpg";
         }
 
@@ -331,12 +329,10 @@
             if(!bet || bet < 5000) return showPopup("Minimal taruhan Rp 5.000");
             if(bet > userUang) return showPopup("Saldo tidak cukup!");
             
-            // 1. SEMBUNYIKAN UI SEGERA
             controlArea.classList.add('hide-game-ui');
             backArea.classList.add('hide-game-ui');
             msgEl.innerText = "MENUNGGU HASIL...";
             
-            // 2. MULAI ANIMASI
             const anims = reels.map(r => setInterval(() => {
                 r.innerText = ['🍎','🍇','🍒','💎','🍋','🔔'][Math.floor(Math.random()*6)];
             }, 70));
@@ -350,14 +346,11 @@
                 const data = await res.json();
 
                 if(data.status) {
-                    // BERHENTI BERTAHAP
                     setTimeout(() => { clearInterval(anims[0]); reels[0].innerText = data.reels[0]; }, 1000);
                     setTimeout(() => { clearInterval(anims[1]); reels[1].innerText = data.reels[1]; }, 1800);
                     setTimeout(() => { 
                         clearInterval(anims[2]); 
                         reels[2].innerText = data.reels[2];
-                        
-                        // KUNCI: Baru munculkan tombol setelah reel 3 berhenti total
                         controlArea.classList.remove('hide-game-ui');
                         backArea.classList.remove('hide-game-ui');
                         finishGame(data);
