@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miwa Dashboard | Soft Dark Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d0d0d;
+            --card: #151515;
+            --card-light: #1e1e1e;
+            --accent: #ffcc00;
+            --text: #f8f9fa;
+            --dim: #888;
+            --border: #252525;
+            --error: #ff4d4d;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-image: radial-gradient(circle at top right, #1a1a1a, transparent);
+        }
+
+        .container {
+            background: var(--card);
+            width: 90%;
+            max-width: 400px;
+            border-radius: 32px;
+            padding: 35px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+            border: 1px solid var(--border);
+            text-align: center;
+            position: relative;
+        }
+
+        h1 { font-weight: 800; font-size: 24px; margin: 0; color: var(--accent); letter-spacing: -1px; }
+        .tagline { color: var(--dim); font-size: 11px; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Profile Soft Styling */
+        .profile-card {
+            background: var(--card-light);
+            border-radius: 24px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid var(--border);
+            display: none;
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .profile-img {
+            width: 70px; height: 70px;
+            border-radius: 20px;
+            border: 2px solid var(--accent);
+            margin-bottom: 12px;
+            object-fit: cover;
+        }
+
+        .balance-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .b-item {
+            background: rgba(0,0,0,0.25);
+            padding: 12px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .b-item small { display: block; font-size: 9px; color: var(--dim); margin-bottom: 4px; font-weight: 800; }
+        .b-item strong { color: var(--accent); font-size: 14px; }
+
+        /* Steps & Animations */
+        .step { display: none; }
+        .active { display: block; animation: fadeIn 0.4s ease forwards; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Inputs & Premium Buttons */
+        input {
+            width: 100%; box-sizing: border-box;
+            background: #1a1a1a; border: 1px solid var(--border);
+            padding: 16px; border-radius: 18px; color: #fff;
+            margin-bottom: 15px; outline: none; font-weight: 600;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: var(--accent); }
+
+        .btn {
+            width: 100%; padding: 18px;
+            background: var(--accent); color: #000;
+            border: none; border-radius: 18px;
+            font-weight: 800; cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn:disabled { background: #333; color: #666; cursor: not-allowed; transform: none; }
+
+        .game-btn {
+            background: var(--card-light); color: #fff;
+            padding: 16px; border-radius: 18px;
+            margin-bottom: 12px; border: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            width: 100%; cursor: pointer; transition: 0.2s;
+            font-weight: 600;
+        }
+        .game-btn:hover { border-color: var(--accent); }
+
+        /* Slot Reels */
+        .reels { display: flex; gap: 12px; justify-content: center; margin: 25px 0; }
+        .reel {
+            width: 75px; height: 75px; background: #1a1a1a;
+            border-radius: 20px; font-size: 38px; line-height: 75px;
+            border: 2px solid var(--border); transition: 0.2s;
+        }
+        .reel.spinning { border-color: var(--accent); transform: scale(1.05); }
+
+        #game-msg { min-height: 20px; font-size: 13px; font-weight: 600; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>MIWA DASHBOARD</h1>
+        <p class="tagline" id="sub-title">Premium Access Only</p>
+
+        <div id="step-1" class="step active">
+            <input type="text" id="phoneInput" placeholder="Nomor WA (628...)">
+            <button class="btn" onclick="checkAccount()">Cek Database</button>
+        </div>
+
+        <div id="step-2" class="step">
+            <div id="profileContent" class="profile-card">
+                <img id="pImg" src="" class="profile-img">
+                <h3 id="pName" style="margin:0; font-size: 18px;">...</h3>
+                <div class="balance-grid">
+                    <div class="b-item"><small>UANG</small><strong id="pUang">Rp 0</strong></div>
+                    <div class="b-item"><small>LIMIT</small><strong id="pLimit">0</strong></div>
+                </div>
+            </div>
+            
+            <div id="countdownArea" style="color: var(--accent); font-weight: 800; padding: 10px;">
+                MENYIAPKAN GAME: <span id="cdText">5</span>s
+            </div>
+
+            <div id="gameList" style="display:none; margin-top: 10px;">
+                <button class="game-btn" onclick="openGame('General')">
+                    <span>🎰 Slot General</span> <small style="color:var(--accent)">READY</small>
+                </button>
+                <button class="game-btn" style="opacity: 0.3; cursor: not-allowed;">
+                    <span>🎡 Roulette</span> <small>LOCKED</small>
+                </button>
+            </div>
+        </div>
+
+        <div id="step-3" class="step">
+            <div id="game-badge" style="font-size: 10px; background: #222; padding: 5px 12px; border-radius: 10px; display: inline-block; color: var(--accent);">GENERAL SLOT</div>
+            <div class="reels">
+                <div id="r1" class="reel">💎</div>
+                <div id="r2" class="reel">💎</div>
+                <div id="r3" class="reel">💎</div>
+            </div>
+            <input type="number" id="betInput" placeholder="Masukkan Bet (Min 5.000)">
+            <button class="btn" id="spinBtn" onclick="playGame()">SPIN MACHINE</button>
+            <p id="game-msg"></p>
+        </div>
+    </div>
+
+    <script>
+        const SECRET = "dimas_ganteng_123";
+        const CD_HOURLY = 5 * 60 * 1000; 
+        let userData = {};
+
+        window.onload = () => {
+            const lastSpin = localStorage.getItem('lastSpinTime');
+            if (lastSpin) {
+                const elapsed = Date.now() - parseInt(lastSpin);
+                if (elapsed < CD_HOURLY) {
+                    startGlobalCooldown(CD_HOURLY - elapsed);
+                }
+            }
+        };
+
+        async function checkAccount() {
+            const num = document.getElementById('phoneInput').value;
+            if(!num) return alert("Nomornya mana bwank? :v");
+
+            document.getElementById('sub-title').innerText = "⏳ Sedang Mengecek...";
+
+            try {
+                const res = await fetch(`/api/slot-web`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ nomor: num, amount: 0, secret: SECRET, type: 'check' })
+                });
+                const data = await res.json();
+
+                if(data.status) {
+                    showStep(2);
+                    document.getElementById('profileContent').style.display = 'block';
+                    document.getElementById('pName').innerText = data.profile.name;
+                    document.getElementById('pUang').innerText = "Rp " + data.profile.uang.toLocaleString();
+                    document.getElementById('pLimit').innerText = data.profile.limit;
+                    document.getElementById('pImg').src = data.profile.img;
+                    
+                    userData = { nomor: num };
+
+                    let cd = 5;
+                    const itv = setInterval(() => {
+                        cd--;
+                        document.getElementById('cdText').innerText = cd;
+                        if(cd <= 0) {
+                            clearInterval(itv);
+                            document.getElementById('countdownArea').style.display = 'none';
+                            document.getElementById('gameList').style.display = 'block';
+                        }
+                    }, 1000);
+                } else { alert(data.msg); }
+            } catch (e) { alert("Bot Offline / Server Error!"); }
+        }
+
+        function showStep(n) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step-'+n).classList.add('active');
+        }
+
+        function openGame(name) { showStep(3); }
+
+        async function playGame() {
+            const bet = document.getElementById('betInput').value;
+            const btn = document.getElementById('spinBtn');
+            const msg = document.getElementById('game-msg');
+            const reels = [document.getElementById('r1'), document.getElementById('r2'), document.getElementById('r3')];
+
+            if(bet < 5000) return alert("Bet minimal 5.000, jier!");
+            
+            // --- SMART LOGIC: CEK DULU BARU ANIMASI ---
+            btn.disabled = true;
+            msg.innerText = "🔌 Validasi Saldo...";
+            msg.style.color = var(--dim);
+
+            try {
+                const res = await fetch(`/api/slot-web`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ nomor: userData.nomor, amount: bet, secret: SECRET })
+                });
+                const data = await res.json();
+
+                if(!data.status) {
+                    msg.innerText = "⚠️ " + data.msg;
+                    msg.style.color = "#ff4d4d";
+                    btn.disabled = false;
+                    return;
+                }
+
+                // JIKA LOLOS VALIDASI, BARU JALANKAN ANIMASI
+                msg.innerText = "🎰 Koneksi Aman! Memutar...";
+                msg.style.color = var(--accent);
+                reels.forEach(r => r.classList.add('spinning'));
+
+                const anim = setInterval(() => {
+                    reels.forEach(r => r.innerText = ['🍎','🍇','🍒','💎','🍋'][Math.floor(Math.random()*5)]);
+                }, 80);
+
+                setTimeout(() => {
+                    clearInterval(anim);
+                    reels.forEach(r => r.classList.remove('spinning'));
+
+                    reels[0].innerText = data.reels[0];
+                    reels[1].innerText = data.reels[1];
+                    reels[2].innerText = data.reels[2];
+
+                    if(data.resultStatus === 'JACKPOT') {
+                        msg.innerText = "🏆 JACKPOT! +Rp " + data.winAmount.toLocaleString();
+                        msg.style.color = "#4ade80";
+                    } else if(data.resultStatus === 'ALMOST') {
+                        msg.innerText = "🤏 ALMOST! Cashback Rp " + data.winAmount.toLocaleString();
+                        msg.style.color = "#fbbf24";
+                    } else {
+                        msg.innerText = "❌ LOSE! Saldo Hangus.";
+                        msg.style.color = "#ff4d4d";
+                    }
+
+                    // Simpan Cooldown
+                    localStorage.setItem('lastSpinTime', Date.now().toString());
+                    startGlobalCooldown(CD_HOURLY);
+                }, 3000);
+
+            } catch (e) { alert("Koneksi Putus!"); btn.disabled = false; }
+        }
+
+        function startGlobalCooldown(ms) {
+            const btn = document.getElementById('spinBtn');
+            showStep(3);
+            btn.disabled = true;
+            const itv = setInterval(() => {
+                ms -= 1000;
+                let min = Math.floor(ms / 60000);
+                let sec = Math.floor((ms % 60000) / 1000);
+                btn.innerText = `COOLDOWN (${min}m ${sec}s)`;
+
+                if(ms <= 0) {
+                    clearInterval(itv);
+                    btn.disabled = false;
+                    btn.innerText = "SPIN MACHINE";
+                    localStorage.removeItem('lastSpinTime');
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
