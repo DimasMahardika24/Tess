@@ -44,7 +44,7 @@
             padding: 20px;
             margin-top: 20px;
             border: 1px dashed var(--accent);
-            display: none; /* Muncul setelah cek nomor */
+            display: none;
         }
 
         .profile-img {
@@ -123,7 +123,7 @@
 
         <div id="step-1" class="step active">
             <input type="text" id="phoneInput" placeholder="Contoh: 62851431xxx">
-            <button class="btn" onclick="checkAccount()">Cek Akun</button>
+            <button class="btn" id="checkBtn" onclick="checkAccount()">Cek Akun</button>
         </div>
 
         <div id="step-2" class="step">
@@ -162,10 +162,10 @@
 
     <script>
         const SECRET = "dimas_ganteng_123";
-        const CD_HOURLY = 5 * 60 * 1000; // 5 Menit (Ganti ke 3600000 kalau mau 1 jam)
+        const CD_HOURLY = 5 * 60 * 1000; 
         let userData = {};
+        let userUang = 0; // Variabel penampung saldo untuk validasi
 
-        // Cek Cooldown pas buka web
         window.onload = () => {
             const lastSpin = localStorage.getItem('lastSpinTime');
             if (lastSpin) {
@@ -178,14 +178,12 @@
 
         async function checkAccount() {
             const num = document.getElementById('phoneInput').value;
+            const btn = document.getElementById('checkBtn');
             if(!num) return alert("Masukkan nomor WA!");
 
-            const msg = document.getElementById('sub-title');
-            msg.innerText = "⏳ Mengecek Database...";
+            btn.disabled = true; // Matikan tombol sementara agar tidak double klik
 
             try {
-                // Di sini kita pakai endpoint /api/slot-web tapi cuma buat "cek profile"
-                // Kamu harus sesuaikan index.js kamu agar bisa merespon cek profile
                 const res = await fetch(`/api/slot-web`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -193,17 +191,20 @@
                 });
                 const data = await res.json();
 
-                if(data.status || data.msg === "Minimal bet Rp 5.000") { // bypass check
+                if(data.status || data.msg === "Minimal bet Rp 5.000") { 
                     showStep(2);
+                    
+                    // Simpan data saldo ke variabel
+                    userUang = data.profile?.uang || 0;
+
                     document.getElementById('profileContent').style.display = 'block';
                     document.getElementById('pName').innerText = data.profile?.name || "User Miwa";
-                    document.getElementById('pUang').innerText = "Rp " + (data.profile?.uang || 0).toLocaleString();
+                    document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
                     document.getElementById('pLimit').innerText = data.profile?.limit || 0;
                     document.getElementById('pImg').src = data.profile?.img || "https://img1.pixhost.to/images/11480/682392173_dhikzxcloud.jpg";
                     
                     userData = { nomor: num };
 
-                    // Timer 5 detik munculkan list game
                     let cd = 5;
                     const itv = setInterval(() => {
                         cd--;
@@ -216,8 +217,12 @@
                     }, 1000);
                 } else {
                     alert("Akun tidak ditemukan di database!");
+                    btn.disabled = false;
                 }
-            } catch (e) { alert("Server Bot Offline!"); }
+            } catch (e) { 
+                alert("Server Bot Offline!"); 
+                btn.disabled = false;
+            }
         }
 
         function showStep(n) {
@@ -231,11 +236,14 @@
         }
 
         async function playGame() {
-            const bet = document.getElementById('betInput').value;
+            const betInput = document.getElementById('betInput');
+            const bet = parseInt(betInput.value);
             const btn = document.getElementById('spinBtn');
             const reels = [document.getElementById('r1'), document.getElementById('r2'), document.getElementById('r3')];
 
-            if(bet < 5000) return alert("Minimal bet 5.000!");
+            // Validasi Sisi Klien
+            if(!bet || bet < 5000) return alert("Minimal bet 5.000!");
+            if(bet > userUang) return alert("Saldo tidak cukup! Saldo Anda: Rp " + userUang.toLocaleString());
             
             btn.disabled = true;
             const anim = setInterval(() => {
@@ -258,6 +266,12 @@
                         reels[2].innerText = data.reels[2];
                         document.getElementById('game-msg').innerText = "RESULT: " + data.resultStatus;
                         
+                        // Update saldo setelah main jika API mengirimkan sisa uang
+                        if(data.currentUang !== undefined) {
+                            userUang = data.currentUang;
+                            document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
+                        }
+
                         localStorage.setItem('lastSpinTime', Date.now().toString());
                         startGlobalCooldown(CD_HOURLY);
                     } else {
@@ -265,12 +279,16 @@
                         btn.disabled = false;
                     }
                 }, 3000);
-            } catch (e) { alert("Koneksi Putus!"); btn.disabled = false; }
+            } catch (e) { 
+                alert("Koneksi Putus!"); 
+                btn.disabled = false; 
+                clearInterval(anim);
+            }
         }
 
         function startGlobalCooldown(ms) {
             const btn = document.getElementById('spinBtn');
-            showStep(3); // Paksa stay di game buat liat CD
+            showStep(3); 
             btn.disabled = true;
             
             const itv = setInterval(() => {
