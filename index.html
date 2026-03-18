@@ -235,9 +235,21 @@
 
         window.onload = () => {
             const savedUser = localStorage.getItem('miwa_user');
+            const lastStep = localStorage.getItem('miwa_current_step');
+
             if(savedUser) {
                 userData = JSON.parse(savedUser);
-                loadProfileAuto();
+                
+                if (lastStep && lastStep !== "1") {
+                    updateProfileDisplay(userData.profile);
+                    showStep(lastStep);
+                    if (lastStep == "2") {
+                        document.getElementById('countdownArea').style.display = 'none';
+                        document.getElementById('gameList').style.display = 'block';
+                    }
+                } else {
+                    loadProfileAuto();
+                }
             }
             checkCooldown();
         };
@@ -309,7 +321,11 @@
 
         function showStep(n) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById('step-'+n).classList.add('active');
+            const target = document.getElementById('step-'+n);
+            if(target) {
+                target.classList.add('active');
+                localStorage.setItem('miwa_current_step', n);
+            }
         }
 
         function openGame() { showStep(3); checkCooldown(); }
@@ -378,6 +394,9 @@
             if(data.newSaldo !== undefined) {
                 userUang = data.newSaldo;
                 document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
+                // Update profile data di localStorage agar tetap sinkron
+                userData.profile.uang = data.newSaldo;
+                localStorage.setItem('miwa_user', JSON.stringify(userData));
             }
 
             localStorage.setItem('lastSpinTime', Date.now().toString());
@@ -416,6 +435,7 @@
         function logout() {
             if(confirm("Keluar dari sesi ini?")) {
                 localStorage.removeItem('miwa_user');
+                localStorage.removeItem('miwa_current_step');
                 location.reload();
             }
         }
