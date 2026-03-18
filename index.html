@@ -155,24 +155,20 @@
             <div id="profileContent" class="profile-card">
                 <img id="pImg" src="" class="profile-img">
                 <h3 id="pName" style="margin:0; font-size: 18px;">...</h3>
-<div class="balance-info" style="display:flex; gap:10px;">
-    <div class="b-box" style="flex:1;">
-        <label>UANG</label>
-        <span id="pUang">Rp 0</span>
-    </div>
-    <div class="b-box" style="flex:1;">
-        <label>LIMIT</label>
-        <span id="pLimit">0</span>
-    </div>
-</div>
+                <div class="balance-info">
+                    <div class="b-box">
+                        <label>SALDO AKTIF</label>
+                        <span id="pUang">Rp 0</span>
+                    </div>
+                </div>
             </div>
             
             <div id="countdownArea" style="margin-top:25px; font-size: 13px; color: var(--accent); font-weight: 600;">
-                PROCESSING... (<span id="cdText">5</span>)
+                MEMUAT MODUL GAME... (<span id="cdText">5</span>)
             </div>
 
             <div id="gameList" class="game-menu" style="display:none;">
-                <span class="menu-label">SELECT GAMES</span>
+                <span class="menu-label">PILIH PERMAINAN</span>
                 <div class="game-item active" onclick="openGame()">
                     <div class="game-icon">🎰</div>
                     <div class="game-details">
@@ -212,7 +208,6 @@
         const CD_HOURLY = 5 * 60 * 1000; 
         let userData = {};
         let userUang = 0;
-        let userLimit = 0;
 
         window.onload = () => {
             const savedUser = localStorage.getItem('miwa_user');
@@ -257,17 +252,12 @@
         function loadProfileUI(data) { showStep(2); updateProfileDisplay(data.profile); startMenuTimer(); }
 
         function updateProfileDisplay(profile) {
-    document.getElementById('profileContent').style.display = 'block';
-    document.getElementById('pName').innerText = profile?.name || "User Miwa";
-
-    userUang = profile?.uang || 0;
-    userLimit = profile?.limit || 0;
-
-    document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
-    document.getElementById('pLimit').innerText = userLimit.toLocaleString();
-
-    document.getElementById('pImg').src = profile?.img || "https://img1.pixhost.to/images/11480/682392173_dhikzxcloud.jpg";
-}
+            document.getElementById('profileContent').style.display = 'block';
+            document.getElementById('pName').innerText = profile?.name || "User Miwa";
+            userUang = profile?.uang || 0;
+            document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
+            document.getElementById('pImg').src = profile?.img || "https://img1.pixhost.to/images/11480/682392173_dhikzxcloud.jpg";
+        }
 
         function startMenuTimer() {
             let cd = 5;
@@ -344,25 +334,11 @@
         }
 
         function finishGame(data) {
-    document.getElementById('game-msg').innerText = "RESULT: " + data.resultStatus;
-
-    if(data.currentUang !== undefined) {
-        userUang = data.currentUang;
-        document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
-    }
-
-    if(data.currentLimit !== undefined) {
-        userLimit = data.currentLimit;
-        document.getElementById('pLimit').innerText = userLimit.toLocaleString();
-    }
-
-    localStorage.setItem('lastSpinTime', Date.now().toString());
-    startGlobalCooldown(CD_HOURLY);
-
-    if(data.resultStatus.toLowerCase().includes('win')) {
-        showPopup("JACKPOT! Saldo bertambah.");
-    }
-}
+            document.getElementById('game-msg').innerText = "RESULT: " + data.resultStatus;
+            if(data.currentUang !== undefined) {
+                userUang = data.currentUang;
+                document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
+            }
             localStorage.setItem('lastSpinTime', Date.now().toString());
             startGlobalCooldown(CD_HOURLY);
             if(data.resultStatus.toLowerCase().includes('win')) showPopup("JACKPOT! Saldo bertambah.");
