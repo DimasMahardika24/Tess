@@ -3,236 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miwa Slot V2 | Modern Dark Mode</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Miwa Dashboard | Dhikzx Cloud</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
+            --bg: #0f0f0f;
+            --card: #181818;
             --accent: #ffd700;
-            --text-main: #e0e0e0;
-            --text-dim: #a0a0a0;
-            --border: #333;
+            --text: #ffffff;
+            --dim: #a0a0a0;
+            --border: #2a2a2a;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background-color: var(--bg);
+            color: var(--text);
             font-family: 'Inter', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            overflow: hidden;
         }
 
-        .slot-container {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 24px;
-            width: 100%;
-            max-width: 400px;
+        .container {
+            background: var(--card);
+            width: 90%;
+            max-width: 420px;
+            border-radius: 28px;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            border: 1px solid var(--border);
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            border: 1px solid var(--border);
         }
 
-        h1 { 
-            font-weight: 900; 
-            font-size: 28px; 
-            margin: 0; 
-            background: linear-gradient(to bottom, #fff, #ffd700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
+        /* Profile Section */
+        .profile-card {
+            background: #222;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px dashed var(--accent);
+            display: none; /* Muncul setelah cek nomor */
         }
 
-        .tagline { color: var(--text-dim); font-size: 12px; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
-
-        /* Slot Reels Styling */
-        .reels-wrapper {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin-bottom: 30px;
+        .profile-img {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            margin-bottom: 10px;
         }
 
-        .reel-box {
-            flex: 1;
-            height: 100px;
-            background: #252525;
-            border-radius: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 50px;
-            border: 2px solid var(--border);
-            transition: all 0.2s ease;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+        .balance-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
         }
 
-        .reel-box.spinning {
-            border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-            transform: scale(1.05);
-        }
-
-        /* Input Styling */
-        .input-area { text-align: left; margin-bottom: 20px; }
-        label { font-size: 11px; font-weight: 700; color: var(--accent); margin-left: 5px; opacity: 0.8; }
-        
-        input {
-            width: 100%;
-            box-sizing: border-box;
-            background: #2a2a2a;
-            border: 1px solid var(--border);
-            padding: 14px;
+        .b-box {
+            background: #111;
+            padding: 10px;
             border-radius: 12px;
-            color: white;
+            font-size: 12px;
+        }
+
+        .b-box span { display: block; color: var(--accent); font-weight: 800; font-size: 14px; }
+
+        /* Step Visibility */
+        .step { display: none; }
+        .active { display: block; animation: fadeIn 0.5s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Button & Inputs */
+        input {
+            width: 100%; box-sizing: border-box;
+            background: #252525; border: 1px solid var(--border);
+            padding: 15px; border-radius: 15px; color: #fff;
+            margin-bottom: 15px; outline: none; font-weight: 600;
+        }
+
+        .btn {
+            width: 100%; padding: 15px;
+            background: var(--accent); color: #000;
+            border: none; border-radius: 15px;
+            font-weight: 900; cursor: pointer;
+            text-transform: uppercase; transition: 0.3s;
+        }
+
+        .btn:disabled { background: #444; color: #888; cursor: not-allowed; }
+
+        .game-btn {
+            background: #252525; color: #fff;
+            padding: 12px; border-radius: 12px;
+            margin-bottom: 10px; border: 1px solid var(--border);
+            display: block; width: 100%; text-align: left;
             font-weight: 600;
-            margin-top: 5px;
-            outline: none;
-            transition: 0.3s;
         }
 
-        input:focus { border-color: var(--accent); background: #333; }
+        .game-btn.locked { opacity: 0.5; border-color: #ff4d4d; }
 
-        /* Button Styling */
-        .btn-glow {
-            width: 100%;
-            padding: 18px;
-            background: var(--accent);
-            border: none;
-            border-radius: 14px;
-            color: #000;
-            font-weight: 900;
-            font-size: 16px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* Slot Animation Area */
+        .reels {
+            display: flex; gap: 10px; justify-content: center; margin: 20px 0;
         }
-
-        .btn-glow:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(255, 215, 0, 0.5); }
-        .btn-glow:active { transform: scale(0.98); }
-        .btn-glow:disabled { background: #444; color: #777; box-shadow: none; cursor: wait; }
-
-        #status-msg {
-            margin-top: 25px;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-dim);
-            transition: 0.3s;
+        .reel {
+            width: 70px; height: 70px; background: #222;
+            border-radius: 15px; font-size: 35px; line-height: 70px;
+            border: 2px solid var(--border);
         }
-
-        .footer-note { margin-top: 20px; font-size: 10px; color: #444; }
     </style>
 </head>
 <body>
 
-    <div class="slot-container">
-        <h1>MIWA SLOT</h1>
-        <div class="tagline">Exclusive for Dhikzx Project</div>
+    <div class="container">
+        <h1 id="main-title">MIWA DASHBOARD</h1>
+        <p class="tagline" id="sub-title">Verify your account first</p>
 
-        <div class="reels-wrapper">
-            <div id="r1" class="reel-box">💎</div>
-            <div id="r2" class="reel-box">💎</div>
-            <div id="r3" class="reel-box">💎</div>
+        <div id="step-1" class="step active">
+            <input type="text" id="phoneInput" placeholder="Contoh: 62851431xxx">
+            <button class="btn" onclick="checkAccount()">Cek Akun</button>
         </div>
 
-        <div class="input-area">
-            <label>TARGET WHATSAPP</label>
-            <input type="text" id="targetWA" placeholder="628xxxxxx">
+        <div id="step-2" class="step">
+            <div id="profileContent" class="profile-card">
+                <img id="pImg" src="" class="profile-img">
+                <h3 id="pName" style="margin:5px 0">...</h3>
+                <div class="balance-info">
+                    <div class="b-box">Uang <span id="pUang">0</span></div>
+                    <div class="b-box">Limit <span id="pLimit">0</span></div>
+                </div>
+            </div>
+            
+            <div id="countdownArea" style="margin-top:20px; font-size: 14px; color: var(--accent);">
+                Membuka daftar game dalam <span id="cdText">5</span>s...
+            </div>
+
+            <div id="gameList" style="display:none; margin-top: 20px;">
+                <button class="game-btn" onclick="openGame('General')">🎰 Slot General (Ready)</button>
+                <button class="game-btn locked">🎡 Roulette (Locked)</button>
+                <button class="game-btn locked">📈 Crash Game (Locked)</button>
+            </div>
         </div>
 
-        <div class="input-area">
-            <label>BET AMOUNT (MIN 5.000)</label>
-            <input type="number" id="betVal" placeholder="5000">
+        <div id="step-3" class="step">
+            <h2 id="gameTitle" style="color:var(--accent)">SLOT GENERAL</h2>
+            <div class="reels">
+                <div id="r1" class="reel">💎</div>
+                <div id="r2" class="reel">💎</div>
+                <div id="r3" class="reel">💎</div>
+            </div>
+            <input type="number" id="betInput" placeholder="Nominal Bet (Min 5.000)">
+            <button class="btn" id="spinBtn" onclick="playGame()">SPIN MACHINE</button>
+            <p id="game-msg" style="font-size: 13px; margin-top: 15px; color: var(--dim);"></p>
         </div>
-
-        <button class="btn-glow" id="spinBtn" onclick="runSlot()">SPIN MACHINE</button>
-
-        <div id="status-msg">Silakan tentukan bet dan nomor WA kamu</div>
-        <div class="footer-note">Secure connection to Pterodactyl 4510</div>
     </div>
 
     <script>
-        const symbols = ['🍇', '🍉', '🍋', '🍌', '🍎', '🍑', '🍒', '🫐', '🥥', '🥑'];
         const SECRET = "dimas_ganteng_123";
+        const CD_HOURLY = 5 * 60 * 1000; // 5 Menit (Ganti ke 3600000 kalau mau 1 jam)
+        let userData = {};
 
-        async function runSlot() {
-            const num = document.getElementById('targetWA').value;
-            const bet = document.getElementById('betVal').value;
+        // Cek Cooldown pas buka web
+        window.onload = () => {
+            const lastSpin = localStorage.getItem('lastSpinTime');
+            if (lastSpin) {
+                const elapsed = Date.now() - parseInt(lastSpin);
+                if (elapsed < CD_HOURLY) {
+                    startGlobalCooldown(CD_HOURLY - elapsed);
+                }
+            }
+        };
+
+        async function checkAccount() {
+            const num = document.getElementById('phoneInput').value;
+            if(!num) return alert("Masukkan nomor WA!");
+
+            const msg = document.getElementById('sub-title');
+            msg.innerText = "⏳ Mengecek Database...";
+
+            try {
+                // Di sini kita pakai endpoint /api/slot-web tapi cuma buat "cek profile"
+                // Kamu harus sesuaikan index.js kamu agar bisa merespon cek profile
+                const res = await fetch(`/api/slot-web`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ nomor: num, amount: 0, secret: SECRET, type: 'check' })
+                });
+                const data = await res.json();
+
+                if(data.status || data.msg === "Minimal bet Rp 5.000") { // bypass check
+                    showStep(2);
+                    document.getElementById('profileContent').style.display = 'block';
+                    document.getElementById('pName').innerText = data.profile?.name || "User Miwa";
+                    document.getElementById('pUang').innerText = "Rp " + (data.profile?.uang || 0).toLocaleString();
+                    document.getElementById('pLimit').innerText = data.profile?.limit || 0;
+                    document.getElementById('pImg').src = data.profile?.img || "https://img1.pixhost.to/images/11480/682392173_dhikzxcloud.jpg";
+                    
+                    userData = { nomor: num };
+
+                    // Timer 5 detik munculkan list game
+                    let cd = 5;
+                    const itv = setInterval(() => {
+                        cd--;
+                        document.getElementById('cdText').innerText = cd;
+                        if(cd <= 0) {
+                            clearInterval(itv);
+                            document.getElementById('countdownArea').style.display = 'none';
+                            document.getElementById('gameList').style.display = 'block';
+                        }
+                    }, 1000);
+                } else {
+                    alert("Akun tidak ditemukan di database!");
+                }
+            } catch (e) { alert("Server Bot Offline!"); }
+        }
+
+        function showStep(n) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step-'+n).classList.add('active');
+        }
+
+        function openGame(name) {
+            document.getElementById('gameTitle').innerText = "SLOT " + name.toUpperCase();
+            showStep(3);
+        }
+
+        async function playGame() {
+            const bet = document.getElementById('betInput').value;
             const btn = document.getElementById('spinBtn');
-            const msg = document.getElementById('status-msg');
             const reels = [document.getElementById('r1'), document.getElementById('r2'), document.getElementById('r3')];
 
-            if(!num || !bet) return alert("Lengkapi data dulu!");
-            if(bet < 5000) return alert("Bet minimal Rp 5.000");
-
-            // UI State: Loading
+            if(bet < 5000) return alert("Minimal bet 5.000!");
+            
             btn.disabled = true;
-            msg.innerText = "🌀 Menghubungkan ke Server...";
-            msg.style.color = "var(--text-dim)";
-
-            // Start Animasi Rolling (Lama: 3.5 detik)
-            reels.forEach(r => r.classList.add('spinning'));
-            let startTime = Date.now();
-            const animInterval = setInterval(() => {
-                reels.forEach(r => {
-                    r.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-                });
+            const anim = setInterval(() => {
+                reels.forEach(r => r.innerText = ['🍎','🍇','🍒','💎','🍋'][Math.floor(Math.random()*5)]);
             }, 80);
 
             try {
-                // Request ke Bot (Lewat Netlify Proxy)
-                const response = await fetch(`/api/slot-web`, {
+                const res = await fetch(`/api/slot-web`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ nomor: num, amount: bet, secret: SECRET })
+                    body: JSON.stringify({ nomor: userData.nomor, amount: bet, secret: SECRET })
                 });
-
-                const data = await response.json();
-                
-                // Cek apakah minimal sudah 3.5 detik biar animasinya kerasa
-                let elapsedTime = Date.now() - startTime;
-                let remainingTime = Math.max(3500 - elapsedTime, 0);
+                const data = await res.json();
 
                 setTimeout(() => {
-                    clearInterval(animInterval);
-                    reels.forEach(r => r.classList.remove('spinning'));
-
-                    if (data.status) {
+                    clearInterval(anim);
+                    if(data.status) {
                         reels[0].innerText = data.reels[0];
                         reels[1].innerText = data.reels[1];
                         reels[2].innerText = data.reels[2];
-
-                        if (data.resultStatus === 'JACKPOT') {
-                            msg.innerText = `🏆 JACKPOT! +Rp ${data.winAmount.toLocaleString()}`;
-                            msg.style.color = "#ffd700";
-                        } else if (data.resultStatus === 'ALMOST') {
-                            msg.innerText = `🤏 ALMOST! Cashback Rp ${data.winAmount.toLocaleString()}`;
-                            msg.style.color = "#4ade80";
-                        } else {
-                            msg.innerText = `❌ LOSE! Bet Rp ${bet} hangus.`;
-                            msg.style.color = "#ff4d4d";
-                        }
+                        document.getElementById('game-msg').innerText = "RESULT: " + data.resultStatus;
+                        
+                        localStorage.setItem('lastSpinTime', Date.now().toString());
+                        startGlobalCooldown(CD_HOURLY);
                     } else {
-                        msg.innerText = `⚠️ ${data.msg}`;
-                        msg.style.color = "#ffa500";
+                        alert(data.msg);
+                        btn.disabled = false;
                     }
-                    btn.disabled = false;
-                }, remainingTime);
+                }, 3000);
+            } catch (e) { alert("Koneksi Putus!"); btn.disabled = false; }
+        }
 
-            } catch (err) {
-                clearInterval(animInterval);
-                reels.forEach(r => r.classList.remove('spinning'));
-                msg.innerText = "❌ ERROR: Koneksi ke Bot Terputus!";
-                msg.style.color = "#ff4d4d";
-                btn.disabled = false;
-            }
+        function startGlobalCooldown(ms) {
+            const btn = document.getElementById('spinBtn');
+            showStep(3); // Paksa stay di game buat liat CD
+            btn.disabled = true;
+            
+            const itv = setInterval(() => {
+                ms -= 1000;
+                let min = Math.floor(ms / 60000);
+                let sec = Math.floor((ms % 60000) / 1000);
+                btn.innerText = `COOLDOWN (${min}m ${sec}s)`;
+
+                if(ms <= 0) {
+                    clearInterval(itv);
+                    btn.disabled = false;
+                    btn.innerText = "SPIN MACHINE";
+                    localStorage.removeItem('lastSpinTime');
+                }
+            }, 1000);
         }
     </script>
 </body>
