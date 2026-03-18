@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miwa Premium Dashboard</title>
+    <title>Miwa Dashboard | Soft Dark Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a0a;
-            --card: #141414;
-            --card-light: #1c1c1c;
+            --bg: #0d0d0d;
+            --card: #151515;
+            --card-light: #1e1e1e;
             --accent: #ffcc00;
-            --accent-glow: rgba(255, 204, 0, 0.3);
-            --text: #f0f0f0;
-            --dim: #94a3b8;
-            --border: #262626;
+            --text: #f8f9fa;
+            --dim: #888;
+            --border: #252525;
             --error: #ff4d4d;
         }
 
@@ -36,15 +35,14 @@
             max-width: 400px;
             border-radius: 32px;
             padding: 35px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.8);
             border: 1px solid var(--border);
             text-align: center;
             position: relative;
-            overflow: hidden;
         }
 
-        h1 { font-weight: 800; font-size: 24px; margin: 0; letter-spacing: -1px; color: var(--accent); }
-        .tagline { color: var(--dim); font-size: 12px; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        h1 { font-weight: 800; font-size: 24px; margin: 0; color: var(--accent); letter-spacing: -1px; }
+        .tagline { color: var(--dim); font-size: 11px; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; }
 
         /* Profile Soft Styling */
         .profile-card {
@@ -54,7 +52,7 @@
             margin: 20px 0;
             border: 1px solid var(--border);
             display: none;
-            animation: slideUp 0.5s ease;
+            animation: slideUp 0.5s ease forwards;
         }
 
         .profile-img {
@@ -73,13 +71,13 @@
         }
 
         .b-item {
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.25);
             padding: 12px;
             border-radius: 16px;
             border: 1px solid var(--border);
         }
 
-        .b-item small { display: block; font-size: 10px; color: var(--dim); margin-bottom: 4px; }
+        .b-item small { display: block; font-size: 9px; color: var(--dim); margin-bottom: 4px; font-weight: 800; }
         .b-item strong { color: var(--accent); font-size: 14px; }
 
         /* Steps & Animations */
@@ -98,18 +96,18 @@
             transition: 0.3s;
         }
 
-        input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+        input:focus { border-color: var(--accent); }
 
         .btn {
             width: 100%; padding: 18px;
             background: var(--accent); color: #000;
             border: none; border-radius: 18px;
             font-weight: 800; cursor: pointer;
-            transition: 0.3s; box-shadow: 0 8px 20px var(--accent-glow);
+            transition: 0.3s;
         }
 
         .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        .btn:disabled { background: #333; color: #666; box-shadow: none; transform: none; }
+        .btn:disabled { background: #333; color: #666; cursor: not-allowed; transform: none; }
 
         .game-btn {
             background: var(--card-light); color: #fff;
@@ -117,8 +115,9 @@
             margin-bottom: 12px; border: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center;
             width: 100%; cursor: pointer; transition: 0.2s;
+            font-weight: 600;
         }
-        .game-btn:hover { border-color: var(--accent); background: #252525; }
+        .game-btn:hover { border-color: var(--accent); }
 
         /* Slot Reels */
         .reels { display: flex; gap: 12px; justify-content: center; margin: 25px 0; }
@@ -129,21 +128,18 @@
         }
         .reel.spinning { border-color: var(--accent); transform: scale(1.05); }
 
-        .status-badge {
-            font-size: 13px; padding: 8px 16px; border-radius: 10px;
-            background: rgba(255,255,255,0.05); color: var(--dim); display: inline-block;
-        }
+        #game-msg { min-height: 20px; font-size: 13px; font-weight: 600; margin-top: 15px; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <h1>MIWA DASHBOARD</h1>
-        <p class="tagline" id="sub-title">System Verified</p>
+        <p class="tagline" id="sub-title">Premium Access Only</p>
 
         <div id="step-1" class="step active">
-            <input type="text" id="phoneInput" placeholder="Nomor WhatsApp (628...)">
-            <button class="btn" onclick="checkAccount()">Masuk ke Panel</button>
+            <input type="text" id="phoneInput" placeholder="Nomor WA (628...)">
+            <button class="btn" onclick="checkAccount()">Cek Database</button>
         </div>
 
         <div id="step-2" class="step">
@@ -151,57 +147,58 @@
                 <img id="pImg" src="" class="profile-img">
                 <h3 id="pName" style="margin:0; font-size: 18px;">...</h3>
                 <div class="balance-grid">
-                    <div class="b-item"><small>SALDO</small><strong id="pUang">Rp 0</strong></div>
+                    <div class="b-item"><small>UANG</small><strong id="pUang">Rp 0</strong></div>
                     <div class="b-item"><small>LIMIT</small><strong id="pLimit">0</strong></div>
                 </div>
             </div>
             
-            <div id="countdownArea" style="color: var(--accent); font-weight: 600;">
-                Memuat Game: <span id="cdText">5</span>s
+            <div id="countdownArea" style="color: var(--accent); font-weight: 800; padding: 10px;">
+                MENYIAPKAN GAME: <span id="cdText">5</span>s
             </div>
 
-            <div id="gameList" style="display:none; margin-top: 20px;">
+            <div id="gameList" style="display:none; margin-top: 10px;">
                 <button class="game-btn" onclick="openGame('General')">
-                    <span>🎰 Slot General</span> <small style="color:var(--accent)">OPEN</small>
+                    <span>🎰 Slot General</span> <small style="color:var(--accent)">READY</small>
                 </button>
-                <button class="game-btn" style="opacity: 0.4; cursor: not-allowed;">
+                <button class="game-btn" style="opacity: 0.3; cursor: not-allowed;">
                     <span>🎡 Roulette</span> <small>LOCKED</small>
                 </button>
             </div>
         </div>
 
         <div id="step-3" class="step">
-            <div class="status-badge" id="game-badge">SLOT GENERAL</div>
+            <div id="game-badge" style="font-size: 10px; background: #222; padding: 5px 12px; border-radius: 10px; display: inline-block; color: var(--accent);">GENERAL SLOT</div>
             <div class="reels">
                 <div id="r1" class="reel">💎</div>
                 <div id="r2" class="reel">💎</div>
                 <div id="r3" class="reel">💎</div>
             </div>
-            <input type="number" id="betInput" placeholder="Nominal Bet (Min 5.000)">
+            <input type="number" id="betInput" placeholder="Masukkan Bet (Min 5.000)">
             <button class="btn" id="spinBtn" onclick="playGame()">SPIN MACHINE</button>
-            <p id="game-msg" style="margin-top: 15px; font-size: 14px; font-weight: 600;"></p>
+            <p id="game-msg"></p>
         </div>
     </div>
 
     <script>
         const SECRET = "dimas_ganteng_123";
-        const CD_TIME = 5 * 60 * 1000; 
+        const CD_HOURLY = 5 * 60 * 1000; 
         let userData = {};
 
         window.onload = () => {
             const lastSpin = localStorage.getItem('lastSpinTime');
             if (lastSpin) {
                 const elapsed = Date.now() - parseInt(lastSpin);
-                if (elapsed < CD_TIME) startGlobalCooldown(CD_TIME - elapsed);
+                if (elapsed < CD_HOURLY) {
+                    startGlobalCooldown(CD_HOURLY - elapsed);
+                }
             }
         };
 
         async function checkAccount() {
             const num = document.getElementById('phoneInput').value;
-            if(!num) return alert("Nomor mana, jier? :v");
+            if(!num) return alert("Nomornya mana bwank? :v");
 
-            const sub = document.getElementById('sub-title');
-            sub.innerText = "⏳ Sinkronisasi Data...";
+            document.getElementById('sub-title').innerText = "⏳ Sedang Mengecek...";
 
             try {
                 const res = await fetch(`/api/slot-web`, {
@@ -212,7 +209,6 @@
                 const data = await res.json();
 
                 if(data.status) {
-                    userData = { nomor: num, balance: data.profile.uang };
                     showStep(2);
                     document.getElementById('profileContent').style.display = 'block';
                     document.getElementById('pName').innerText = data.profile.name;
@@ -220,6 +216,8 @@
                     document.getElementById('pLimit').innerText = data.profile.limit;
                     document.getElementById('pImg').src = data.profile.img;
                     
+                    userData = { nomor: num };
+
                     let cd = 5;
                     const itv = setInterval(() => {
                         cd--;
@@ -231,7 +229,7 @@
                         }
                     }, 1000);
                 } else { alert(data.msg); }
-            } catch (e) { alert("Server Error!"); }
+            } catch (e) { alert("Bot Offline / Server Error!"); }
         }
 
         function showStep(n) {
@@ -242,17 +240,17 @@
         function openGame(name) { showStep(3); }
 
         async function playGame() {
-            const bet = parseInt(document.getElementById('betInput').value);
+            const bet = document.getElementById('betInput').value;
             const btn = document.getElementById('spinBtn');
             const msg = document.getElementById('game-msg');
             const reels = [document.getElementById('r1'), document.getElementById('r2'), document.getElementById('r3')];
 
-            if(isNaN(bet) || bet < 5000) return alert("Bet minimal 5.000!");
-
+            if(bet < 5000) return alert("Bet minimal 5.000, jier!");
+            
             // --- SMART LOGIC: CEK DULU BARU ANIMASI ---
             btn.disabled = true;
             msg.innerText = "🔌 Validasi Saldo...";
-            msg.style.color = "var(--dim)";
+            msg.style.color = var(--dim);
 
             try {
                 const res = await fetch(`/api/slot-web`, {
@@ -264,25 +262,24 @@
 
                 if(!data.status) {
                     msg.innerText = "⚠️ " + data.msg;
-                    msg.style.color = "var(--error)";
+                    msg.style.color = "#ff4d4d";
                     btn.disabled = false;
                     return;
                 }
 
-                // JIKA LOLOS CEK, BARU JALANKAN ANIMASI
-                msg.innerText = "🎰 Server Berhasil Terhubung! Rolling...";
-                msg.style.color = "var(--accent)";
+                // JIKA LOLOS VALIDASI, BARU JALANKAN ANIMASI
+                msg.innerText = "🎰 Koneksi Aman! Memutar...";
+                msg.style.color = var(--accent);
                 reels.forEach(r => r.classList.add('spinning'));
 
                 const anim = setInterval(() => {
                     reels.forEach(r => r.innerText = ['🍎','🍇','🍒','💎','🍋'][Math.floor(Math.random()*5)]);
                 }, 80);
 
-                // Delay 3 detik biar dapet sensasi nunggunya
                 setTimeout(() => {
                     clearInterval(anim);
                     reels.forEach(r => r.classList.remove('spinning'));
-                    
+
                     reels[0].innerText = data.reels[0];
                     reels[1].innerText = data.reels[1];
                     reels[2].innerText = data.reels[2];
@@ -294,31 +291,28 @@
                         msg.innerText = "🤏 ALMOST! Cashback Rp " + data.winAmount.toLocaleString();
                         msg.style.color = "#fbbf24";
                     } else {
-                        msg.innerText = "❌ LOSE! Saldo Terpotong.";
-                        msg.style.color = var(--error);
+                        msg.innerText = "❌ LOSE! Saldo Hangus.";
+                        msg.style.color = "#ff4d4d";
                     }
 
-                    // Update local balance view
-                    document.getElementById('pUang').innerText = "Rp " + data.newSaldo.toLocaleString();
-                    
+                    // Simpan Cooldown
                     localStorage.setItem('lastSpinTime', Date.now().toString());
-                    startGlobalCooldown(CD_TIME);
+                    startGlobalCooldown(CD_HOURLY);
                 }, 3000);
 
-            } catch (e) { 
-                alert("Koneksi Putus!"); 
-                btn.disabled = false; 
-            }
+            } catch (e) { alert("Koneksi Putus!"); btn.disabled = false; }
         }
 
         function startGlobalCooldown(ms) {
             const btn = document.getElementById('spinBtn');
+            showStep(3);
             btn.disabled = true;
             const itv = setInterval(() => {
                 ms -= 1000;
                 let min = Math.floor(ms / 60000);
                 let sec = Math.floor((ms % 60000) / 1000);
-                btn.innerText = `WAIT: ${min}m ${sec}s`;
+                btn.innerText = `COOLDOWN (${min}m ${sec}s)`;
+
                 if(ms <= 0) {
                     clearInterval(itv);
                     btn.disabled = false;
