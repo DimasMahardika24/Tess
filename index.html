@@ -55,7 +55,6 @@
 
         h1 { font-weight: 800; letter-spacing: -1.5px; margin-bottom: 5px; font-size: 28px; }
 
-        /* Profile Card */
         .profile-card {
             background: var(--input); border-radius: 24px; padding: 20px;
             margin-top: 10px; border: 1px solid var(--border);
@@ -76,7 +75,6 @@
         .b-box label { display: block; font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; }
         .b-box span { display: block; color: var(--text-main); font-weight: 800; font-size: 13px; margin-top: 2px; }
 
-        /* Game Menu Styling */
         .game-menu { margin-top: 25px; text-align: left; }
         .menu-label { font-size: 11px; font-weight: 700; color: var(--text-dim); letter-spacing: 1.5px; margin-bottom: 15px; display: block; }
 
@@ -86,10 +84,7 @@
             display: flex; align-items: center; cursor: pointer; position: relative;
         }
 
-        .game-item:active { transform: scale(0.98); }
-
         .game-item.active:hover { border-color: var(--accent); background: rgba(61, 139, 255, 0.05); }
-
         .game-item.locked { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
 
         .game-icon {
@@ -108,7 +103,6 @@
             padding: 4px 8px; border-radius: 8px; font-weight: 700;
         }
 
-        /* Standard Elements */
         input {
             width: 100%; background: var(--input); border: 1px solid var(--border);
             padding: 16px 20px; border-radius: 18px; color: #fff;
@@ -133,7 +127,13 @@
 
         .step { display: none; }
         .active { display: block; animation: fadeIn 0.5s ease forwards; }
-        .hide-game-ui { opacity: 0; pointer-events: none; transform: translateY(10px); }
+        
+        /* CLASS HIDE-GAME-UI: Sangat Penting */
+        .hide-game-ui { 
+            opacity: 0 !important; 
+            pointer-events: none !important; 
+            transform: translateY(15px); 
+        }
 
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -326,14 +326,17 @@
             const reels = [document.getElementById('r1'), document.getElementById('r2'), document.getElementById('r3')];
             const controlArea = document.getElementById('controlArea');
             const backArea = document.getElementById('backArea');
+            const msgEl = document.getElementById('game-msg');
 
             if(!bet || bet < 5000) return showPopup("Minimal taruhan Rp 5.000");
             if(bet > userUang) return showPopup("Saldo tidak cukup!");
             
+            // 1. SEMBUNYIKAN UI SEGERA
             controlArea.classList.add('hide-game-ui');
             backArea.classList.add('hide-game-ui');
-            document.getElementById('game-msg').innerText = "MENUNGGU HASIL...";
+            msgEl.innerText = "MENUNGGU HASIL...";
             
+            // 2. MULAI ANIMASI
             const anims = reels.map(r => setInterval(() => {
                 r.innerText = ['🍎','🍇','🍒','💎','🍋','🔔'][Math.floor(Math.random()*6)];
             }, 70));
@@ -347,10 +350,14 @@
                 const data = await res.json();
 
                 if(data.status) {
+                    // BERHENTI BERTAHAP
                     setTimeout(() => { clearInterval(anims[0]); reels[0].innerText = data.reels[0]; }, 1000);
                     setTimeout(() => { clearInterval(anims[1]); reels[1].innerText = data.reels[1]; }, 1800);
                     setTimeout(() => { 
-                        clearInterval(anims[2]); reels[2].innerText = data.reels[2];
+                        clearInterval(anims[2]); 
+                        reels[2].innerText = data.reels[2];
+                        
+                        // KUNCI: Baru munculkan tombol setelah reel 3 berhenti total
                         controlArea.classList.remove('hide-game-ui');
                         backArea.classList.remove('hide-game-ui');
                         finishGame(data);
@@ -360,12 +367,14 @@
                     controlArea.classList.remove('hide-game-ui');
                     backArea.classList.remove('hide-game-ui');
                     showPopup(data.msg);
+                    msgEl.innerText = "";
                 }
             } catch (e) { 
                 anims.forEach(a => clearInterval(a));
                 controlArea.classList.remove('hide-game-ui');
                 backArea.classList.remove('hide-game-ui');
                 showPopup("Koneksi Putus!");
+                msgEl.innerText = "";
             }
         }
 
