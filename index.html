@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Users | Professional</title>
+    <title>Miwa Dashboard | Professional Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -45,18 +45,6 @@
             position: relative;
         }
 
-        /* HEADER TITLE BARU */
-        h1 { 
-            font-weight: 800; 
-            letter-spacing: 1px; 
-            margin-bottom: 5px; 
-            font-size: 22px;
-            background: linear-gradient(to right, #ffffff, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-        }
-
         .back-btn {
             position: absolute; top: 25px; left: 25px;
             background: var(--input); border: 1px solid var(--border);
@@ -65,38 +53,38 @@
             justify-content: center; cursor: pointer; z-index: 10; font-weight: bold;
         }
 
-        /* STEP 1: LOGIN STYLE */
-        .login-box { margin-top: 30px; }
-        .lock-icon { font-size: 40px; margin-bottom: 15px; display: block; opacity: 0.8; }
+        h1 { font-weight: 800; letter-spacing: -1.5px; margin-bottom: 5px; font-size: 28px; }
 
-        /* STEP 2: PROFILE CARD */
         .profile-card {
             background: var(--input); border-radius: 24px; padding: 20px;
-            margin-top: 15px; border: 1px solid var(--border);
+            margin-top: 10px; border: 1px solid var(--border);
             display: none; animation: slideUp 0.6s ease;
         }
+
         .profile-img {
-            width: 70px; height: 70px; border-radius: 20px;
-            border: 2px solid var(--accent); margin-bottom: 12px;
+            width: 65px; height: 65px; border-radius: 18px;
+            border: 2px solid var(--accent); margin-bottom: 10px;
             object-fit: cover; box-shadow: 0 0 15px var(--accent-glow);
         }
+
+        /* GRID BALANCE-INFO: Saldo & Limit Utama Bot */
         .balance-info { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
         .b-box {
-            background: rgba(0,0,0,0.3); padding: 12px; border-radius: 16px;
+            background: rgba(0,0,0,0.3); padding: 10px; border-radius: 14px;
             border: 1px solid rgba(255,255,255,0.03);
         }
         .b-box label { display: block; font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; }
-        .b-box span { display: block; color: var(--text-main); font-weight: 800; font-size: 13px; margin-top: 3px; }
+        .b-box span { display: block; color: var(--text-main); font-weight: 800; font-size: 13px; margin-top: 2px; }
 
-        /* MENU GAME */
         .game-menu { margin-top: 25px; text-align: left; }
         .menu-label { font-size: 11px; font-weight: 700; color: var(--text-dim); letter-spacing: 1.5px; margin-bottom: 15px; display: block; }
+
         .game-item {
             width: 100%; background: var(--input); border: 1px solid var(--border);
             border-radius: 20px; padding: 12px 16px; margin-bottom: 12px;
             display: flex; align-items: center; cursor: pointer;
         }
-        .game-item.active:hover { border-color: var(--accent); background: rgba(61, 139, 255, 0.05); transform: translateY(-2px); }
+        .game-item.active:hover { border-color: var(--accent); background: rgba(61, 139, 255, 0.05); }
 
         .game-icon {
             width: 45px; height: 45px; background: rgba(0,0,0,0.2);
@@ -104,29 +92,32 @@
             justify-content: center; font-size: 22px; margin-right: 15px;
         }
 
-        /* INPUTS & BUTTONS */
+        .game-details { flex: 1; }
+        .game-title { display: block; font-size: 14px; font-weight: 700; color: var(--text-main); }
+        .game-subtitle { display: block; font-size: 10px; font-weight: 600; color: var(--success); }
+
         input {
             width: 100%; background: var(--input); border: 1px solid var(--border);
             padding: 16px 20px; border-radius: 18px; color: #fff;
-            margin-bottom: 16px; outline: none; font-size: 15px; text-align: center;
+            margin-bottom: 16px; outline: none; font-size: 15px;
         }
+
         .btn {
             width: 100%; padding: 16px; background: var(--accent);
             color: white; border: none; border-radius: 18px;
             font-weight: 700; cursor: pointer; box-shadow: 0 8px 25px var(--accent-glow);
-            text-transform: uppercase; letter-spacing: 1px;
+            text-transform: uppercase;
         }
+
         .btn:disabled { background: #2d3748; color: #64748b; cursor: not-allowed; box-shadow: none; }
 
-        /* REELS SLOT */
         .reels { display: flex; gap: 10px; justify-content: center; margin: 30px 0; }
         .reel {
-            width: 85px; height: 85px; background: #000; border-radius: 22px;
+            width: 85px; height: 85px; background: #000; border-radius: 20px;
             font-size: 40px; line-height: 85px; border: 1px solid var(--border);
-            box-shadow: inset 0 5px 20px rgba(0,0,0,0.9);
+            box-shadow: inset 0 5px 15px rgba(0,0,0,0.8);
         }
 
-        /* ANIMATIONS */
         .step { display: none; }
         .active { display: block; animation: fadeIn 0.5s ease forwards; }
         .hide-game-ui { opacity: 0 !important; pointer-events: none !important; transform: translateY(20px); }
@@ -150,60 +141,57 @@
     </div>
 
     <div class="container">
-        <h1>Dashboard Users</h1>
+        <h1>MIWA</h1>
         
         <div id="step-1" class="step active">
-            <div class="login-box">
-                <span class="lock-icon">🔒</span>
-                <p style="color: var(--text-dim); font-size: 13px; margin-bottom: 25px;">Sistem Otorisasi Terenkripsi</p>
-                <input type="text" id="phoneInput" placeholder="Nomor WhatsApp (628...)">
-                <button class="btn" id="checkBtn" onclick="checkAccount()">Masuk Sekarang</button>
-            </div>
+            <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 25px;">Sesi Aman & Terverifikasi</p>
+            <input type="text" id="phoneInput" placeholder="Masukkan Nomor (628...)">
+            <button class="btn" id="checkBtn" onclick="checkAccount()">Otorisasi Akun</button>
         </div>
 
         <div id="step-2" class="step">
             <div id="profileContent" class="profile-card">
                 <img id="pImg" src="" class="profile-img">
-                <h3 id="pName" style="margin:0; font-size: 18px; letter-spacing: 0.5px;">...</h3>
+                <h3 id="pName" style="margin:0; font-size: 18px;">...</h3>
                 <div class="balance-info">
                     <div class="b-box"><label>SALDO</label><span id="pUang">Rp 0</span></div>
                     <div class="b-box"><label>LIMIT BOT</label><span id="pLimit" style="color:var(--accent)">0</span></div>
                 </div>
             </div>
             
-            <div id="countdownArea" style="margin-top:25px; font-size: 12px; color: var(--accent); font-weight: 700; letter-spacing: 1px;">
-                MENGHUBUNGKAN KE MODULE... (<span id="cdText">5</span>)
+            <div id="countdownArea" style="margin-top:25px; font-size: 13px; color: var(--accent); font-weight: 600;">
+                MEMUAT MODUL GAME... (<span id="cdText">5</span>)
             </div>
 
             <div id="gameList" class="game-menu" style="display:none;">
-                <span class="menu-label">MENU UTAMA</span>
+                <span class="menu-label">PILIH PERMAINAN</span>
                 <div class="game-item active" onclick="openGame()">
                     <div class="game-icon">🎰</div>
                     <div class="game-details">
                         <span class="game-title">SLOT GENERAL</span>
-                        <span class="game-subtitle">Status: Online</span>
+                        <span class="game-subtitle">ONLINE</span>
                     </div>
                     <div class="game-badge" style="color: var(--accent);">PLAY</div>
                 </div>
-                <div style="text-align: center; margin-top: 25px;">
-                    <button onclick="logout()" style="background:none; border:none; color:var(--text-dim); font-size: 11px; cursor:pointer; font-weight: 700; text-decoration: underline;">LOGOUT SESSION</button>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="logout()" style="background:none; border:none; color:var(--text-dim); font-size: 11px; cursor:pointer; font-weight: 600;">KELUAR SESI</button>
                 </div>
             </div>
         </div>
 
         <div id="step-3" class="step">
             <div id="backArea" class="back-btn" onclick="goBack()">&larr;</div>
-            <p style="color: var(--accent); font-weight: 800; font-size: 11px; letter-spacing: 2px; margin-bottom: 15px; margin-top: 10px;">MESIN SLOT V1.0</p>
+            <p style="color: var(--accent); font-weight: 800; font-size: 11px; letter-spacing: 2px; margin-bottom: 10px;">MESIN SLOT AKTIF</p>
             <div class="reels">
                 <div id="r1" class="reel">💎</div>
                 <div id="r2" class="reel">💎</div>
                 <div id="r3" class="reel">💎</div>
             </div>
             <div id="controlArea">
-                <input type="number" id="betInput" placeholder="Bet (Min 5k - Max 1M)">
+                <input type="number" id="betInput" placeholder="Taruhan (Min 5k - Max 1M)">
                 <button class="btn" id="spinBtn" onclick="playGame()">PUTAR SEKARANG</button>
             </div>
-            <p id="game-msg" style="font-size: 12px; margin-top: 25px; color: var(--text-dim); font-weight: 700; min-height: 15px;"></p>
+            <p id="game-msg" style="font-size: 12px; margin-top: 20px; color: var(--text-dim); font-weight: 700; min-height: 15px;"></p>
         </div>
     </div>
 
@@ -233,7 +221,7 @@
             const num = document.getElementById('phoneInput').value;
             const btn = document.getElementById('checkBtn');
             if(!num) return showPopup("Masukkan nomor WhatsApp!");
-            btn.disabled = true; btn.innerText = "AUTHENTICATING...";
+            btn.disabled = true; btn.innerText = "VERIFIKASI...";
             try {
                 const res = await fetch(`/api/slot-web`, {
                     method: "POST",
@@ -246,10 +234,10 @@
                     localStorage.setItem('miwa_user', JSON.stringify(userData));
                     loadProfileUI(data);
                 } else {
-                    showPopup("Akun tidak terdaftar!");
-                    btn.disabled = false; btn.innerText = "MASUK SEKARANG";
+                    showPopup("Akun tidak ditemukan!");
+                    btn.disabled = false; btn.innerText = "OTORISASI AKUN";
                 }
-            } catch (e) { showPopup("Server Bermasalah!"); btn.disabled = false; }
+            } catch (e) { showPopup("Koneksi Putus!"); btn.disabled = false; }
         }
 
         function loadProfileAuto() { showStep(2); updateProfileDisplay(userData.profile); startMenuTimer(); }
@@ -257,10 +245,13 @@
 
         function updateProfileDisplay(profile) {
             document.getElementById('profileContent').style.display = 'block';
-            document.getElementById('pName').innerText = profile?.name || "User Dashboard";
+            document.getElementById('pName').innerText = profile?.name || "User Miwa";
             userUang = profile?.uang || 0;
             document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
+            
+            // Limit Bot Utama Tetap Diisi
             document.getElementById('pLimit').innerText = profile?.limit || 0;
+            
             document.getElementById('pImg').src = profile?.img || "https://img1.pixhost.to/images/11480/682392173_dhikzxcloud.jpg";
         }
 
@@ -294,13 +285,13 @@
             const backArea = document.getElementById('backArea');
             const msgEl = document.getElementById('game-msg');
 
-            if(!bet || bet < 5000) return showPopup("Minimal Rp 5.000");
-            if(bet > 1000000000) return showPopup("Maksimal Rp 1 Miliar");
+            if(!bet || bet < 5000) return showPopup("Minimal taruhan Rp 5.000");
+            if(bet > 1000000000) return showPopup("Maksimal taruhan Rp 1 Miliar");
             if(bet > userUang) return showPopup("Saldo tidak cukup!");
             
             controlArea.classList.add('hide-game-ui');
             backArea.classList.add('hide-game-ui');
-            msgEl.innerText = "MEMPROSES TRANSAKSI...";
+            msgEl.innerText = "MENUNGGU HASIL...";
             
             const anims = reels.map(r => setInterval(() => {
                 r.innerText = ['🍎','🍇','🍒','💎','🍋','🔔'][Math.floor(Math.random()*6)];
@@ -334,7 +325,7 @@
                 anims.forEach(a => clearInterval(a));
                 controlArea.classList.remove('hide-game-ui');
                 backArea.classList.remove('hide-game-ui');
-                showPopup("Lost Connection!");
+                showPopup("Koneksi Putus!");
             }
         }
 
@@ -344,12 +335,13 @@
                 userUang = data.currentUang;
                 document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
             }
+            // Update Limit Bot Utama pasca spin kalau ada perubahan
             if(data.currentLimit !== undefined) {
                 document.getElementById('pLimit').innerText = data.currentLimit;
             }
             localStorage.setItem('lastSpinTime', Date.now().toString());
             startGlobalCooldown(CD_HOURLY);
-            if(data.resultStatus.toLowerCase().includes('win')) showPopup("🎉 JACKPOT! Saldo Bertambah.");
+            if(data.resultStatus.toLowerCase().includes('win')) showPopup("JACKPOT! Saldo bertambah.");
         }
 
         function checkCooldown() {
@@ -366,7 +358,7 @@
             const itv = setInterval(() => {
                 ms -= 1000;
                 let min = Math.floor(ms / 60000), sec = Math.floor((ms % 60000) / 1000);
-                btn.innerText = `READY IN (${min}:${sec < 10 ? '0'+sec : sec})`;
+                btn.innerText = `COOLDOWN (${min}:${sec < 10 ? '0'+sec : sec})`;
                 if(ms <= 0) {
                     clearInterval(itv);
                     btn.disabled = false; btn.innerText = "PUTAR SEKARANG";
@@ -376,7 +368,7 @@
         }
 
         function logout() {
-            if(confirm("Hapus sesi dan keluar?")) {
+            if(confirm("Keluar dan hapus data login?")) {
                 localStorage.removeItem('miwa_user');
                 location.reload();
             }
