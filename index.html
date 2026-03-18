@@ -62,19 +62,20 @@
         }
 
         .profile-img {
-            width: 65px; height: 65px; border-radius: 18px;
-            border: 2px solid var(--accent); margin-bottom: 10px;
+            width: 70px; height: 70px; border-radius: 20px;
+            border: 2px solid var(--accent); margin-bottom: 12px;
             object-fit: cover; box-shadow: 0 0 15px var(--accent-glow);
         }
 
-        /* GRID BALANCE-INFO: Saldo & Limit Utama Bot */
-        .balance-info { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+        /* Balance Info: Box Tunggal Mewah */
+        .balance-info { margin-top: 15px; }
         .b-box {
-            background: rgba(0,0,0,0.3); padding: 10px; border-radius: 14px;
+            background: rgba(0,0,0,0.3); padding: 15px; border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.03);
+            text-align: center;
         }
-        .b-box label { display: block; font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; }
-        .b-box span { display: block; color: var(--text-main); font-weight: 800; font-size: 13px; margin-top: 2px; }
+        .b-box label { display: block; font-size: 10px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+        .b-box span { display: block; color: var(--success); font-weight: 800; font-size: 20px; margin-top: 4px; }
 
         .game-menu { margin-top: 25px; text-align: left; }
         .menu-label { font-size: 11px; font-weight: 700; color: var(--text-dim); letter-spacing: 1.5px; margin-bottom: 15px; display: block; }
@@ -85,6 +86,7 @@
             display: flex; align-items: center; cursor: pointer;
         }
         .game-item.active:hover { border-color: var(--accent); background: rgba(61, 139, 255, 0.05); }
+        .game-item.locked { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
 
         .game-icon {
             width: 45px; height: 45px; background: rgba(0,0,0,0.2);
@@ -154,8 +156,10 @@
                 <img id="pImg" src="" class="profile-img">
                 <h3 id="pName" style="margin:0; font-size: 18px;">...</h3>
                 <div class="balance-info">
-                    <div class="b-box"><label>SALDO</label><span id="pUang">Rp 0</span></div>
-                    <div class="b-box"><label>LIMIT BOT</label><span id="pLimit" style="color:var(--accent)">0</span></div>
+                    <div class="b-box">
+                        <label>SALDO AKTIF</label>
+                        <span id="pUang">Rp 0</span>
+                    </div>
                 </div>
             </div>
             
@@ -172,6 +176,10 @@
                         <span class="game-subtitle">ONLINE</span>
                     </div>
                     <div class="game-badge" style="color: var(--accent);">PLAY</div>
+                </div>
+                <div class="game-item locked">
+                    <div class="game-icon">🎡</div>
+                    <div class="game-details"><span class="game-title">ROULETTE</span><span class="game-subtitle">COMING SOON</span></div>
                 </div>
                 <div style="text-align: center; margin-top: 20px;">
                     <button onclick="logout()" style="background:none; border:none; color:var(--text-dim); font-size: 11px; cursor:pointer; font-weight: 600;">KELUAR SESI</button>
@@ -237,7 +245,7 @@
                     showPopup("Akun tidak ditemukan!");
                     btn.disabled = false; btn.innerText = "OTORISASI AKUN";
                 }
-            } catch (e) { showPopup("Koneksi Putus!"); btn.disabled = false; }
+            } catch (e) { showPopup("Koneksi Server Gagal!"); btn.disabled = false; }
         }
 
         function loadProfileAuto() { showStep(2); updateProfileDisplay(userData.profile); startMenuTimer(); }
@@ -248,10 +256,6 @@
             document.getElementById('pName').innerText = profile?.name || "User Miwa";
             userUang = profile?.uang || 0;
             document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
-            
-            // Limit Bot Utama Tetap Diisi
-            document.getElementById('pLimit').innerText = profile?.limit || 0;
-            
             document.getElementById('pImg').src = profile?.img || "https://img1.pixhost.to/images/11480/682392173_dhikzxcloud.jpg";
         }
 
@@ -334,10 +338,6 @@
             if(data.currentUang !== undefined) {
                 userUang = data.currentUang;
                 document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
-            }
-            // Update Limit Bot Utama pasca spin kalau ada perubahan
-            if(data.currentLimit !== undefined) {
-                document.getElementById('pLimit').innerText = data.currentLimit;
             }
             localStorage.setItem('lastSpinTime', Date.now().toString());
             startGlobalCooldown(CD_HOURLY);
