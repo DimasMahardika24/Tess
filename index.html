@@ -45,102 +45,111 @@
             position: relative;
         }
 
+        .back-btn {
+            position: absolute; top: 25px; left: 25px;
+            background: var(--input); border: 1px solid var(--border);
+            color: var(--text-main); width: 35px; height: 35px;
+            border-radius: 12px; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; z-index: 10; font-weight: bold;
+        }
+
         h1 { font-weight: 800; letter-spacing: -1.5px; margin-bottom: 5px; font-size: 28px; }
 
-        /* Profile Section */
+        /* Profile Card */
         .profile-card {
-            background: var(--input);
-            border-radius: 24px;
-            padding: 24px;
-            margin-top: 10px;
-            border: 1px solid var(--border);
-            display: none;
-            animation: slideUp 0.6s ease;
+            background: var(--input); border-radius: 24px; padding: 20px;
+            margin-top: 10px; border: 1px solid var(--border);
+            display: none; animation: slideUp 0.6s ease;
         }
 
         .profile-img {
-            width: 75px; height: 75px;
-            border-radius: 22px;
-            border: 2px solid var(--accent);
-            margin-bottom: 12px;
-            object-fit: cover;
-            box-shadow: 0 0 20px var(--accent-glow);
+            width: 65px; height: 65px; border-radius: 18px;
+            border: 2px solid var(--accent); margin-bottom: 10px;
+            object-fit: cover; box-shadow: 0 0 15px var(--accent-glow);
         }
 
-        .balance-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 15px;
-        }
-
+        .balance-info { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
         .b-box {
-            background: rgba(0,0,0,0.3);
-            padding: 12px;
-            border-radius: 16px;
+            background: rgba(0,0,0,0.3); padding: 10px; border-radius: 14px;
             border: 1px solid rgba(255,255,255,0.03);
         }
+        .b-box label { display: block; font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; }
+        .b-box span { display: block; color: var(--text-main); font-weight: 800; font-size: 13px; margin-top: 2px; }
 
-        .b-box label { display: block; font-size: 10px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; }
-        .b-box span { display: block; color: var(--text-main); font-weight: 800; font-size: 14px; margin-top: 2px; }
+        /* Game Menu Styling */
+        .game-menu { margin-top: 25px; text-align: left; }
+        .menu-label { font-size: 11px; font-weight: 700; color: var(--text-dim); letter-spacing: 1.5px; margin-bottom: 15px; display: block; }
 
-        /* Input & Button */
+        .game-item {
+            width: 100%; background: var(--input); border: 1px solid var(--border);
+            border-radius: 20px; padding: 12px 16px; margin-bottom: 12px;
+            display: flex; align-items: center; cursor: pointer; position: relative;
+        }
+
+        .game-item:active { transform: scale(0.98); }
+
+        .game-item.active:hover { border-color: var(--accent); background: rgba(61, 139, 255, 0.05); }
+
+        .game-item.locked { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+
+        .game-icon {
+            width: 45px; height: 45px; background: rgba(0,0,0,0.2);
+            border-radius: 14px; display: flex; align-items: center;
+            justify-content: center; font-size: 22px; margin-right: 15px;
+        }
+
+        .game-details { flex: 1; }
+        .game-title { display: block; font-size: 14px; font-weight: 700; color: var(--text-main); }
+        .game-subtitle { display: block; font-size: 10px; font-weight: 600; color: var(--success); }
+        .locked .game-subtitle { color: var(--text-dim); }
+
+        .game-badge {
+            font-size: 10px; background: var(--border); color: var(--text-dim);
+            padding: 4px 8px; border-radius: 8px; font-weight: 700;
+        }
+
+        /* Standard Elements */
         input {
             width: 100%; background: var(--input); border: 1px solid var(--border);
             padding: 16px 20px; border-radius: 18px; color: #fff;
             margin-bottom: 16px; outline: none; font-size: 15px;
         }
 
-        input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); }
-
         .btn {
-            width: 100%; padding: 16px;
-            background: var(--accent); color: white;
-            border: none; border-radius: 18px;
-            font-weight: 700; cursor: pointer;
-            box-shadow: 0 8px 25px var(--accent-glow);
+            width: 100%; padding: 16px; background: var(--accent);
+            color: white; border: none; border-radius: 18px;
+            font-weight: 700; cursor: pointer; box-shadow: 0 8px 25px var(--accent-glow);
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        .btn:hover { transform: translateY(-3px); filter: brightness(1.1); }
-        .btn:disabled { background: #2d3748; color: #64748b; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn:disabled { background: #2d3748; color: #64748b; cursor: not-allowed; box-shadow: none; }
 
-        /* Slot Reels */
         .reels { display: flex; gap: 12px; justify-content: center; margin: 30px 0; }
         .reel {
-            width: 85px; height: 85px; background: #000;
-            border-radius: 20px; font-size: 40px; line-height: 85px;
-            border: 1px solid var(--border);
+            width: 85px; height: 85px; background: #000; border-radius: 20px;
+            font-size: 40px; line-height: 85px; border: 1px solid var(--border);
             box-shadow: inset 0 5px 15px rgba(0,0,0,0.8);
         }
 
-        /* Custom Modal / Popup */
+        .step { display: none; }
+        .active { display: block; animation: fadeIn 0.5s ease forwards; }
+        .hide-game-ui { opacity: 0; pointer-events: none; transform: translateY(10px); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
         #customPopup {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
             background: var(--card); border: 1px solid var(--border);
             padding: 15px 25px; border-radius: 20px; z-index: 999;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; align-items: center;
-            gap: 12px; opacity: 0; pointer-events: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0;
         }
-
         #customPopup.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-        /* Step & Animations */
-        .step { display: none; }
-        .active { display: block; animation: fadeIn 0.5s ease forwards; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .update-flash { animation: flash 0.5s ease; }
-        @keyframes flash { 50% { color: var(--success); transform: scale(1.1); } }
     </style>
 </head>
 <body>
 
     <div id="customPopup">
-        <div id="popIcon" style="font-size: 20px;">ℹ️</div>
         <div id="popMsg" style="font-size: 14px; font-weight: 600;">Pesan di sini</div>
     </div>
 
@@ -167,25 +176,55 @@
                 MEMUAT MODUL GAME... (<span id="cdText">5</span>)
             </div>
 
-            <div id="gameList" style="display:none; margin-top: 25px;">
-                <button class="btn" style="background: var(--input); color: white; display: flex; align-items: center; margin-bottom: 12px; box-shadow: none; border: 1px solid var(--border);" onclick="openGame()">
-                    <span style="font-size: 20px; margin-right: 15px;">🎰</span> SLOT GENERAL
-                </button>
-                <p style="font-size: 11px; color: var(--text-dim); margin-top: 20px;">Mode Profesional Aktif</p>
+            <div id="gameList" class="game-menu" style="display:none;">
+                <span class="menu-label">PILIH PERMAINAN</span>
+                
+                <div class="game-item active" onclick="openGame()">
+                    <div class="game-icon">🎰</div>
+                    <div class="game-details">
+                        <span class="game-title">SLOT GENERAL</span>
+                        <span class="game-subtitle">ONLINE</span>
+                    </div>
+                    <div class="game-badge" style="color: var(--accent);">PLAY</div>
+                </div>
+
+                <div class="game-item locked">
+                    <div class="game-icon">🎡</div>
+                    <div class="game-details">
+                        <span class="game-title">ROULETTE ROYALE</span>
+                        <span class="game-subtitle">COMING SOON</span>
+                    </div>
+                    <div class="game-badge">LOCKED</div>
+                </div>
+
+                <div class="game-item locked">
+                    <div class="game-icon">🚀</div>
+                    <div class="game-details">
+                        <span class="game-title">CRASH GALAXY</span>
+                        <span class="game-subtitle">DEVELOPMENT</span>
+                    </div>
+                    <div class="game-badge">LOCKED</div>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="logout()" style="background:none; border:none; color:var(--text-dim); font-size: 11px; cursor:pointer; font-weight: 600;">KELUAR SESI</button>
+                </div>
             </div>
         </div>
 
         <div id="step-3" class="step">
+            <div id="backArea" class="back-btn" onclick="goBack()">&larr;</div>
             <p style="color: var(--accent); font-weight: 800; font-size: 11px; letter-spacing: 2px; margin-bottom: 10px;">MESIN SLOT AKTIF</p>
             <div class="reels">
                 <div id="r1" class="reel">💎</div>
                 <div id="r2" class="reel">💎</div>
                 <div id="r3" class="reel">💎</div>
             </div>
-            <input type="number" id="betInput" placeholder="Jumlah Taruhan (5k-50k)">
-            <button class="btn" id="spinBtn" onclick="playGame()">PUTAR SEKARANG</button>
+            <div id="controlArea">
+                <input type="number" id="betInput" placeholder="Jumlah Taruhan (5k-50k)">
+                <button class="btn" id="spinBtn" onclick="playGame()">PUTAR SEKARANG</button>
+            </div>
             <p id="game-msg" style="font-size: 12px; margin-top: 20px; color: var(--text-dim); font-weight: 700;"></p>
-            <button onclick="logout()" style="background:none; border:none; color:var(--text-dim); font-size: 11px; cursor:pointer; margin-top: 15px;">Keluar Sesi</button>
         </div>
     </div>
 
@@ -195,30 +234,18 @@
         let userData = {};
         let userUang = 0;
 
-        // --- CORE FUNCTIONS ---
-
         window.onload = () => {
-            // Cek Auto Login
             const savedUser = localStorage.getItem('miwa_user');
             if(savedUser) {
                 userData = JSON.parse(savedUser);
                 loadProfileAuto();
             }
-
-            // Cek Cooldown
-            const lastSpin = localStorage.getItem('lastSpinTime');
-            if (lastSpin) {
-                const elapsed = Date.now() - parseInt(lastSpin);
-                if (elapsed < CD_HOURLY) startGlobalCooldown(CD_HOURLY - elapsed);
-            }
+            checkCooldown();
         };
 
-        function showPopup(msg, type = 'info') {
+        function showPopup(msg) {
             const p = document.getElementById('customPopup');
-            const icon = document.getElementById('popIcon');
             document.getElementById('popMsg').innerText = msg;
-            icon.innerText = type === 'error' ? '❌' : (type === 'success' ? '✅' : 'ℹ️');
-            p.style.borderLeft = `5px solid ${type === 'error' ? 'var(--error)' : 'var(--success)'}`;
             p.classList.add('show');
             setTimeout(() => p.classList.remove('show'), 3000);
         }
@@ -226,11 +253,8 @@
         async function checkAccount() {
             const num = document.getElementById('phoneInput').value;
             const btn = document.getElementById('checkBtn');
-            if(!num) return showPopup("Masukkan nomor WhatsApp!", "error");
-
-            btn.disabled = true; 
-            btn.innerText = "VERIFIKASI...";
-
+            if(!num) return showPopup("Masukkan nomor WhatsApp!");
+            btn.disabled = true; btn.innerText = "VERIFIKASI...";
             try {
                 const res = await fetch(`/api/slot-web`, {
                     method: "POST",
@@ -238,51 +262,44 @@
                     body: JSON.stringify({ nomor: num, amount: 0, secret: SECRET, type: 'check' })
                 });
                 const data = await res.json();
-
                 if(data.status || data.msg.includes("Minimal")) { 
                     userData = { nomor: num, profile: data.profile };
-                    localStorage.setItem('miwa_user', JSON.stringify(userData)); // Simpan Sesi
+                    localStorage.setItem('miwa_user', JSON.stringify(userData));
                     loadProfileUI(data);
                 } else {
-                    showPopup("Akun tidak ditemukan!", "error");
-                    btn.disabled = false;
-                    btn.innerText = "OTORISASI AKUN";
+                    showPopup("Akun tidak ditemukan!");
+                    btn.disabled = false; btn.innerText = "OTORISASI AKUN";
                 }
-            } catch (e) { 
-                showPopup("Koneksi Server Gagal!", "error");
-                btn.disabled = false;
-            }
+            } catch (e) { showPopup("Server Offline!"); btn.disabled = false; }
         }
 
         function loadProfileAuto() {
-            // Fungsi ini dipanggil kalau user sudah pernah login sebelumnya
             showStep(2);
-            // Kamu bisa fetch ulang data saldo di sini jika mau lebih akurat
-            document.getElementById('profileContent').style.display = 'block';
-            document.getElementById('pName').innerText = userData.profile?.name || "User Miwa";
-            userUang = userData.profile?.uang || 0;
-            document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
-            document.getElementById('pLimit').innerText = userData.profile?.limit || 0;
-            document.getElementById('pImg').src = userData.profile?.img || "https://img1.pixhost.to/images/11480/682392173_dhikzxcloud.jpg";
+            updateProfileDisplay(userData.profile);
             startMenuTimer();
         }
 
         function loadProfileUI(data) {
             showStep(2);
-            userUang = data.profile?.uang || 0;
-            document.getElementById('profileContent').style.display = 'block';
-            document.getElementById('pName').innerText = data.profile?.name || "User Miwa";
-            document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
-            document.getElementById('pLimit').innerText = data.profile?.limit || 0;
-            document.getElementById('pImg').src = data.profile?.img || "https://img1.pixhost.to/images/11480/682392173_dhikzxcloud.jpg";
+            updateProfileDisplay(data.profile);
             startMenuTimer();
+        }
+
+        function updateProfileDisplay(profile) {
+            document.getElementById('profileContent').style.display = 'block';
+            document.getElementById('pName').innerText = profile?.name || "User Miwa";
+            userUang = profile?.uang || 0;
+            document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
+            document.getElementById('pLimit').innerText = profile?.limit || 0;
+            document.getElementById('pImg').src = profile?.img || "https://img1.pixhost.to/images/11480/682392173_dhikzxcloud.jpg";
         }
 
         function startMenuTimer() {
             let cd = 5;
+            const cdText = document.getElementById('cdText');
             const itv = setInterval(() => {
                 cd--;
-                document.getElementById('cdText').innerText = cd;
+                if(cdText) cdText.innerText = cd;
                 if(cd <= 0) {
                     clearInterval(itv);
                     document.getElementById('countdownArea').style.display = 'none';
@@ -296,21 +313,27 @@
             document.getElementById('step-'+n).classList.add('active');
         }
 
-        function openGame() { showStep(3); }
+        function openGame() { showStep(3); checkCooldown(); }
+        
+        function goBack() { 
+            const isSpinning = document.getElementById('controlArea').classList.contains('hide-game-ui');
+            if(!isSpinning) showStep(2); 
+        }
 
         async function playGame() {
             const betInput = document.getElementById('betInput');
-            const bet = Math.abs(parseInt(betInput.value)); // Anti Spam Minus
-            const btn = document.getElementById('spinBtn');
+            const bet = Math.abs(parseInt(betInput.value));
             const reels = [document.getElementById('r1'), document.getElementById('r2'), document.getElementById('r3')];
+            const controlArea = document.getElementById('controlArea');
+            const backArea = document.getElementById('backArea');
 
-            if(!bet || bet < 5000) return showPopup("Minimal taruhan Rp 5.000", "error");
-            if(bet > userUang) return showPopup("Saldo Anda tidak cukup!", "error");
+            if(!bet || bet < 5000) return showPopup("Minimal taruhan Rp 5.000");
+            if(bet > userUang) return showPopup("Saldo tidak cukup!");
             
-            btn.disabled = true;
+            controlArea.classList.add('hide-game-ui');
+            backArea.classList.add('hide-game-ui');
             document.getElementById('game-msg').innerText = "MENUNGGU HASIL...";
             
-            // Animasi Putar Tanpa Henti
             const anims = reels.map(r => setInterval(() => {
                 r.innerText = ['🍎','🍇','🍒','💎','🍋','🔔'][Math.floor(Math.random()*6)];
             }, 70));
@@ -324,47 +347,50 @@
                 const data = await res.json();
 
                 if(data.status) {
-                    // BERHENTI SATU PER SATU (Realistic)
                     setTimeout(() => { clearInterval(anims[0]); reels[0].innerText = data.reels[0]; }, 1000);
                     setTimeout(() => { clearInterval(anims[1]); reels[1].innerText = data.reels[1]; }, 1800);
                     setTimeout(() => { 
-                        clearInterval(anims[2]); 
-                        reels[2].innerText = data.reels[2];
+                        clearInterval(anims[2]); reels[2].innerText = data.reels[2];
+                        controlArea.classList.remove('hide-game-ui');
+                        backArea.classList.remove('hide-game-ui');
                         finishGame(data);
                     }, 2600);
                 } else {
                     anims.forEach(a => clearInterval(a));
-                    showPopup(data.msg, "error");
-                    btn.disabled = false;
+                    controlArea.classList.remove('hide-game-ui');
+                    backArea.classList.remove('hide-game-ui');
+                    showPopup(data.msg);
                 }
             } catch (e) { 
                 anims.forEach(a => clearInterval(a));
-                showPopup("Koneksi Putus!", "error");
-                btn.disabled = false; 
+                controlArea.classList.remove('hide-game-ui');
+                backArea.classList.remove('hide-game-ui');
+                showPopup("Koneksi Putus!");
             }
         }
 
         function finishGame(data) {
-            const msgEl = document.getElementById('game-msg');
-            msgEl.innerText = "RESULT: " + data.resultStatus;
-            
+            document.getElementById('game-msg').innerText = "RESULT: " + data.resultStatus;
             if(data.currentUang !== undefined) {
                 userUang = data.currentUang;
-                const saldoEl = document.getElementById('pUang');
-                saldoEl.innerText = "Rp " + userUang.toLocaleString();
-                saldoEl.classList.add('update-flash');
-                setTimeout(() => saldoEl.classList.remove('update-flash'), 600);
+                document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
             }
-
             localStorage.setItem('lastSpinTime', Date.now().toString());
             startGlobalCooldown(CD_HOURLY);
-            
-            if(data.resultStatus.toLowerCase().includes('win')) showPopup("JACKPOT! Saldo bertambah.", "success");
+            if(data.resultStatus.toLowerCase().includes('win')) showPopup("JACKPOT! Saldo bertambah.");
+        }
+
+        function checkCooldown() {
+            const lastSpin = localStorage.getItem('lastSpinTime');
+            if (lastSpin) {
+                const elapsed = Date.now() - parseInt(lastSpin);
+                if (elapsed < CD_HOURLY) startGlobalCooldown(CD_HOURLY - elapsed);
+            }
         }
 
         function startGlobalCooldown(ms) {
             const btn = document.getElementById('spinBtn');
-            showStep(3); btn.disabled = true;
+            btn.disabled = true;
             const itv = setInterval(() => {
                 ms -= 1000;
                 let min = Math.floor(ms / 60000), sec = Math.floor((ms % 60000) / 1000);
@@ -378,8 +404,10 @@
         }
 
         function logout() {
-            localStorage.removeItem('miwa_user');
-            location.reload();
+            if(confirm("Keluar dari sesi ini?")) {
+                localStorage.removeItem('miwa_user');
+                location.reload();
+            }
         }
     </script>
 </body>
