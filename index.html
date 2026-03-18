@@ -379,15 +379,27 @@
         }
 
         function finishGame(data) {
-            document.getElementById('game-msg').innerText = "RESULT: " + data.resultStatus;
-            if(data.currentUang !== undefined) {
-                userUang = data.currentUang;
-                document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
-            }
-            localStorage.setItem('lastSpinTime', Date.now().toString());
-            startGlobalCooldown(CD_HOURLY);
-            if(data.resultStatus.toLowerCase().includes('win')) showPopup("JACKPOT! Saldo bertambah.");
-        }
+    // 1. Ambil status (JACKPOT, ALMOST, atau LOSE)
+    document.getElementById('game-msg').innerText = "RESULT: " + data.resultStatus;
+
+    // 2. Update Saldo (Ganti currentUang jadi newSaldo sesuai index.js)
+    if(data.newSaldo !== undefined) {
+        userUang = data.newSaldo;
+        document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
+    }
+
+    // 3. Pasang Cooldown
+    localStorage.setItem('lastSpinTime', Date.now().toString());
+    startGlobalCooldown(CD_HOURLY);
+
+    // 4. Efek Jackpot
+    if(data.resultStatus === 'JACKPOT') {
+        showPopup("JACKPOT! Saldo bertambah Rp " + data.winAmount.toLocaleString());
+    } else if(data.resultStatus === 'ALMOST') {
+        showPopup("HAMPIR! Dapat cashback Rp " + data.winAmount.toLocaleString());
+    }
+}
+
 
         function checkCooldown() {
             const lastSpin = localStorage.getItem('lastSpinTime');
