@@ -128,7 +128,6 @@
         .step { display: none; }
         .active { display: block; animation: fadeIn 0.5s ease forwards; }
         
-        /* CLASS HIDE-GAME-UI: Sangat Penting */
         .hide-game-ui { 
             opacity: 0 !important; 
             pointer-events: none !important; 
@@ -331,12 +330,10 @@
             if(!bet || bet < 5000) return showPopup("Minimal taruhan Rp 5.000");
             if(bet > userUang) return showPopup("Saldo tidak cukup!");
             
-            // 1. SEMBUNYIKAN UI SEGERA
             controlArea.classList.add('hide-game-ui');
             backArea.classList.add('hide-game-ui');
             msgEl.innerText = "MENUNGGU HASIL...";
             
-            // 2. MULAI ANIMASI
             const anims = reels.map(r => setInterval(() => {
                 r.innerText = ['🍎','🍇','🍒','💎','🍋','🔔'][Math.floor(Math.random()*6)];
             }, 70));
@@ -349,15 +346,12 @@
                 });
                 const data = await res.json();
 
-                if(data.status) {
-                    // BERHENTI BERTAHAP
+                if(data.status && data.reels) {
                     setTimeout(() => { clearInterval(anims[0]); reels[0].innerText = data.reels[0]; }, 1000);
                     setTimeout(() => { clearInterval(anims[1]); reels[1].innerText = data.reels[1]; }, 1800);
                     setTimeout(() => { 
                         clearInterval(anims[2]); 
                         reels[2].innerText = data.reels[2];
-                        
-                        // KUNCI: Baru munculkan tombol setelah reel 3 berhenti total
                         controlArea.classList.remove('hide-game-ui');
                         backArea.classList.remove('hide-game-ui');
                         finishGame(data);
@@ -366,7 +360,7 @@
                     anims.forEach(a => clearInterval(a));
                     controlArea.classList.remove('hide-game-ui');
                     backArea.classList.remove('hide-game-ui');
-                    showPopup(data.msg);
+                    showPopup(data.msg || "Gagal memutar slot");
                     msgEl.innerText = "";
                 }
             } catch (e) { 
@@ -379,27 +373,22 @@
         }
 
         function finishGame(data) {
-    // 1. Ambil status (JACKPOT, ALMOST, atau LOSE)
-    document.getElementById('game-msg').innerText = "RESULT: " + data.resultStatus;
+            document.getElementById('game-msg').innerText = "RESULT: " + data.resultStatus;
 
-    // 2. Update Saldo (Ganti currentUang jadi newSaldo sesuai index.js)
-    if(data.newSaldo !== undefined) {
-        userUang = data.newSaldo;
-        document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
-    }
+            if(data.newSaldo !== undefined) {
+                userUang = data.newSaldo;
+                document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
+            }
 
-    // 3. Pasang Cooldown
-    localStorage.setItem('lastSpinTime', Date.now().toString());
-    startGlobalCooldown(CD_HOURLY);
+            localStorage.setItem('lastSpinTime', Date.now().toString());
+            startGlobalCooldown(CD_HOURLY);
 
-    // 4. Efek Jackpot
-    if(data.resultStatus === 'JACKPOT') {
-        showPopup("JACKPOT! Saldo bertambah Rp " + data.winAmount.toLocaleString());
-    } else if(data.resultStatus === 'ALMOST') {
-        showPopup("HAMPIR! Dapat cashback Rp " + data.winAmount.toLocaleString());
-    }
-}
-
+            if(data.resultStatus === 'JACKPOT') {
+                showPopup("JACKPOT! Saldo bertambah Rp " + data.winAmount.toLocaleString());
+            } else if(data.resultStatus === 'ALMOST') {
+                showPopup("HAMPIR! Dapat cashback Rp " + data.winAmount.toLocaleString());
+            }
+        }
 
         function checkCooldown() {
             const lastSpin = localStorage.getItem('lastSpinTime');
