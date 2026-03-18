@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhikzx Virtual Slot | Web Integrated</title>
+    <style>
+        body {
+            background-color: #0b0b0b;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .slot-card {
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 20px;
+            border: 2px solid #ffd700;
+            text-align: center;
+            width: 380px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+        }
+
+        h2 { color: #ffd700; margin: 0; letter-spacing: 2px; }
+        .info-bar { font-size: 12px; color: #888; margin-bottom: 20px; }
+
+        .reels-container {
+            background: #252525;
+            padding: 15px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            border: 2px inset #333;
+        }
+
+        .reel {
+            width: 80px;
+            height: 80px;
+            background: #333;
+            border-radius: 10px;
+            font-size: 45px;
+            line-height: 80px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .input-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; font-size: 12px; color: #ffd700; margin-bottom: 5px; margin-left: 5px; }
+        
+        input {
+            width: 93%;
+            padding: 12px;
+            background: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            outline: none;
+        }
+
+        .btn-spin {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ffd700, #ff8c00);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-weight: 900;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-spin:disabled { background: #444; color: #777; cursor: not-allowed; }
+
+        #log-status {
+            margin-top: 15px;
+            font-size: 14px;
+            padding: 10px;
+            border-radius: 8px;
+            min-height: 20px;
+        }
+
+        .limit-table {
+            margin-top: 15px;
+            font-size: 10px;
+            color: #666;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slot-card">
+        <h2>🎰 MIWA SLOT 🎰</h2>
+        <div class="info-bar">Web-to-Bot Integration by Dhikzx</div>
+
+        <div class="reels-container">
+            <div id="r1" class="reel">🍇</div>
+            <div id="r2" class="reel">🍉</div>
+            <div id="r3" class="reel">🍋</div>
+        </div>
+
+        <div class="input-group">
+            <label>NOMOR WHATSAPP (Wajib terdaftar di bot)</label>
+            <input type="text" id="nomorWA" placeholder="6285143166649">
+        </div>
+
+        <div class="input-group">
+            <label>NOMINAL TARUHAN (Min: 5.000)</label>
+            <input type="number" id="betAmount" placeholder="5000">
+        </div>
+
+        <button class="btn-spin" id="spinBtn" onclick="mulaiSlot()">SPIN SEKARANG</button>
+
+        <div id="log-status">Silakan masukkan Bet & Spin!</div>
+
+        <div class="limit-table">
+            <span>Bet 50k: -3 Limit</span>
+            <span>Bet 100k: -7 Limit</span>
+            <span>Bet 500k: -15 Limit</span>
+            <span>Bet 1jt: -25 Limit</span>
+        </div>
+    </div>
+
+    <script>
+        const symbols = ['🍇', '🍉', '🍋', '🍌', '🍎', '🍑', '🍒', '🫐', '🥥', '🥑'];
+        const IP_BOT = "38.49.215.226"; // IP kamu
+        const PORT_BOT = "4510"; // Port kamu
+        const SECRET = "dimas_ganteng_123"; // Harus sama dengan di index.js
+
+        let isRolling = false;
+
+        async function mulaiSlot() {
+            const nomor = document.getElementById('nomorWA').value;
+            const bet = document.getElementById('betAmount').value;
+            const btn = document.getElementById('spinBtn');
+            const log = document.getElementById('log-status');
+
+            if (!nomor || !bet) return alert("Isi nomor WA dan jumlah bet dulu!");
+            if (bet < 5000) return alert("Minimal bet adalah 5.000");
+
+            isRolling = true;
+            btn.disabled = true;
+            log.innerText = "⏳ Memproses data ke Bot...";
+            log.style.color = "#888";
+
+            // Animasi rolling visual di web (palsu)
+            const anim = setInterval(() => {
+                document.getElementById('r1').innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                document.getElementById('r2').innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                document.getElementById('r3').innerText = symbols[Math.floor(Math.random() * symbols.length)];
+            }, 100);
+
+            try {
+                // KIRIM DATA KE BOT PTERODACTYL
+                const response = await fetch(`/api/slot-web`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        nomor: nomor,
+                        amount: bet,
+                        secret: SECRET
+                    })
+                });
+
+                const data = await response.json();
+                clearInterval(anim); // Stop animasi rolling
+
+                if (data.status) {
+                    // Tampilkan hasil ASLI dari Bot
+                    document.getElementById('r1').innerText = data.reels[0];
+                    document.getElementById('r2').innerText = data.reels[1];
+                    document.getElementById('r3').innerText = data.reels[2];
+
+                    if (data.resultStatus === 'JACKPOT') {
+                        log.innerText = `🎉 JACKPOT! Menang Rp ${data.winAmount.toLocaleString()}`;
+                        log.style.color = "#ffd700";
+                    } else if (data.resultStatus === 'ALMOST') {
+                        log.innerText = `🤏 ALMOST! Cashback Rp ${data.winAmount.toLocaleString()}`;
+                        log.style.color = "#00ff00";
+                    } else {
+                        log.innerText = `❌ KALAH! Saldo terpotong.`;
+                        log.style.color = "#ff4444";
+                    }
+                } else {
+                    // Jika gagal (Limit habis/Saldo kurang)
+                    log.innerText = `⚠️ Gagal: ${data.msg}`;
+                    log.style.color = "orange";
+                }
+
+            } catch (err) {
+                clearInterval(anim);
+                log.innerText = "❌ Gagal terhubung ke Bot Pterodactyl!";
+                log.style.color = "red";
+                console.error(err);
+            }
+
+            btn.disabled = false;
+            isRolling = false;
+        }
+    </script>
+</body>
+</html>
