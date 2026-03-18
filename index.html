@@ -4,159 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miwa Dashboard | Dhikzx Cloud</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0f0f0f;
-            --card: #181818;
-            --accent: #ffd700;
-            --text: #ffffff;
-            --dim: #a0a0a0;
-            --border: #2a2a2a;
+            --bg: #0b0e11;
+            --card: #151921;
+            --input: #1f2632;
+            --accent: #3d8bff; /* Biru Modern Profesional */
+            --accent-glow: rgba(61, 139, 255, 0.3);
+            --text-main: #ffffff;
+            --text-dim: #94a3b8;
+            --border: #2d3748;
+            --success: #10b981;
         }
+
+        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
         body {
             background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            overflow-x: hidden;
         }
 
+        /* Container dengan Glassmorphism */
         .container {
             background: var(--card);
             width: 90%;
-            max-width: 420px;
-            border-radius: 28px;
-            padding: 30px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            max-width: 400px;
+            border-radius: 32px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.05);
             border: 1px solid var(--border);
             text-align: center;
+            position: relative;
         }
 
-        /* Profile Section */
+        h1 { font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; font-size: 24px; color: var(--text-main); }
+        .tagline { font-size: 14px; color: var(--text-dim); margin-bottom: 30px; }
+
+        /* Profile Card Modern */
         .profile-card {
-            background: #222;
-            border-radius: 20px;
-            padding: 20px;
-            margin-top: 20px;
-            border: 1px dashed var(--accent);
+            background: var(--input);
+            border-radius: 24px;
+            padding: 24px;
+            margin-top: 10px;
+            border: 1px solid var(--border);
             display: none;
+            animation: slideUp 0.6s ease;
         }
 
         .profile-img {
-            width: 80px; height: 80px;
-            border-radius: 50%;
-            border: 3px solid var(--accent);
-            margin-bottom: 10px;
+            width: 70px; height: 70px;
+            border-radius: 22px;
+            border: 2px solid var(--accent);
+            margin-bottom: 12px;
+            object-fit: cover;
+            box-shadow: 0 0 15px var(--accent-glow);
         }
 
         .balance-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 12px;
+            margin-top: 20px;
         }
 
         .b-box {
-            background: #111;
-            padding: 10px;
-            border-radius: 12px;
-            font-size: 12px;
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 16px;
+            font-size: 11px;
+            color: var(--text-dim);
+            border: 1px solid rgba(255,255,255,0.03);
         }
 
-        .b-box span { display: block; color: var(--accent); font-weight: 800; font-size: 14px; }
+        .b-box span { display: block; color: var(--text-main); font-weight: 700; font-size: 14px; margin-top: 4px; }
 
-        /* Step Visibility */
-        .step { display: none; }
-        .active { display: block; animation: fadeIn 0.5s ease; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Button & Inputs */
+        /* Input & Button Styling */
         input {
-            width: 100%; box-sizing: border-box;
-            background: #252525; border: 1px solid var(--border);
-            padding: 15px; border-radius: 15px; color: #fff;
-            margin-bottom: 15px; outline: none; font-weight: 600;
+            width: 100%; 
+            background: var(--input); 
+            border: 1px solid var(--border);
+            padding: 16px 20px; 
+            border-radius: 18px; 
+            color: #fff;
+            margin-bottom: 16px; 
+            outline: none; 
+            font-size: 15px;
         }
+
+        input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); }
 
         .btn {
-            width: 100%; padding: 15px;
-            background: var(--accent); color: #000;
-            border: none; border-radius: 15px;
-            font-weight: 900; cursor: pointer;
-            text-transform: uppercase; transition: 0.3s;
+            width: 100%; padding: 16px;
+            background: var(--accent); color: white;
+            border: none; border-radius: 18px;
+            font-weight: 700; cursor: pointer;
+            box-shadow: 0 8px 20px var(--accent-glow);
         }
 
-        .btn:disabled { background: #444; color: #888; cursor: not-allowed; }
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn:disabled { background: #2d3748; color: #64748b; cursor: not-allowed; box-shadow: none; }
 
+        /* Game List */
         .game-btn {
-            background: #252525; color: #fff;
-            padding: 12px; border-radius: 12px;
-            margin-bottom: 10px; border: 1px solid var(--border);
-            display: block; width: 100%; text-align: left;
-            font-weight: 600;
+            background: var(--input); color: var(--text-main);
+            padding: 16px; border-radius: 18px;
+            margin-bottom: 12px; border: 1px solid var(--border);
+            display: flex; align-items: center; width: 100%; 
+            font-weight: 600; cursor: pointer;
         }
 
-        .game-btn.locked { opacity: 0.5; border-color: #ff4d4d; }
+        .game-btn:hover { border-color: var(--accent); background: rgba(61, 139, 255, 0.05); }
+        .game-btn.locked { opacity: 0.4; cursor: default; }
 
-        /* Slot Animation Area */
+        /* Slot Reels */
         .reels {
-            display: flex; gap: 10px; justify-content: center; margin: 20px 0;
+            display: flex; gap: 12px; justify-content: center; margin: 25px 0;
         }
         .reel {
-            width: 70px; height: 70px; background: #222;
-            border-radius: 15px; font-size: 35px; line-height: 70px;
-            border: 2px solid var(--border);
+            width: 80px; height: 80px; background: var(--input);
+            border-radius: 20px; font-size: 36px; line-height: 80px;
+            border: 1px solid var(--border);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
         }
+
+        /* Animations */
+        .step { display: none; }
+        .active { display: block; animation: fadeIn 0.5s ease forwards; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        #game-msg { font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .win { color: var(--success); text-shadow: 0 0 10px rgba(16, 185, 129, 0.4); }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1 id="main-title">MIWA DASHBOARD</h1>
-        <p class="tagline" id="sub-title">Verify your account first</p>
-
+        <h1>MIWA</h1>
+        
         <div id="step-1" class="step active">
-            <input type="text" id="phoneInput" placeholder="Contoh: 62851431xxx">
-            <button class="btn" id="checkBtn" onclick="checkAccount()">Cek Akun</button>
+            <p class="tagline">Silakan verifikasi akun Anda</p>
+            <input type="text" id="phoneInput" placeholder="Nomor WhatsApp (628...)">
+            <button class="btn" id="checkBtn" onclick="checkAccount()">Masuk Dashboard</button>
         </div>
 
         <div id="step-2" class="step">
             <div id="profileContent" class="profile-card">
                 <img id="pImg" src="" class="profile-img">
-                <h3 id="pName" style="margin:5px 0">...</h3>
+                <h3 id="pName" style="margin:0; font-size: 18px;">...</h3>
                 <div class="balance-info">
-                    <div class="b-box">Uang <span id="pUang">0</span></div>
-                    <div class="b-box">Limit <span id="pLimit">0</span></div>
+                    <div class="b-box">SALDO UTAMA <span id="pUang">Rp 0</span></div>
+                    <div class="b-box">LIMIT HARIAN <span id="pLimit">0</span></div>
                 </div>
             </div>
             
-            <div id="countdownArea" style="margin-top:20px; font-size: 14px; color: var(--accent);">
-                Membuka daftar game dalam <span id="cdText">5</span>s...
+            <div id="countdownArea" style="margin-top:25px; font-size: 13px; color: var(--accent);">
+                Menyiapkan sesi dalam <span id="cdText">5</span>...
             </div>
 
-            <div id="gameList" style="display:none; margin-top: 20px;">
-                <button class="game-btn" onclick="openGame('General')">🎰 Slot General (Ready)</button>
-                <button class="game-btn locked">🎡 Roulette (Locked)</button>
-                <button class="game-btn locked">📈 Crash Game (Locked)</button>
+            <div id="gameList" style="display:none; margin-top: 25px;">
+                <button class="game-btn" onclick="openGame('General')">
+                    <span style="font-size: 20px; margin-right: 12px;">🎰</span> Slot General
+                </button>
+                <button class="game-btn locked">
+                    <span style="font-size: 20px; margin-right: 12px;">🎡</span> Roulette (Coming Soon)
+                </button>
             </div>
         </div>
 
         <div id="step-3" class="step">
-            <h2 id="gameTitle" style="color:var(--accent)">SLOT GENERAL</h2>
+            <p id="gameTitle" style="color: var(--accent); font-weight: 800; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">SLOT GENERAL</p>
             <div class="reels">
                 <div id="r1" class="reel">💎</div>
                 <div id="r2" class="reel">💎</div>
                 <div id="r3" class="reel">💎</div>
             </div>
-            <input type="number" id="betInput" placeholder="Nominal Bet (Min 5.000)">
-            <button class="btn" id="spinBtn" onclick="playGame()">SPIN MACHINE</button>
-            <p id="game-msg" style="font-size: 13px; margin-top: 15px; color: var(--dim);"></p>
+            <input type="number" id="betInput" placeholder="Jumlah Bet (Min 5.000)">
+            <button class="btn" id="spinBtn" onclick="playGame()">MULAI SPIN</button>
+            <p id="game-msg" style="font-size: 12px; margin-top: 20px; color: var(--text-dim);"></p>
         </div>
     </div>
 
@@ -164,7 +198,7 @@
         const SECRET = "dimas_ganteng_123";
         const CD_HOURLY = 5 * 60 * 1000; 
         let userData = {};
-        let userUang = 0; // Variabel penampung saldo untuk validasi
+        let userUang = 0; 
 
         window.onload = () => {
             const lastSpin = localStorage.getItem('lastSpinTime');
@@ -179,9 +213,10 @@
         async function checkAccount() {
             const num = document.getElementById('phoneInput').value;
             const btn = document.getElementById('checkBtn');
-            if(!num) return alert("Masukkan nomor WA!");
+            if(!num) return;
 
-            btn.disabled = true; // Matikan tombol sementara agar tidak double klik
+            btn.disabled = true; 
+            btn.innerText = "MENYAMBUNGKAN...";
 
             try {
                 const res = await fetch(`/api/slot-web`, {
@@ -193,16 +228,12 @@
 
                 if(data.status || data.msg === "Minimal bet Rp 5.000") { 
                     showStep(2);
-                    
-                    // Simpan data saldo ke variabel
                     userUang = data.profile?.uang || 0;
-
                     document.getElementById('profileContent').style.display = 'block';
                     document.getElementById('pName').innerText = data.profile?.name || "User Miwa";
                     document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
                     document.getElementById('pLimit').innerText = data.profile?.limit || 0;
                     document.getElementById('pImg').src = data.profile?.img || "https://img1.pixhost.to/images/11480/682392173_dhikzxcloud.jpg";
-                    
                     userData = { nomor: num };
 
                     let cd = 5;
@@ -216,12 +247,14 @@
                         }
                     }, 1000);
                 } else {
-                    alert("Akun tidak ditemukan di database!");
+                    alert("Akun tidak ditemukan!");
                     btn.disabled = false;
+                    btn.innerText = "MASUK DASHBOARD";
                 }
             } catch (e) { 
-                alert("Server Bot Offline!"); 
+                alert("Server Offline!"); 
                 btn.disabled = false;
+                btn.innerText = "MASUK DASHBOARD";
             }
         }
 
@@ -231,7 +264,6 @@
         }
 
         function openGame(name) {
-            document.getElementById('gameTitle').innerText = "SLOT " + name.toUpperCase();
             showStep(3);
         }
 
@@ -241,11 +273,12 @@
             const btn = document.getElementById('spinBtn');
             const reels = [document.getElementById('r1'), document.getElementById('r2'), document.getElementById('r3')];
 
-            // Validasi Sisi Klien
             if(!bet || bet < 5000) return alert("Minimal bet 5.000!");
-            if(bet > userUang) return alert("Saldo tidak cukup! Saldo Anda: Rp " + userUang.toLocaleString());
+            if(bet > userUang) return alert("Saldo Anda tidak mencukupi!");
             
             btn.disabled = true;
+            document.getElementById('game-msg').innerText = "SPINNING...";
+            
             const anim = setInterval(() => {
                 reels.forEach(r => r.innerText = ['🍎','🍇','🍒','💎','🍋'][Math.floor(Math.random()*5)]);
             }, 80);
@@ -264,9 +297,12 @@
                         reels[0].innerText = data.reels[0];
                         reels[1].innerText = data.reels[1];
                         reels[2].innerText = data.reels[2];
-                        document.getElementById('game-msg').innerText = "RESULT: " + data.resultStatus;
                         
-                        // Update saldo setelah main jika API mengirimkan sisa uang
+                        const isWin = data.resultStatus.toLowerCase().includes('win');
+                        const msgEl = document.getElementById('game-msg');
+                        msgEl.innerText = "RESULT: " + data.resultStatus;
+                        if(isWin) msgEl.classList.add('win'); else msgEl.classList.remove('win');
+                        
                         if(data.currentUang !== undefined) {
                             userUang = data.currentUang;
                             document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
@@ -277,12 +313,13 @@
                     } else {
                         alert(data.msg);
                         btn.disabled = false;
+                        document.getElementById('game-msg').innerText = "";
                     }
-                }, 3000);
+                }, 2000);
             } catch (e) { 
+                clearInterval(anim);
                 alert("Koneksi Putus!"); 
                 btn.disabled = false; 
-                clearInterval(anim);
             }
         }
 
@@ -295,12 +332,12 @@
                 ms -= 1000;
                 let min = Math.floor(ms / 60000);
                 let sec = Math.floor((ms % 60000) / 1000);
-                btn.innerText = `COOLDOWN (${min}m ${sec}s)`;
+                btn.innerText = `WAIT ${min}m ${sec}s`;
 
                 if(ms <= 0) {
                     clearInterval(itv);
                     btn.disabled = false;
-                    btn.innerText = "SPIN MACHINE";
+                    btn.innerText = "MULAI SPIN";
                     localStorage.removeItem('lastSpinTime');
                 }
             }, 1000);
