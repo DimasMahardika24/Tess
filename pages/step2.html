@@ -1,15 +1,19 @@
 <style>
-    /* WRAPPER UTAMA */
+        /* WRAPPER UTAMA */
     .lobby-wrapper {
         display: flex;
         flex-direction: column;
+        justify-content: center; /* Menaruh konten di tengah secara vertikal */
+        align-items: center;     /* Menaruh konten di tengah secara horizontal */
         gap: 12px; 
         width: 100%;
-        align-items: center;
+        max-width: 400px;        /* Batasan lebar biar rapi di HP/Tab */
+        margin: 0 auto;          /* Centering container */
         background: #000;
-        padding: 20px;
+        padding: 40px 20px;      /* Tambah padding atas (40px) biar gak nempel status bar */
         min-height: 100vh;
     }
+
 
     /* CARD PROFIL */
     .profile-card {
