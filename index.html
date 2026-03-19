@@ -3,177 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIWA CASINO | Premium Gateway</title>
-    <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>MIWA CASINO | Premium Slot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --soft-dark: #0f0f0f; --card-modern: #1a1a1a; --accent-blue: #007bff;
-            --gold: #ffcc00; --gold-dark: #b8860b; --text-main: #ffffff; --text-dim: #888;
+            --bg-dark: #080808; --card-dark: #121212; --accent-blue: #3d85ff;
+            --gold: #ffcc00; --gold-dark: #b8860b; --text-main: #e0e0e0;
         }
-        * { box-sizing: border-box; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        body { background: var(--soft-dark); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        * { box-sizing: border-box; }
+        body { background: var(--bg-dark); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
         body.casino-mode { background: radial-gradient(circle at center, #1a0f00 0%, #050505 100%); }
         
-        /* FULL SCREEN LOADING */
-        #main-loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 9999; display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
+        /* PREVIEW LOADER */
+        #main-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.5s; }
+        .liquid-ring { width: 60px; height: 60px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--gold); animation: rotate 1s linear infinite; }
+        @keyframes rotate { to { transform: rotate(360deg); } }
+
+        .container { width: 92%; max-width: 380px; display: none; opacity: 0; transition: 0.8s; }
+        .modern-card { background: var(--card-dark); border-radius: 40px; padding: 40px 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.03); text-align: center; }
+        
+        /* SLOT MACHINE UI */
+        .casino-ui { background: #0a0a0a; border: 3px solid var(--gold); border-radius: 45px; padding: 30px 20px; box-shadow: 0 0 50px rgba(0,0,0,1); position: relative; }
+        
+        /* REEL SYSTEM (MODERN) */
+        .slot-window { 
+            height: 120px; background: #000; border-radius: 25px; 
+            display: flex; justify-content: center; gap: 10px; padding: 0 15px;
+            overflow: hidden; border: 2px solid #222; margin-bottom: 25px;
+            position: relative;
         }
-        .spinner {
-            width: 50px; height: 50px; border: 5px solid #222; border-top: 5px solid var(--gold);
-            border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;
+        .slot-window::before { /* Efek Bayangan Dalam */
+            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
+            box-shadow: inset 0 20px 20px #000, inset 0 -20px 20px #000; z-index: 2; pointer-events: none;
         }
-        .loader-text { font-family: 'Goldman'; color: var(--gold); letter-spacing: 2px; font-size: 14px; animation: pulse 1.5s infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        
+        .reel-column { 
+            width: 75px; position: relative; height: 100%;
+            transition: transform 0.5s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        }
 
-        .container { width: 90%; max-width: 400px; display: none; } /* Sembunyi sampai loading kelar */
-        
-        .modern-card { background: var(--card-modern); border-radius: 35px; padding: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.03); text-align: center; }
-        
-        .ip-display { background: #222; padding: 25px; border-radius: 25px; border: 2px dashed #444; margin: 25px 0; cursor: pointer; }
-        .ip-display label { font-size: 10px; color: var(--accent-blue); font-weight: 800; display: block; margin-bottom: 8px; }
-        .ip-display span { font-family: 'Goldman', cursive; font-size: 22px; color: #fff; }
-        
-        .profile-img { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--accent-blue); padding: 5px; margin-bottom: 15px; }
-        .balance-card { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .stat-item { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 20px; border: 1px solid #333; }
-        .stat-item b { font-size: 15px; color: #00ff88; }
+        /* Container untuk item yang berputar */
+        .reel-strip {
+            display: flex; flex-direction: column; align-items: center;
+            position: absolute; width: 100%; left: 0; top: 0;
+        }
 
-        .casino-ui { background: #111; border: 4px solid var(--gold); border-radius: 40px; padding: 30px 20px; display: none; }
-        .slot-window { height: 130px; background: #000; border-radius: 25px; display: flex; justify-content: center; gap: 10px; padding: 10px; overflow: hidden; border: 2px solid #222; margin-bottom: 25px; }
-        .reel-column { width: 85px; display: flex; flex-direction: column; }
-        .slot-item { height: 110px; min-height: 110px; display: flex; align-items: center; justify-content: center; font-size: 50px; }
+        .slot-item { 
+            height: 120px; min-height: 120px; display: flex; 
+            align-items: center; justify-content: center; font-size: 50px; 
+        }
 
-        .btn-action { width: 100%; padding: 18px; border-radius: 20px; border: none; font-weight: 800; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        .btn-blue { background: var(--accent-blue); color: white; }
-        .btn-gold { background: linear-gradient(to bottom, var(--gold), #b8860b); color: #000; font-family: 'Goldman'; }
-        
-        #customPopup { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-200%); background: var(--gold); color: #000; padding: 15px 30px; border-radius: 50px; font-weight: 800; z-index: 10000; }
-        #customPopup.show { transform: translateX(-50%) translateY(0); }
+        /* ANIMASI SPIN KENCENG */
+        @keyframes spin-loop {
+            from { transform: translateY(0); }
+            to { transform: translateY(-1200px); } /* Berputar melewati 10 item */
+        }
+        .spinning { animation: spin-loop 0.2s linear infinite; }
+
+        /* BUTTONS & INPUT */
+        .btn-gold { 
+            width: 100%; padding: 20px; border-radius: 25px; border: none; 
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark)); 
+            color: #000; font-family: 'Goldman'; font-weight: 800; cursor: pointer;
+        }
+        .btn-gold:disabled { filter: grayscale(1); cursor: not-allowed; }
+
+        .stat-item { background: #181818; padding: 15px; border-radius: 20px; border: 1px solid #252525; margin-bottom: 10px; }
+        .stat-item b { color: #00ff88; font-size: 18px; }
+
         .step { display: none; }
-        .active { display: block !important; animation: zoomIn 0.5s ease; }
-        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        .is-spinning .hide-on-spin { opacity: 0; pointer-events: none; }
+        .active-step { display: block !important; }
+        #customPopup { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(150%); background: #fff; color: #000; padding: 10px 20px; border-radius: 50px; font-weight: 800; z-index: 10000; transition: 0.3s; }
+        #customPopup.show { transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body id="mainBody">
 
     <div id="main-loader">
-        <div class="spinner"></div>
-        <div class="loader-text">AUTHENTICATING...</div>
+        <div class="liquid-ring"></div>
+        <p style="font-family:'Goldman'; color:var(--gold); margin-top:20px; font-size:10px; letter-spacing:3px">LOADING MIWA</p>
     </div>
 
-    <div id="customPopup">Copied!</div>
+    <div id="customPopup">Alert</div>
 
     <div class="container" id="mainContainer">
         <div id="step-1" class="step">
             <div class="modern-card">
-                <h2 style="margin:0;">Device Identity</h2>
-                <p style="color:var(--text-dim); font-size:14px;">IP belum terdaftar. Hubungkan ke Bot WA.</p>
-                <div class="ip-display" onclick="copyIP()">
-                    <label>YOUR DEVICE IP</label>
-                    <span id="userIP">Detecting...</span>
+                <h2>Unauthorized</h2>
+                <div style="background:#222; padding:20px; border-radius:20px; margin:20px 0;">
+                    <span id="userIP" style="font-family:'Goldman'; font-size:20px;">...</span>
                 </div>
-                <button class="btn-action btn-blue" onclick="location.reload()">Refresh Status</button>
+                <button class="btn-gold" style="color:#fff; background:#333" onclick="location.reload()">RE-CHECK</button>
             </div>
         </div>
 
         <div id="step-2" class="step">
             <div class="modern-card">
-                <img id="pImg" src="" class="profile-img">
+                <img id="pImg" src="" style="width:100px; border-radius:50%; margin-bottom:15px; border:3px solid var(--accent-blue)">
                 <h2 id="pName" style="margin:0">...</h2>
-                <div class="balance-card">
-                    <div class="stat-item"><small>CHIPS</small><br><b id="pUang">0</b></div>
-                    <div class="stat-item"><small>LIMIT</small><br><b id="pLimit" style="color:#fff">0</b></div>
+                <div style="display:flex; gap:10px; margin:20px 0;">
+                    <div class="stat-item" style="flex:1"><small>CREDITS</small><br><b id="pUang">0</b></div>
+                    <div class="stat-item" style="flex:1"><small>LIMIT</small><br><b id="pLimit" style="color:#fff">0</b></div>
                 </div>
-                <button class="btn-action btn-gold" style="margin-top:25px" onclick="showStep(3)">🎰 START PLAYING</button>
+                <button class="btn-gold" onclick="showStep(3)">PLAY NOW</button>
             </div>
         </div>
 
         <div id="step-3" class="step">
-            <div id="casinoCard" class="casino-ui">
+            <div class="casino-ui">
                 <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom:20px">
-                    <span onclick="showStep(2)" style="color:var(--gold); cursor:pointer" class="hide-on-spin">&larr; EXIT</span>
-                    <h2 style="font-family:'Goldman'; color:var(--gold); margin:0;">LAS VEGAS</h2>
+                    <span onclick="showStep(2)" style="cursor:pointer; font-size:12px; font-weight:800; color:var(--gold)" id="btnExit">BACK</span>
                     <span id="displayMoney" style="color:#00ff88; font-weight:800">0</span>
                 </div>
+
                 <div class="slot-window">
-                    <div id="reel1" class="reel-column"><div class="slot-item">💰</div></div>
-                    <div id="reel2" class="reel-column"><div class="slot-item">💰</div></div>
-                    <div id="reel3" class="reel-column"><div class="slot-item">💰</div></div>
+                    <div class="reel-column"><div id="strip1" class="reel-strip"></div></div>
+                    <div class="reel-column"><div id="strip2" class="reel-strip"></div></div>
+                    <div class="reel-column"><div id="strip3" class="reel-strip"></div></div>
                 </div>
-                <div class="hide-on-spin">
-                    <input type="number" id="betInput" style="width:100%; background:#1a1a1a; border:2px solid var(--gold); padding:18px; border-radius:20px; color:#fff; text-align:center; margin-bottom:15px;" placeholder="BET AMOUNT">
-                    <button class="btn-action btn-gold" onclick="playGame()">SPIN MACHINE</button>
-                </div>
-                <div id="spinText" style="display:none; text-align:center; font-family:'Goldman'; color:var(--gold); font-size:20px;">ROLLING...</div>
+
+                <input type="number" id="betInput" style="width:100%; background:#111; border:1px solid #333; padding:15px; border-radius:20px; color:#fff; text-align:center; margin-bottom:10px; font-family:'Goldman'" placeholder="BET">
+                <button class="btn-gold" id="spinBtn" onclick="playGame()">SPIN MACHINE</button>
             </div>
         </div>
     </div>
 
     <script>
         const SECRET = "dimas_ganteng_123";
-        const SYMS = ['🍇', '🍉', '🍋', '🍌', '🍎', '🍒'];
+        const SYMS = ['🍇', '🍉', '🍋', '🍌', '🍎', '🍑', '🍒', '🫐', '🥥', '🥑'];
         let userData = { ip: '' };
-        let intervals = [null, null, null];
 
-        // 1. INSIALISASI DENGAN LOADING 5 DETIK
+        // Inisialisasi Reel awal
+        function initReels() {
+            for(let i=1; i<=3; i++) {
+                const strip = document.getElementById('strip'+i);
+                strip.innerHTML = '';
+                // Isi dengan 10 item acak untuk efek visual
+                for(let j=0; j<15; j++) {
+                    const item = document.createElement('div');
+                    item.className = 'slot-item';
+                    item.innerText = SYMS[Math.floor(Math.random()*SYMS.length)];
+                    strip.appendChild(item);
+                }
+            }
+        }
+
         async function startApp() {
+            initReels();
             const loader = document.getElementById('main-loader');
             const container = document.getElementById('mainContainer');
 
             try {
-                // Sambil loading, kita ambil IP
                 const resIp = await fetch('https://api.ipify.org?format=json');
                 const dataIp = await resIp.json();
                 userData.ip = dataIp.ip;
                 document.getElementById('userIP').innerText = dataIp.ip;
 
-                // Cek status ke server
                 const resAuth = await fetch(`/api/slot-web`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    method: "POST", headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ type: 'checkIP', ip: userData.ip, secret: SECRET })
                 });
                 const auth = await resAuth.json();
 
-                // Tunggu sampai total 5 detik biar estetik
                 setTimeout(() => {
-                    loader.style.display = 'none';
-                    container.style.display = 'block';
-
-                    if(auth.status) {
-                        updateUI(auth.profile);
-                        showStep(2);
-                    } else {
-                        showStep(1);
-                    }
-                }, 5000);
-
-            } catch (e) {
-                setTimeout(() => {
-                    loader.innerHTML = '<div class="loader-text" style="color:red">CONNECTION ERROR</div>';
-                }, 5000);
-            }
+                    loader.style.opacity = '0';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                        container.style.display = 'block';
+                        container.style.opacity = '1';
+                        if(auth.status) { updateUI(auth.profile); showStep(2); }
+                        else { showStep(1); }
+                    }, 500);
+                }, 3000);
+            } catch (e) { console.error(e); }
         }
 
         function showStep(n) {
-            document.querySelectorAll('.step').forEach(s => {
-                s.classList.remove('active');
-                s.style.display = 'none';
-            });
-            const target = document.getElementById('step-' + n);
-            target.style.display = 'block';
-            setTimeout(() => target.classList.add('active'), 10);
-
-            if(n === 3) {
-                document.getElementById('mainBody').classList.add('casino-mode');
-                document.getElementById('casinoCard').style.display = 'block';
-            } else {
-                document.getElementById('mainBody').classList.remove('casino-mode');
-            }
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active-step'));
+            document.getElementById('step-' + n).classList.add('active-step');
+            if(n === 3) document.getElementById('mainBody').classList.add('casino-mode');
+            else document.getElementById('mainBody').classList.remove('casino-mode');
         }
 
         function updateUI(p) {
@@ -184,40 +193,23 @@
             document.getElementById('pImg').src = p.img || "https://telegra.ph/file/default.jpg";
         }
 
-        function copyIP() {
-            navigator.clipboard.writeText(userData.ip);
-            showPopup("IP Copied!");
-        }
-
-        function showPopup(msg) {
-            const p = document.getElementById('customPopup');
-            p.innerText = msg; p.classList.add('show');
-            setTimeout(() => p.classList.remove('show'), 3000);
-        }
-
-        // --- SLOT ENGINE ---
-        function animateReel(idx) {
-            const reel = document.getElementById('reel' + (idx + 1));
-            let pos = 0;
-            intervals[idx] = setInterval(() => {
-                pos -= 20;
-                if(pos <= -110) {
-                    pos = 0;
-                    reel.innerHTML = `<div class="slot-item">${SYMS[Math.floor(Math.random()*SYMS.length)]}</div>`;
-                }
-                reel.style.transform = `translateY(${pos}px)`;
-            }, 30);
-        }
-
+        // --- LOGIKA SPIN NYATA ---
         async function playGame() {
             const bet = parseInt(document.getElementById('betInput').value);
-            if(!bet || bet < 5000) return showPopup("MIN BET RP 5,000!");
+            if(!bet || bet < 5000) return showPopup("MIN BET 5,000");
 
-            const casinoCard = document.getElementById('casinoCard');
-            casinoCard.classList.add('is-spinning');
-            document.getElementById('spinText').style.display = 'block';
+            const spinBtn = document.getElementById('spinBtn');
+            const btnExit = document.getElementById('btnExit');
+            
+            // Disable UI
+            spinBtn.disabled = true;
+            btnExit.style.opacity = '0';
+            btnExit.style.pointerEvents = 'none';
 
-            animateReel(0); animateReel(1); animateReel(2);
+            // 1. Mulai Spin Kenceng (Loop)
+            for(let i=1; i<=3; i++) {
+                document.getElementById('strip'+i).classList.add('spinning');
+            }
 
             try {
                 const res = await fetch(`/api/slot-web`, {
@@ -227,27 +219,45 @@
                 const data = await res.json();
 
                 if(data.status) {
+                    // 2. Berhenti Satu Per Satu (Inersia)
                     [0, 1, 2].forEach(i => {
                         setTimeout(() => {
-                            clearInterval(intervals[i]);
-                            const reel = document.getElementById('reel' + (i + 1));
-                            reel.style.transform = "translateY(0)";
-                            reel.innerHTML = `<div class="slot-item">${data.reels[i]}</div>`;
-                        }, 1200 + (i * 800));
+                            const strip = document.getElementById('strip'+(i+1));
+                            strip.classList.remove('spinning');
+                            
+                            // Pasang item hasil di paling atas
+                            const items = strip.querySelectorAll('.slot-item');
+                            items[0].innerText = data.reels[i];
+                            
+                            // Efek Bounce (Membal)
+                            strip.style.transform = 'translateY(15px)';
+                            setTimeout(() => strip.style.transform = 'translateY(0)', 200);
+
+                        }, 1000 + (i * 800)); // Delay berhenti antar reel
                     });
+
+                    // 3. Selesai
                     setTimeout(() => {
-                        casinoCard.classList.remove('is-spinning');
-                        document.getElementById('spinText').style.display = 'none';
+                        spinBtn.disabled = false;
+                        btnExit.style.opacity = '1';
+                        btnExit.style.pointerEvents = 'auto';
                         showPopup(data.resultStatus);
                         updateUI(data.profile);
                     }, 3500);
+
                 } else { throw new Error(data.msg); }
             } catch(e) {
-                intervals.forEach(clearInterval);
-                casinoCard.classList.remove('is-spinning');
-                document.getElementById('spinText').style.display = 'none';
+                for(let i=1; i<=3; i++) document.getElementById('strip'+i).classList.remove('spinning');
+                spinBtn.disabled = false;
+                btnExit.style.opacity = '1';
                 showPopup(e.message);
             }
+        }
+
+        function showPopup(msg) {
+            const p = document.getElementById('customPopup');
+            p.innerText = msg; p.classList.add('show');
+            setTimeout(() => p.classList.remove('show'), 2500);
         }
 
         startApp();
