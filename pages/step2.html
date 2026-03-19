@@ -1,16 +1,131 @@
-<div class="modern-card">
-    <img id="pImg" src="" style="width:100px; height:100px; border-radius:50%; margin-bottom:15px; border:3px solid var(--accent-blue); object-fit: cover;">
-    <h2 id="pName" style="margin:0">...</h2>
-    <p style="font-size: 10px; color: var(--accent-blue); font-weight: 800; margin-top: 5px;">ACCOUNT VERIFIED</p>
-    <div style="display:flex; gap:10px; margin:20px 0;">
-        <div style="flex:1; background:#181818; padding:15px; border-radius:20px; border:1px solid #252525;">
-            <small style="font-size:10px; color:var(--text-dim)">CREDITS</small><br>
-            <b id="pUang" style="color:#00ff88">0</b>
+<style>
+    /* WRAPPER UTAMA */
+    .lobby-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 15px; /* Jarak antar elemen ke bawah */
+        width: 100%;
+        align-items: center;
+    }
+
+    /* CARD PROFIL */
+    .profile-card {
+        background: var(--card-dark);
+        border-radius: 35px;
+        padding: 30px 20px;
+        width: 100%;
+        text-align: center;
+        border: 1px solid rgba(255,255,255,0.03);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    }
+
+    /* AVATAR GLOW */
+    .avatar-container {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+    #pImg {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        border: 3px solid var(--accent-blue);
+        object-fit: cover;
+        box-shadow: 0 0 20px rgba(61, 133, 255, 0.2);
+    }
+
+    /* VERIFIED BADGE */
+    .verify-tag {
+        font-size: 9px;
+        color: var(--accent-blue);
+        font-weight: 800;
+        letter-spacing: 2px;
+        margin-top: 8px;
+        text-transform: uppercase;
+    }
+
+    /* STATS ROW (SEKARANG VERTIKAL) */
+    .stat-box {
+        width: 100%;
+        background: #161616;
+        padding: 18px 25px;
+        border-radius: 22px;
+        border: 1px solid #222;
+        display: flex;
+        justify-content: space-between; /* Label kiri, Angka kanan */
+        align-items: center;
+        margin-bottom: 10px;
+        transition: 0.3s;
+    }
+    .stat-box:active { background: #1a1a1a; }
+    
+    .stat-label {
+        font-size: 10px;
+        color: var(--text-dim);
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    .stat-value {
+        font-family: 'Goldman';
+        font-size: 16px;
+    }
+
+    /* BUTTON GAYA BARU */
+    .btn-play {
+        width: 100%;
+        padding: 22px;
+        border-radius: 25px;
+        border: none;
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        color: #000;
+        font-family: 'Goldman';
+        font-weight: 800;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+        box-shadow: 0 10px 25px rgba(255, 204, 0, 0.2);
+    }
+</style>
+
+<div class="lobby-wrapper">
+    <div class="profile-card">
+        <div class="avatar-container">
+            <img id="pImg" src="https://telegra.ph/file/default.jpg">
         </div>
-        <div style="flex:1; background:#181818; padding:15px; border-radius:20px; border:1px solid #252525;">
-            <small style="font-size:10px; color:var(--text-dim)">LIMIT</small><br>
-            <b id="pLimit" style="color:#fff">0</b>
+        <h2 id="pName" style="margin:0; font-size: 22px; color: #fff;">...</h2>
+        <div id="pStatus" class="verify-tag">ACCOUNT VERIFIED</div>
+    </div>
+
+    <div style="width: 100%;">
+        <div class="stat-box">
+            <span class="stat-label">AVAILABLE CREDITS</span>
+            <span id="pUang" class="stat-value" style="color: #00ff88;">Rp 0</span>
+        </div>
+
+        <div class="stat-box">
+            <span class="stat-label">REMAINING LIMIT</span>
+            <span id="pLimit" class="stat-value" style="color: #fff;">0</span>
+        </div>
+        
+        <div id="premBox" class="stat-box" style="display: none; border-color: var(--gold-dark); background: rgba(255, 204, 0, 0.03);">
+            <span class="stat-label" style="color: var(--gold);">VIP STATUS</span>
+            <span class="stat-value" style="color: var(--gold);">PREMIUM ✨</span>
         </div>
     </div>
-    <button class="btn-gold" onclick="navigateTo('step3')">START PLAYING</button>
+
+    <button class="btn-play" onclick="navigateTo('step3')">ENTER CASINO</button>
+    
+    <p style="font-size: 9px; color: #333; font-weight: 700; margin-top: 10px;">SECURE CONNECTION ESTABLISHED</p>
 </div>
+
+<script>
+    // Script pendukung untuk deteksi status di Lobby
+    (function() {
+        if (userData.profile.premium) {
+            document.getElementById('premBox').style.display = 'flex';
+            document.getElementById('pStatus').innerText = "VIP MEMBER";
+            document.getElementById('pStatus').style.color = "var(--gold)";
+            document.getElementById('pImg').style.borderColor = "var(--gold)";
+        }
+    })();
+</script>
