@@ -1,19 +1,28 @@
 <style>
-        /* WRAPPER UTAMA */
+    /* WRAPPER UTAMA: Mengatur latar belakang dan kemampuan scroll */
     .lobby-wrapper {
         display: flex;
         flex-direction: column;
-        justify-content: center; /* Menaruh konten di tengah secara vertikal */
-        align-items: center;     /* Menaruh konten di tengah secara horizontal */
-        gap: 12px; 
+        align-items: center;
         width: 100%;
-        max-width: 400px;        /* Batasan lebar biar rapi di HP/Tab */
-        margin: 0 auto;          /* Centering container */
         background: #000;
-        padding: 40px 20px;      /* Tambah padding atas (40px) biar gak nempel status bar */
         min-height: 100vh;
+        padding: 30px 20px;
+        box-sizing: border-box;
+        overflow-y: auto; /* Memastikan halaman bisa di-scroll di HP */
+        -webkit-overflow-scrolling: touch;
     }
 
+    /* CONTAINER KONTEN: Trik 'margin: auto' untuk centering vertikal yang aman */
+    .content-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        max-width: 380px; /* Batas lebar agar pas di genggaman */
+        margin: auto; /* Pusatkan ke tengah jika ada ruang sisa */
+    }
 
     /* CARD PROFIL */
     .profile-card {
@@ -64,7 +73,7 @@
     .stat-label { font-size: 8px; color: #555; font-weight: 800; display: block; margin-bottom: 4px; }
     .stat-value { font-family: 'Goldman', sans-serif; font-size: 14px; }
 
-    /* MENU GAME SELECTION */
+    /* MENU GAME */
     .menu-title {
         width: 100%;
         text-align: left;
@@ -75,7 +84,6 @@
         margin: 15px 0 5px 5px;
     }
 
-    /* BUTTON GAYA BARU DENGAN IKON */
     .btn-game {
         width: 100%;
         padding: 15px 20px;
@@ -86,22 +94,13 @@
         justify-content: space-between;
         align-items: center;
         cursor: pointer;
-        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: 0.3s;
         text-decoration: none;
         margin-bottom: 12px;
     }
 
-    .game-info-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .game-icon {
-        width: 45px;
-        height: 45px;
-        object-fit: contain;
-    }
+    .game-info-wrapper { display: flex; align-items: center; gap: 15px; }
+    .game-icon { width: 45px; height: 45px; object-fit: contain; }
 
     .game-ready {
         background: linear-gradient(135deg, #1a1a1a, #222);
@@ -110,91 +109,89 @@
     .game-ready .game-name { color: #ffcc00; font-family: 'Goldman', sans-serif; font-size: 16px; }
     .game-ready .status-text { color: #00ff88; font-size: 10px; font-weight: 800; }
 
-    .game-soon {
-        opacity: 0.4;
-        filter: grayscale(1);
-    }
-    .game-soon .game-name { color: #888; font-family: 'Goldman', sans-serif; font-size: 16px; }
-    .game-soon .status-text { color: #555; font-size: 9px; font-weight: 800; border: 1px solid #333; padding: 3px 10px; border-radius: 12px; }
+    .game-soon { opacity: 0.4; filter: grayscale(1); cursor: default; }
 
-    /* WARNA TEKS STATUS USER */
+    /* STATUS COLORS */
     .text-owner { color: #ff3e3e !important; text-shadow: 0 0 10px rgba(255,62,62,0.2); }
     .text-premium { color: #ffcc00 !important; text-shadow: 0 0 10px rgba(255,204,0,0.2); }
     .text-reguler { color: #00ff88 !important; }
-
 </style>
 
 <div class="lobby-wrapper">
-    <div class="profile-card">
-        <img id="pImg" src="https://telegra.ph/file/default.jpg">
-        <h2 id="pName">...</h2>
-        <span id="pStatus" class="status-tag">checking status...</span>
-    </div>
-
-    <div class="stats-container">
-        <div class="stat-mini-box">
-            <span class="stat-label">CREDITS</span>
-            <span id="pUang" class="stat-value" style="color: #00ff88;">Rp 0</span>
+    <div class="content-container">
+        <div class="profile-card">
+            <img id="pImg" src="https://telegra.ph/file/default.jpg">
+            <h2 id="pName">...</h2>
+            <span id="pStatus" class="status-tag">syncing...</span>
         </div>
-        <div class="stat-mini-box">
-            <span class="stat-label">LIMIT</span>
-            <span id="pLimit" class="stat-value" style="color: #fff;">0</span>
-        </div>
-    </div>
 
-    <div class="menu-title">SELECT CATEGORY</div>
-
-    <div class="game-menu" style="width: 100%;">
-        <div class="btn-game game-ready" onclick="navigateTo('step3')">
-            <div class="game-info-wrapper">
-                <img src="https://cdn-icons-png.flaticon.com/512/1055/1055823.png" class="game-icon">
-                <div style="text-align: left;">
-                    <span class="game-name">CASINO SLOT</span><br>
-                    <small style="color: #666; font-size: 9px;">Classic 3-Reel Machine</small>
-                </div>
+        <div class="stats-container">
+            <div class="stat-mini-box">
+                <span class="stat-label">CREDITS</span>
+                <span id="pUang" class="stat-value" style="color: #00ff88;">Rp 0</span>
             </div>
-            <span class="status-text">PLAY NOW ›</span>
+            <div class="stat-mini-box">
+                <span class="stat-label">LIMIT</span>
+                <span id="pLimit" class="stat-value" style="color: #fff;">0</span>
+            </div>
         </div>
 
-        <div class="btn-game game-soon">
-            <div class="game-info-wrapper">
-                <img src="https://cdn-icons-png.flaticon.com/512/2169/2169874.png" class="game-icon">
-                <div style="text-align: left;">
-                    <span class="game-name">ROULETTE ROYALE</span><br>
-                    <small style="color: #444; font-size: 9px;">European Table Game</small>
+        <div class="menu-title">SELECT CATEGORY</div>
+
+        <div class="game-menu" style="width: 100%;">
+            <div class="btn-game game-ready" onclick="navigateTo('step3')">
+                <div class="game-info-wrapper">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1055/1055823.png" class="game-icon">
+                    <div style="text-align: left;">
+                        <span class="game-name">CASINO SLOT</span><br>
+                        <small style="color: #666; font-size: 9px;">Classic 3-Reel Machine</small>
+                    </div>
                 </div>
+                <span class="status-text">PLAY NOW ›</span>
             </div>
-            <span class="status-text">SOON</span>
+
+            <div class="btn-game game-soon">
+                <div class="game-info-wrapper">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2169/2169874.png" class="game-icon">
+                    <div style="text-align: left;">
+                        <span class="game-name">ROULETTE ROYALE</span><br>
+                        <small style="color: #444; font-size: 9px;">European Table Game</small>
+                    </div>
+                </div>
+                <span class="status-text">SOON</span>
+            </div>
+
+            <div class="btn-game game-soon">
+                <div class="game-info-wrapper">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3590/3590323.png" class="game-icon">
+                    <div style="text-align: left;">
+                        <span class="game-name">ASTRONOT DESTROYER</span><br>
+                        <small style="color: #444; font-size: 9px;">Multiplier Crash Game</small>
+                    </div>
+                </div>
+                <span class="status-text">SOON</span>
+            </div>
         </div>
 
-        <div class="btn-game game-soon">
-            <div class="game-info-wrapper">
-                <img src="https://cdn-icons-png.flaticon.com/512/3590/3590323.png" class="game-icon">
-                <div style="text-align: left;">
-                    <span class="game-name">ASTRONOT DESTROYER</span><br>
-                    <small style="color: #444; font-size: 9px;">Multiplier Crash Game</small>
-                </div>
-            </div>
-            <span class="status-text">SOON</span>
-        </div>
+        <p style="font-size: 8px; color: #333; font-weight: 700; margin-top: 15px; letter-spacing: 2px;">MIWA MULTI-GAME ENGINE v1.0</p>
     </div>
-
-    <p style="font-size: 8px; color: #333; font-weight: 700; margin-top: 10px; letter-spacing: 2px;">MIWA MULTI-GAME ENGINE v1.0</p>
 </div>
 
 <script>
     (function() {
+        // Ambil data global
         const user = userData.profile;
         const nameEl = document.getElementById('pName');
         const imgEl = document.getElementById('pImg');
         const statusEl = document.getElementById('pStatus');
 
+        // Update data dasar
         nameEl.innerText = user.name || "user";
-        document.getElementById('pUang').innerText = "Rp " + user.uang.toLocaleString('id-ID');
-        document.getElementById('pLimit').innerText = user.limit;
-        if(user.pp) imgEl.src = user.pp;
+        document.getElementById('pUang').innerText = "Rp " + (user.uang || 0).toLocaleString('id-ID');
+        document.getElementById('pLimit').innerText = user.limit || 0;
+        if(user.img) imgEl.src = user.img;
 
-        // LOGIKA STATUS USER SESUAI REQUEST
+        // Logika Status Badge
         if (user.owner) {
             statusEl.innerText = "Owner Developer 👑";
             statusEl.className = "status-tag text-owner";
