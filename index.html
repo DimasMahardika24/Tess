@@ -8,7 +8,7 @@
     <style>
         :root {
             --bg-dark: #080808; --card-dark: #121212; --accent-blue: #3d85ff;
-            --gold: #ffcc00; --gold-dark: #b8860b; --text-main: #e0e0e0;
+            --gold: #ffcc00; --gold-dark: #b8860b; --text-main: #e0e0e0; --text-dim: #777;
         }
         * { box-sizing: border-box; }
         body { background: var(--bg-dark); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
@@ -22,51 +22,37 @@
         .container { width: 92%; max-width: 380px; display: none; opacity: 0; transition: 0.8s; }
         .modern-card { background: var(--card-dark); border-radius: 40px; padding: 40px 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.03); text-align: center; }
         
+        /* STEP 1: IDENTITY DETAILS */
+        .ip-display { background: #181818; padding: 25px; border-radius: 25px; border: 1px solid #222; margin: 25px 0; cursor: pointer; position: relative; }
+        .ip-display label { font-size: 10px; color: var(--accent-blue); font-weight: 800; display: block; margin-bottom: 8px; letter-spacing: 1px; }
+        .ip-display span { font-family: 'Goldman'; font-size: 22px; color: #fff; }
+        .guide-box { text-align: left; background: rgba(61, 133, 255, 0.05); padding: 15px; border-radius: 20px; font-size: 12px; border: 1px solid rgba(61, 133, 255, 0.1); margin-bottom: 20px; line-height: 1.6; }
+        .guide-box b { color: var(--accent-blue); }
+
         /* SLOT MACHINE UI */
         .casino-ui { background: #0a0a0a; border: 3px solid var(--gold); border-radius: 45px; padding: 30px 20px; box-shadow: 0 0 50px rgba(0,0,0,1); position: relative; }
-        
-        /* REEL SYSTEM (MODERN) */
         .slot-window { 
             height: 120px; background: #000; border-radius: 25px; 
             display: flex; justify-content: center; gap: 10px; padding: 0 15px;
             overflow: hidden; border: 2px solid #222; margin-bottom: 25px;
             position: relative;
         }
-        .slot-window::before { /* Efek Bayangan Dalam */
+        .slot-window::before { 
             content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
             box-shadow: inset 0 20px 20px #000, inset 0 -20px 20px #000; z-index: 2; pointer-events: none;
         }
-        
-        .reel-column { 
-            width: 75px; position: relative; height: 100%;
-            transition: transform 0.5s cubic-bezier(0.45, 0.05, 0.55, 0.95);
-        }
+        .reel-column { width: 75px; position: relative; height: 100%; transition: transform 0.5s cubic-bezier(0.45, 0.05, 0.55, 0.95); }
+        .reel-strip { display: flex; flex-direction: column; align-items: center; position: absolute; width: 100%; left: 0; top: 0; }
+        .slot-item { height: 120px; min-height: 120px; display: flex; align-items: center; justify-content: center; font-size: 50px; }
 
-        /* Container untuk item yang berputar */
-        .reel-strip {
-            display: flex; flex-direction: column; align-items: center;
-            position: absolute; width: 100%; left: 0; top: 0;
-        }
-
-        .slot-item { 
-            height: 120px; min-height: 120px; display: flex; 
-            align-items: center; justify-content: center; font-size: 50px; 
-        }
-
-        /* ANIMASI SPIN KENCENG */
-        @keyframes spin-loop {
-            from { transform: translateY(0); }
-            to { transform: translateY(-1200px); } /* Berputar melewati 10 item */
-        }
+        /* ANIMASI SPIN */
+        @keyframes spin-loop { from { transform: translateY(0); } to { transform: translateY(-1200px); } }
         .spinning { animation: spin-loop 0.2s linear infinite; }
 
-        /* BUTTONS & INPUT */
-        .btn-gold { 
-            width: 100%; padding: 20px; border-radius: 25px; border: none; 
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark)); 
-            color: #000; font-family: 'Goldman'; font-weight: 800; cursor: pointer;
-        }
+        /* BUTTONS */
+        .btn-gold { width: 100%; padding: 20px; border-radius: 25px; border: none; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #000; font-family: 'Goldman'; font-weight: 800; cursor: pointer; }
         .btn-gold:disabled { filter: grayscale(1); cursor: not-allowed; }
+        .btn-blue { width: 100%; padding: 18px; border-radius: 20px; border: 1px solid #333; background: #1a1a1a; color: var(--accent-blue); font-weight: 800; cursor: pointer; font-size: 14px; }
 
         .stat-item { background: #181818; padding: 15px; border-radius: 20px; border: 1px solid #252525; margin-bottom: 10px; }
         .stat-item b { color: #00ff88; font-size: 18px; }
@@ -81,31 +67,43 @@
 
     <div id="main-loader">
         <div class="liquid-ring"></div>
-        <p style="font-family:'Goldman'; color:var(--gold); margin-top:20px; font-size:10px; letter-spacing:3px">LOADING MIWA</p>
+        <p style="font-family:'Goldman'; color:var(--gold); margin-top:20px; font-size:10px; letter-spacing:3px">AUTHENTICATING...</p>
     </div>
 
-    <div id="customPopup">Alert</div>
+    <div id="customPopup">Copied!</div>
 
     <div class="container" id="mainContainer">
         <div id="step-1" class="step">
             <div class="modern-card">
-                <h2>Unauthorized</h2>
-                <div style="background:#222; padding:20px; border-radius:20px; margin:20px 0;">
-                    <span id="userIP" style="font-family:'Goldman'; font-size:20px;">...</span>
+                <h2 style="margin:0; font-weight: 800; font-size: 26px;">Device Identity</h2>
+                <p style="color:var(--text-dim); font-size:13px; margin-top:8px">IP anda belum terhubung ke database bot.</p>
+                
+                <div class="ip-display" onclick="copyIP()">
+                    <label>YOUR DEVICE IP (TAP TO COPY)</label>
+                    <span id="userIP">Detecting...</span>
                 </div>
-                <button class="btn-gold" style="color:#fff; background:#333" onclick="location.reload()">RE-CHECK</button>
+
+                <div class="guide-box">
+                    <b>Cara Aktivasi:</b><br>
+                    1. Klik kotak IP di atas untuk menyalin.<br>
+                    2. Kirim pesan <code style="color:var(--gold)">.reg-webs [IP]</code> ke Bot WA.<br>
+                    3. Jika sudah, klik tombol <b>Refresh Status</b>.
+                </div>
+                
+                <button class="btn-blue" onclick="location.reload()">REFRESH STATUS</button>
             </div>
         </div>
 
         <div id="step-2" class="step">
             <div class="modern-card">
-                <img id="pImg" src="" style="width:100px; border-radius:50%; margin-bottom:15px; border:3px solid var(--accent-blue)">
+                <img id="pImg" src="" style="width:100px; height:100px; border-radius:50%; margin-bottom:15px; border:3px solid var(--accent-blue); object-fit: cover;">
                 <h2 id="pName" style="margin:0">...</h2>
+                <p style="font-size: 10px; color: var(--accent-blue); font-weight: 800; margin-top: 5px;">ACCOUNT VERIFIED</p>
                 <div style="display:flex; gap:10px; margin:20px 0;">
-                    <div class="stat-item" style="flex:1"><small>CREDITS</small><br><b id="pUang">0</b></div>
-                    <div class="stat-item" style="flex:1"><small>LIMIT</small><br><b id="pLimit" style="color:#fff">0</b></div>
+                    <div class="stat-item" style="flex:1"><small style="color:var(--text-dim); font-size: 10px;">CREDITS</small><br><b id="pUang">0</b></div>
+                    <div class="stat-item" style="flex:1"><small style="color:var(--text-dim); font-size: 10px;">LIMIT</small><br><b id="pLimit" style="color:#fff">0</b></div>
                 </div>
-                <button class="btn-gold" onclick="showStep(3)">PLAY NOW</button>
+                <button class="btn-gold" onclick="showStep(3)">START PLAYING</button>
             </div>
         </div>
 
@@ -113,7 +111,8 @@
             <div class="casino-ui">
                 <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom:20px">
                     <span onclick="showStep(2)" style="cursor:pointer; font-size:12px; font-weight:800; color:var(--gold)" id="btnExit">BACK</span>
-                    <span id="displayMoney" style="color:#00ff88; font-weight:800">0</span>
+                    <h2 style="font-family:'Goldman'; color:var(--gold); margin:0; font-size: 16px; letter-spacing: 2px;">MIWA SLOT</h2>
+                    <span id="displayMoney" style="color:#00ff88; font-weight:800; font-size: 14px;">0</span>
                 </div>
 
                 <div class="slot-window">
@@ -122,8 +121,11 @@
                     <div class="reel-column"><div id="strip3" class="reel-strip"></div></div>
                 </div>
 
-                <input type="number" id="betInput" style="width:100%; background:#111; border:1px solid #333; padding:15px; border-radius:20px; color:#fff; text-align:center; margin-bottom:10px; font-family:'Goldman'" placeholder="BET">
-                <button class="btn-gold" id="spinBtn" onclick="playGame()">SPIN MACHINE</button>
+                <div id="ui-controls">
+                    <input type="number" id="betInput" style="width:100%; background:#111; border:1px solid #333; padding:15px; border-radius:20px; color:#fff; text-align:center; margin-bottom:12px; font-family:'Goldman'; font-size: 18px;" placeholder="BET AMOUNT">
+                    <button class="btn-gold" id="spinBtn" onclick="playGame()">SPIN MACHINE</button>
+                </div>
+                <p id="spinText" style="display:none; text-align:center; font-family:'Goldman'; color:var(--gold); font-size:14px; letter-spacing:4px; animation: pulse 1s infinite">ROLLING...</p>
             </div>
         </div>
     </div>
@@ -133,12 +135,10 @@
         const SYMS = ['🍇', '🍉', '🍋', '🍌', '🍎', '🍑', '🍒', '🫐', '🥥', '🥑'];
         let userData = { ip: '' };
 
-        // Inisialisasi Reel awal
         function initReels() {
             for(let i=1; i<=3; i++) {
                 const strip = document.getElementById('strip'+i);
                 strip.innerHTML = '';
-                // Isi dengan 10 item acak untuk efek visual
                 for(let j=0; j<15; j++) {
                     const item = document.createElement('div');
                     item.className = 'slot-item';
@@ -170,12 +170,14 @@
                     setTimeout(() => {
                         loader.style.display = 'none';
                         container.style.display = 'block';
-                        container.style.opacity = '1';
+                        setTimeout(() => container.style.opacity = '1', 50);
                         if(auth.status) { updateUI(auth.profile); showStep(2); }
                         else { showStep(1); }
                     }, 500);
                 }, 3000);
-            } catch (e) { console.error(e); }
+            } catch (e) { 
+                document.getElementById('userIP').innerText = "Network Error";
+            }
         }
 
         function showStep(n) {
@@ -193,23 +195,27 @@
             document.getElementById('pImg').src = p.img || "https://telegra.ph/file/default.jpg";
         }
 
-        // --- LOGIKA SPIN NYATA ---
+        function copyIP() {
+            navigator.clipboard.writeText(userData.ip);
+            showPopup("IP Copied!");
+        }
+
         async function playGame() {
             const bet = parseInt(document.getElementById('betInput').value);
             if(!bet || bet < 5000) return showPopup("MIN BET 5,000");
 
             const spinBtn = document.getElementById('spinBtn');
             const btnExit = document.getElementById('btnExit');
+            const controls = document.getElementById('ui-controls');
+            const spinText = document.getElementById('spinText');
             
-            // Disable UI
             spinBtn.disabled = true;
             btnExit.style.opacity = '0';
             btnExit.style.pointerEvents = 'none';
+            controls.style.display = 'none';
+            spinText.style.display = 'block';
 
-            // 1. Mulai Spin Kenceng (Loop)
-            for(let i=1; i<=3; i++) {
-                document.getElementById('strip'+i).classList.add('spinning');
-            }
+            for(let i=1; i<=3; i++) document.getElementById('strip'+i).classList.add('spinning');
 
             try {
                 const res = await fetch(`/api/slot-web`, {
@@ -219,37 +225,33 @@
                 const data = await res.json();
 
                 if(data.status) {
-                    // 2. Berhenti Satu Per Satu (Inersia)
                     [0, 1, 2].forEach(i => {
                         setTimeout(() => {
                             const strip = document.getElementById('strip'+(i+1));
                             strip.classList.remove('spinning');
-                            
-                            // Pasang item hasil di paling atas
                             const items = strip.querySelectorAll('.slot-item');
                             items[0].innerText = data.reels[i];
-                            
-                            // Efek Bounce (Membal)
                             strip.style.transform = 'translateY(15px)';
                             setTimeout(() => strip.style.transform = 'translateY(0)', 200);
-
-                        }, 1000 + (i * 800)); // Delay berhenti antar reel
+                        }, 1000 + (i * 800));
                     });
 
-                    // 3. Selesai
                     setTimeout(() => {
                         spinBtn.disabled = false;
                         btnExit.style.opacity = '1';
                         btnExit.style.pointerEvents = 'auto';
+                        controls.style.display = 'block';
+                        spinText.style.display = 'none';
                         showPopup(data.resultStatus);
                         updateUI(data.profile);
                     }, 3500);
-
                 } else { throw new Error(data.msg); }
             } catch(e) {
                 for(let i=1; i<=3; i++) document.getElementById('strip'+i).classList.remove('spinning');
                 spinBtn.disabled = false;
                 btnExit.style.opacity = '1';
+                controls.style.display = 'block';
+                spinText.style.display = 'none';
                 showPopup(e.message);
             }
         }
