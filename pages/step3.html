@@ -1,8 +1,79 @@
+<style>
+    /* FIX LAYOUT SLOT NGUMPET KE KANAN */
+    .slot-window { 
+        height: 120px; 
+        background: #000; 
+        border-radius: 25px; 
+        display: flex; 
+        justify-content: center; /* KUNCI: Biar simbol di tengah */
+        align-items: center; 
+        gap: 10px; 
+        padding: 0 10px; 
+        overflow: hidden; 
+        border: 2px solid #222; 
+        margin-bottom: 25px; 
+        position: relative; 
+        width: 100%;
+    }
+
+    .slot-window::before { 
+        content: ''; position: absolute; top:0; left:0; width:100%; height:100%; 
+        box-shadow: inset 0 25px 20px #000, inset 0 -25px 20px #000; z-index: 2; pointer-events: none; 
+    }
+
+    .reel-column { 
+        width: 80px; /* Lebar kolom per simbol */
+        height: 120px; 
+        position: relative; 
+        overflow: hidden; 
+        display: flex;
+        justify-content: center;
+    }
+
+    .reel-strip { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        position: absolute; 
+        width: 100%; 
+        left: 0; 
+        top: 0; 
+    }
+
+    .slot-item { 
+        height: 120px; 
+        min-height: 120px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: 55px; /* Ukuran emoji biar pas */
+    }
+
+    /* BADGE STATUS PREMIUM */
+    .status-badge {
+        font-size: 9px;
+        padding: 4px 10px;
+        border-radius: 50px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-top: 5px;
+        display: inline-block;
+    }
+    .badge-prem { background: var(--gold); color: #000; box-shadow: 0 0 10px rgba(255, 204, 0, 0.4); }
+    .badge-free { background: #333; color: #777; }
+</style>
+
 <div class="casino-ui">
-    <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom:20px">
+    <div style="display:flex; justify-content: space-between; align-items: flex-start; margin-bottom:20px">
         <span onclick="navigateTo('step2')" style="cursor:pointer; font-size:12px; font-weight:800; color:var(--gold)">BACK</span>
-        <h2 style="font-family:'Goldman'; color:var(--gold); margin:0; font-size: 16px; letter-spacing: 2px;">MIWA SLOT</h2>
-        <span id="displayMoney" style="color:#00ff88; font-weight:800; font-size: 14px;">0</span>
+        
+        <div style="text-align: center;">
+            <h2 style="font-family:'Goldman'; color:var(--gold); margin:0; font-size: 16px; letter-spacing: 2px;">MIWA SLOT</h2>
+            <div id="userStatusBadge" class="status-badge badge-free">Loading...</div>
+        </div>
+
+        <span id="displayMoney" style="color:#00ff88; font-weight:800; font-size: 14px; text-align: right;">Rp 0</span>
     </div>
 
     <div class="slot-window">
@@ -12,7 +83,23 @@
     </div>
 
     <div id="ui-controls">
-        <input type="number" id="betInput" style="width:100%; background:#111; border:1px solid #333; padding:15px; border-radius:20px; color:#fff; text-align:center; margin-bottom:12px; font-family:'Goldman'; font-size: 18px;" placeholder="BET AMOUNT">
+        <input type="number" id="betInput" 
+               style="width:100%; background:#111; border:1px solid #333; padding:15px; border-radius:20px; color:#fff; text-align:center; margin-bottom:12px; font-family:'Goldman'; font-size: 18px;" 
+               placeholder="BET AMOUNT">
         <button class="btn-gold" id="spinBtn" onclick="playGame()">SPIN MACHINE</button>
     </div>
 </div>
+
+<script>
+    // Script kecil untuk update badge status saat masuk step3
+    (function() {
+        const badge = document.getElementById('userStatusBadge');
+        if (userData.profile.premium) {
+            badge.innerText = "PREMIUM ✨";
+            badge.className = "status-badge badge-prem";
+        } else {
+            badge.innerText = "NORMAL";
+            badge.className = "status-badge badge-free";
+        }
+    })();
+</script>
