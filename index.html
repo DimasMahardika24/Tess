@@ -3,27 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miwa Dashboard | No Cache Edition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>MIWA CASINO | Premium Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0b0e11;
-            --card: #151921;
-            --input: #1f2632;
-            --accent: #3d8bff;
-            --accent-glow: rgba(61, 139, 255, 0.3);
-            --text-main: #ffffff;
-            --text-dim: #94a3b8;
-            --border: #2d3748;
-            --success: #10b981;
-            --error: #ef4444;
+            --gold: #ffcc00;
+            --gold-dark: #b8860b;
+            --casino-red: #d40000;
+            --bg-dark: #050505;
+            --card-bg: #111111;
+            --accent: #ffcc00;
+            --text: #ffffff;
+            --border: #333333;
         }
 
         * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
         body {
-            background-color: var(--bg);
-            color: var(--text-main);
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
+            color: var(--text);
             font-family: 'Plus Jakarta Sans', sans-serif;
             display: flex;
             justify-content: center;
@@ -33,175 +32,158 @@
             overflow: hidden;
         }
 
+        /* Container Utama */
         .container {
-            background: var(--card);
-            width: 90%;
-            max-width: 400px;
-            border-radius: 32px;
+            background: var(--card-bg);
+            width: 95%;
+            max-width: 420px;
+            border-radius: 40px;
             padding: 40px 30px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
+            border: 2px solid var(--gold-dark);
+            box-shadow: 0 0 50px rgba(0,0,0,1), 0 0 20px rgba(184, 134, 11, 0.2);
             text-align: center;
             position: relative;
         }
 
-        .back-btn {
-            position: absolute; top: 25px; left: 25px;
-            background: var(--input); border: 1px solid var(--border);
-            color: var(--text-main); width: 35px; height: 35px;
-            border-radius: 12px; display: flex; align-items: center;
-            justify-content: center; cursor: pointer; z-index: 10; font-weight: bold;
+        .container::before {
+            content: ""; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border-radius: 45px; border: 1px solid rgba(255,204,0,0.3); z-index: -1;
         }
 
-        h1 { font-weight: 800; letter-spacing: -1.5px; margin-bottom: 5px; font-size: 28px; }
+        h1 { font-family: 'Goldman', cursive; font-size: 35px; color: var(--gold); text-shadow: 0 0 15px var(--gold-dark); margin-bottom: 5px; }
 
+        /* Profile Card */
         .profile-card {
-            background: var(--input); border-radius: 24px; padding: 20px;
-            margin-top: 10px; border: 1px solid var(--border);
-            display: none; animation: slideUp 0.6s ease;
+            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+            border-radius: 25px; padding: 20px; border: 1px solid var(--border);
+            margin: 20px 0; display: none;
         }
 
         .profile-img {
-            width: 65px; height: 65px; border-radius: 18px;
-            border: 2px solid var(--accent); margin-bottom: 10px;
-            object-fit: cover; box-shadow: 0 0 15px var(--accent-glow);
+            width: 70px; height: 70px; border-radius: 50%;
+            border: 3px solid var(--gold); margin-bottom: 10px;
+            box-shadow: 0 0 15px var(--gold-dark);
         }
 
-        .balance-info { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-        .b-box {
-            background: rgba(0,0,0,0.3); padding: 10px; border-radius: 14px;
-            border: 1px solid rgba(255,255,255,0.03);
-        }
-        .b-box label { display: block; font-size: 9px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; }
-        .b-box span { display: block; color: var(--text-main); font-weight: 800; font-size: 13px; margin-top: 2px; }
+        .balance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .stat-box { background: rgba(0,0,0,0.5); padding: 12px; border-radius: 15px; border: 1px solid #222; }
+        .stat-box label { font-size: 10px; color: var(--gold); font-weight: 800; letter-spacing: 1px; display: block; }
+        .stat-box span { font-size: 14px; font-weight: 800; }
 
-        .game-menu { margin-top: 25px; text-align: left; }
-        .menu-label { font-size: 11px; font-weight: 700; color: var(--text-dim); letter-spacing: 1.5px; margin-bottom: 15px; display: block; }
-
-        .game-item {
-            width: 100%; background: var(--input); border: 1px solid var(--border);
-            border-radius: 20px; padding: 12px 16px; margin-bottom: 12px;
-            display: flex; align-items: center; cursor: pointer; position: relative;
-        }
-
-        .game-item.active:hover { border-color: var(--accent); background: rgba(61, 139, 255, 0.05); }
-
-        .game-icon {
-            width: 45px; height: 45px; background: rgba(0,0,0,0.2);
-            border-radius: 14px; display: flex; align-items: center;
-            justify-content: center; font-size: 22px; margin-right: 15px;
-        }
-
-        .game-details { flex: 1; }
-        .game-title { display: block; font-size: 14px; font-weight: 700; color: var(--text-main); }
-        .game-subtitle { display: block; font-size: 10px; font-weight: 600; color: var(--success); }
-
-        .game-badge {
-            font-size: 10px; background: var(--border); color: var(--text-dim);
-            padding: 4px 8px; border-radius: 8px; font-weight: 700;
-        }
-
+        /* Input & Buttons */
         input {
-            width: 100%; background: var(--input); border: 1px solid var(--border);
-            padding: 16px 20px; border-radius: 18px; color: #fff;
-            margin-bottom: 16px; outline: none; font-size: 15px;
+            width: 100%; background: #1a1a1a; border: 2px solid var(--border);
+            padding: 18px; border-radius: 20px; color: #fff; font-weight: 700;
+            margin-bottom: 15px; outline: none; text-align: center;
         }
 
-        .btn {
-            width: 100%; padding: 16px; background: var(--accent);
-            color: white; border: none; border-radius: 18px;
-            font-weight: 700; cursor: pointer; box-shadow: 0 8px 25px var(--accent-glow);
-            text-transform: uppercase;
+        input:focus { border-color: var(--gold); box-shadow: 0 0 10px rgba(255,204,0,0.3); }
+
+        .btn-gold {
+            width: 100%; padding: 18px; background: linear-gradient(to bottom, var(--gold), #b8860b);
+            color: black; border: none; border-radius: 20px; font-weight: 800;
+            cursor: pointer; font-family: 'Goldman', cursive; font-size: 16px;
+            box-shadow: 0 5px 0 #7a5a00; text-transform: uppercase;
         }
 
-        .btn:disabled { background: #2d3748; color: #64748b; cursor: not-allowed; box-shadow: none; }
+        .btn-gold:active { transform: translateY(3px); box-shadow: 0 2px 0 #7a5a00; }
+        .btn-gold:disabled { background: #444; box-shadow: 0 5px 0 #222; color: #777; cursor: not-allowed; }
 
-        .reels { display: flex; gap: 12px; justify-content: center; margin: 30px 0; }
+        /* Mesin Slot UI */
+        .slot-machine {
+            background: #111; border: 4px solid var(--gold-dark);
+            border-radius: 30px; padding: 25px 15px; margin: 25px 0;
+            position: relative; overflow: hidden;
+            box-shadow: inset 0 0 30px #000;
+        }
+
+        .reels { display: flex; gap: 10px; justify-content: center; }
         .reel {
-            width: 85px; height: 85px; background: #000; border-radius: 20px;
-            font-size: 40px; line-height: 85px; border: 1px solid var(--border);
-            box-shadow: inset 0 5px 15px rgba(0,0,0,0.8);
+            width: 90px; height: 110px; background: linear-gradient(to bottom, #222, #000, #222);
+            border-radius: 15px; font-size: 50px; line-height: 110px;
+            border: 2px solid #333; text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
 
+        .machine-light {
+            position: absolute; width: 100%; height: 5px;
+            background: var(--gold); top: 0; left: 0;
+            box-shadow: 0 0 15px var(--gold); animation: blink 0.5s infinite alternate;
+        }
+
+        @keyframes blink { from { opacity: 0.3; } to { opacity: 1; } }
+
+        /* Steps */
         .step { display: none; }
-        .active { display: block; animation: fadeIn 0.5s ease forwards; }
-        
-        .hide-game-ui { opacity: 0 !important; pointer-events: none !important; }
+        .active { display: block; animation: slideIn 0.5s ease; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .hide-ui { opacity: 0; pointer-events: none; transform: scale(0.9); }
 
+        /* Popup */
         #customPopup {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
-            background: var(--card); border: 1px solid var(--border);
-            padding: 15px 25px; border-radius: 20px; z-index: 999;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0;
+            background: var(--gold); color: #000; padding: 15px 30px;
+            border-radius: 50px; font-weight: 800; z-index: 1000; transition: 0.5s;
         }
-        #customPopup.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        #customPopup.show { transform: translateX(-50%) translateY(0); }
 
-        /* Label Warning */
-        .warning-text { font-size: 10px; color: var(--error); font-weight: 700; margin-top: 15px; display: block; letter-spacing: 0.5px; }
+        .back-btn { position: absolute; top: 30px; left: 25px; cursor: pointer; color: var(--gold); font-size: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="customPopup">
-        <div id="popMsg" style="font-size: 14px; font-weight: 600;">Pesan di sini</div>
-    </div>
+    <div id="customPopup">SABAR COK!</div>
 
     <div class="container">
-        <h1>MIWA</h1>
+        <h1 id="mainTitle">MIWA CASINO</h1>
         
         <div id="step-1" class="step active">
-            <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 25px;">Sesi Aman & Terverifikasi</p>
-            <input type="text" id="phoneInput" placeholder="Masukkan Nomor (628...)">
-            <button class="btn" id="checkBtn" onclick="checkAccount()">Otorisasi Akun</button>
-            <span class="warning-text">⚠️ JANGAN REFRESH HALAMAN SAAT BERMAIN!</span>
+            <p style="color: #888; margin-bottom: 25px;">Enter Member ID (WhatsApp Number)</p>
+            <input type="text" id="phoneInput" placeholder="628xxxxxxxx">
+            <button class="btn-gold" id="loginBtn" onclick="checkAccount()">ENTER CASINO</button>
+            <p style="font-size: 10px; color: var(--casino-red); font-weight: 800; margin-top: 15px;">REFRESH = SESSION ENDED</p>
         </div>
 
         <div id="step-2" class="step">
             <div id="profileContent" class="profile-card">
                 <img id="pImg" src="" class="profile-img">
-                <h3 id="pName" style="margin:0; font-size: 18px;">...</h3>
-                <div class="balance-info">
-                    <div class="b-box"><label>SALDO</label><span id="pUang">Rp 0</span></div>
-                    <div class="b-box"><label>LIMIT</label><span id="pLimit">0</span></div>
+                <h2 id="pName" style="margin:0; font-family: 'Goldman';">...</h2>
+                <div class="balance-grid">
+                    <div class="stat-box"><label>CHIPS</label><span id="pUang">0</span></div>
+                    <div class="stat-box"><label>LIMIT</label><span id="pLimit">0</span></div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; text-align: left;">
+                <label style="font-size: 11px; color: var(--gold); font-weight: 800; letter-spacing: 2px;">SELECT ROOM</label>
+                <div onclick="openGame()" style="background: #1a1a1a; padding: 20px; border-radius: 20px; border: 1px solid var(--gold-dark); cursor: pointer; margin-top: 10px; display: flex; align-items: center;">
+                    <div style="font-size: 30px; margin-right: 15px;">🎰</div>
+                    <div style="flex:1;"><span style="font-weight: 800;">GENERAL SLOT</span><br><small style="color:var(--gold)">WIN RATE 5%</small></div>
+                    <span style="font-size: 12px; font-weight: 800;">PLAY &rsaquo;</span>
                 </div>
             </div>
             
-            <div id="countdownArea" style="margin-top:25px; font-size: 13px; color: var(--accent); font-weight: 600;">
-                MEMUAT MODUL GAME... (<span id="cdText">5</span>)
-            </div>
-
-            <div id="gameList" class="game-menu" style="display:none;">
-                <span class="menu-label">PILIH PERMAINAN</span>
-                <div class="game-item active" onclick="openGame()">
-                    <div class="game-icon">🎰</div>
-                    <div class="game-details">
-                        <span class="game-title">SLOT GENERAL</span>
-                        <span class="game-subtitle">ONLINE</span>
-                    </div>
-                    <div class="game-badge" style="color: var(--accent);">PLAY</div>
-                </div>
-                <div style="text-align: center; margin-top: 20px;">
-                    <button onclick="location.reload()" style="background:none; border:none; color:var(--text-dim); font-size: 11px; cursor:pointer; font-weight: 600;">KELUAR SESI</button>
-                </div>
-            </div>
+            <button onclick="location.reload()" style="background:none; border:none; color:#555; margin-top: 30px; cursor:pointer; font-weight: 700;">EXIT CASINO</button>
         </div>
 
         <div id="step-3" class="step">
-            <div id="backArea" class="back-btn" onclick="showStep(2)">&larr;</div>
-            <p style="color: var(--accent); font-weight: 800; font-size: 11px; letter-spacing: 2px; margin-bottom: 10px;">MESIN SLOT AKTIF</p>
-            <div class="reels">
-                <div id="r1" class="reel">💎</div>
-                <div id="r2" class="reel">💎</div>
-                <div id="r3" class="reel">💎</div>
+            <div id="backBtn" class="back-btn" onclick="showStep(2)">&larr; LOBBY</div>
+            
+            <div class="slot-machine">
+                <div class="machine-light"></div>
+                <div class="reels">
+                    <div id="r1" class="reel">💰</div>
+                    <div id="r2" class="reel">💰</div>
+                    <div id="r3" class="reel">💰</div>
+                </div>
             </div>
+
             <div id="controlArea">
-                <input type="number" id="betInput" placeholder="Jumlah Taruhan (5k-50k)">
-                <button class="btn" id="spinBtn" onclick="playGame()">PUTAR SEKARANG</button>
+                <p style="font-size: 11px; font-weight: 800; color: var(--gold);">PLACE YOUR BET</p>
+                <input type="number" id="betInput" placeholder="Min 5,000">
+                <button class="btn-gold" id="spinBtn" onclick="playGame()">SPIN NOW</button>
             </div>
-            <p id="game-msg" style="font-size: 12px; margin-top: 20px; color: var(--text-dim); font-weight: 700;"></p>
+            <p id="game-msg" style="margin-top: 20px; font-weight: 800; font-family: 'Goldman'; letter-spacing: 1px;"></p>
         </div>
     </div>
 
@@ -211,23 +193,23 @@
         let userUang = 0;
         let slotIntervals = [];
 
-        // === PREVENT REFRESH WARNING ===
-        window.onbeforeunload = function() {
-            return "Data permainan akan hilang jika Anda refresh. Lanjutkan?";
-        };
+        // ANTI-REFRESH
+        window.onbeforeunload = () => "Peringatan: Progress akan hilang!";
 
         function showPopup(msg) {
             const p = document.getElementById('customPopup');
-            document.getElementById('popMsg').innerText = msg;
+            p.innerText = msg;
             p.classList.add('show');
             setTimeout(() => p.classList.remove('show'), 3000);
         }
 
         async function checkAccount() {
             const num = document.getElementById('phoneInput').value;
-            const btn = document.getElementById('checkBtn');
-            if(!num) return showPopup("Masukkan nomor WhatsApp!");
-            btn.disabled = true; btn.innerText = "VERIFIKASI...";
+            const btn = document.getElementById('loginBtn');
+            if(!num) return showPopup("MASUKKAN NOMOR!");
+            
+            btn.disabled = true; btn.innerText = "VERIFYING...";
+            
             try {
                 const res = await fetch(`/api/slot-web`, {
                     method: "POST",
@@ -235,82 +217,59 @@
                     body: JSON.stringify({ nomor: num, secret: SECRET, type: 'check' })
                 });
                 const data = await res.json();
-                if(data.status) { 
-                    userData = { nomor: num, profile: data.profile };
+                if(data.status) {
+                    userData = { nomor: num };
+                    updateProfile(data.profile);
                     showStep(2);
-                    updateProfileDisplay(data.profile);
-                    startMenuTimer();
                 } else {
-                    showPopup(data.msg || "Akun tidak ditemukan!");
-                    btn.disabled = false; btn.innerText = "OTORISASI AKUN";
+                    showPopup(data.msg);
+                    btn.disabled = false; btn.innerText = "ENTER CASINO";
                 }
-            } catch (e) { showPopup("Server Offline!"); btn.disabled = false; }
+            } catch(e) { showPopup("SERVER OFFLINE"); btn.disabled = false; }
         }
 
-        function updateProfileDisplay(profile) {
+        function updateProfile(p) {
             document.getElementById('profileContent').style.display = 'block';
-            document.getElementById('pName').innerText = profile?.name || "User Miwa";
-            userUang = profile?.uang || 0;
-            document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
-            document.getElementById('pLimit').innerText = profile?.limit || 0;
-            document.getElementById('pImg').src = profile?.img || "https://img1.pixhost.to/images/11480/682392173_dhikzxcloud.jpg";
-        }
-
-        function startMenuTimer() {
-            let cd = 5;
-            const cdText = document.getElementById('cdText');
-            const itv = setInterval(() => {
-                cd--;
-                if(cdText) cdText.innerText = cd;
-                if(cd <= 0) {
-                    clearInterval(itv);
-                    document.getElementById('countdownArea').style.display = 'none';
-                    document.getElementById('gameList').style.display = 'block';
-                }
-            }, 1000);
+            document.getElementById('pName').innerText = p.name;
+            userUang = p.uang;
+            document.getElementById('pUang').innerText = "Rp " + p.uang.toLocaleString();
+            document.getElementById('pLimit').innerText = p.limit;
+            document.getElementById('pImg').src = p.img;
         }
 
         function showStep(n) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById('step-'+n).classList.add('active');
+            if(n === 3) document.getElementById('mainTitle').innerText = "Vegas Room";
+            else document.getElementById('mainTitle').innerText = "MIWA CASINO";
         }
 
-        async function openGame() { 
-            // Setiap masuk menu, ambil data terbaru (Sync)
-            try {
-                const res = await fetch(`/api/slot-web`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ nomor: userData.nomor, secret: SECRET, type: 'check' })
-                });
-                const data = await res.json();
-                if(data.status) updateProfileDisplay(data.profile);
-            } catch (e) {}
-            showStep(3); 
+        async function openGame() {
+            await checkAccount(); // Sync data
+            showStep(3);
         }
 
         async function playGame() {
-            const betInput = document.getElementById('betInput');
-            const bet = Math.abs(parseInt(betInput.value));
+            const bet = parseInt(document.getElementById('betInput').value);
             const reels = [document.getElementById('r1'), document.getElementById('r2'), document.getElementById('r3')];
-            const controlArea = document.getElementById('controlArea');
             const msgEl = document.getElementById('game-msg');
 
-            if(!bet || bet < 5000) return showPopup("Minimal taruhan Rp 5.000");
-            if(bet > userUang) return showPopup("Saldo tidak cukup!");
-            
-            slotIntervals.forEach(clearInterval);
-            slotIntervals = [];
+            if(!bet || bet < 5000) return showPopup("MIN BET 5,000!");
+            if(bet > userUang) return showPopup("INSUFFICIENT CHIPS!");
 
-            controlArea.classList.add('hide-game-ui');
-            msgEl.innerText = "MENUNGGU HASIL...";
-            
-            reels.forEach((reel) => {
+            // Hide UI
+            document.getElementById('controlArea').classList.add('hide-ui');
+            document.getElementById('backBtn').classList.add('hide-ui');
+            msgEl.innerText = "ROLLING...";
+            msgEl.style.color = "var(--gold)";
+
+            // Animasi Putar
+            reels.forEach(r => {
                 const itv = setInterval(() => {
-                    const syms = ['🍎','🍇','🍒','💎','🍋','🔔','🍉','🥥'];
-                    reel.innerText = syms[Math.floor(Math.random()*syms.length)];
-                    reel.style.filter = "blur(2px)";
-                }, 130);
+                    const s = ['💎','🍒','💰','🔔','7️⃣','⭐','🍋','🍉'];
+                    r.innerText = s[Math.floor(Math.random()*s.length)];
+                    r.style.transform = "translateY("+(Math.random()*10)+"px)";
+                }, 100);
                 slotIntervals.push(itv);
             });
 
@@ -323,30 +282,31 @@
                 const data = await res.json();
 
                 if(data.status) {
-                    setTimeout(() => { clearInterval(slotIntervals[0]); reels[0].innerText = data.reels[0]; reels[0].style.filter = "none"; }, 1500);
-                    setTimeout(() => { clearInterval(slotIntervals[1]); reels[1].innerText = data.reels[1]; reels[1].style.filter = "none"; }, 2500);
+                    // Stop reels one by one
+                    setTimeout(() => { clearInterval(slotIntervals[0]); reels[0].innerText = data.reels[0]; reels[0].style.transform="none"; }, 1500);
+                    setTimeout(() => { clearInterval(slotIntervals[1]); reels[1].innerText = data.reels[1]; reels[1].style.transform="none"; }, 2500);
                     setTimeout(() => { 
                         clearInterval(slotIntervals[2]); 
-                        reels[2].innerText = data.reels[2];
-                        reels[2].style.filter = "none";
-                        controlArea.classList.remove('hide-game-ui');
-                        finishGame(data);
+                        reels[2].innerText = data.reels[2]; reels[2].style.transform="none";
+                        
+                        document.getElementById('controlArea').classList.remove('hide-ui');
+                        document.getElementById('backBtn').classList.remove('hide-ui');
+                        
+                        msgEl.innerText = data.resultStatus;
+                        msgEl.style.color = data.resultStatus === 'JACKPOT' ? 'var(--gold)' : (data.resultStatus === 'ALMOST' ? '#00ccff' : '#666');
+                        
+                        updateProfile(data.profile);
+                        if(data.resultStatus === 'JACKPOT') showPopup("BIG WIN! 💰");
                     }, 3500);
                 } else { throw new Error(data.msg); }
-            } catch (e) { 
+            } catch(e) {
                 slotIntervals.forEach(clearInterval);
-                reels.forEach(r => r.style.filter = "none");
-                controlArea.classList.remove('hide-game-ui');
-                showPopup(e.message || "Gagal!");
+                reels.forEach(r => r.style.transform="none");
+                document.getElementById('controlArea').classList.remove('hide-ui');
+                document.getElementById('backBtn').classList.remove('hide-ui');
+                showPopup(e.message);
                 msgEl.innerText = "";
             }
-        }
-
-        function finishGame(data) {
-            document.getElementById('game-msg').innerText = "RESULT: " + data.resultStatus;
-            userUang = data.newSaldo;
-            updateProfileDisplay(data.profile);
-            if(data.resultStatus === 'JACKPOT') showPopup("JACKPOT! +" + data.winAmount);
         }
     </script>
 </body>
