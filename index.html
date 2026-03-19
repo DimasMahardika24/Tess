@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miwa Dashboard | Professional Edition</title>
+    <title>Miwa Dashboard | No Cache Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -85,7 +85,6 @@
         }
 
         .game-item.active:hover { border-color: var(--accent); background: rgba(61, 139, 255, 0.05); }
-        .game-item.locked { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
 
         .game-icon {
             width: 45px; height: 45px; background: rgba(0,0,0,0.2);
@@ -96,7 +95,6 @@
         .game-details { flex: 1; }
         .game-title { display: block; font-size: 14px; font-weight: 700; color: var(--text-main); }
         .game-subtitle { display: block; font-size: 10px; font-weight: 600; color: var(--success); }
-        .locked .game-subtitle { color: var(--text-dim); }
 
         .game-badge {
             font-size: 10px; background: var(--border); color: var(--text-dim);
@@ -123,19 +121,14 @@
             width: 85px; height: 85px; background: #000; border-radius: 20px;
             font-size: 40px; line-height: 85px; border: 1px solid var(--border);
             box-shadow: inset 0 5px 15px rgba(0,0,0,0.8);
-            filter: none;
         }
 
         .step { display: none; }
         .active { display: block; animation: fadeIn 0.5s ease forwards; }
         
-        .hide-game-ui { 
-            opacity: 0 !important; 
-            pointer-events: none !important; 
-            transform: translateY(15px); 
-        }
+        .hide-game-ui { opacity: 0 !important; pointer-events: none !important; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         #customPopup {
@@ -145,6 +138,9 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0;
         }
         #customPopup.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        /* Label Warning */
+        .warning-text { font-size: 10px; color: var(--error); font-weight: 700; margin-top: 15px; display: block; letter-spacing: 0.5px; }
     </style>
 </head>
 <body>
@@ -160,6 +156,7 @@
             <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 25px;">Sesi Aman & Terverifikasi</p>
             <input type="text" id="phoneInput" placeholder="Masukkan Nomor (628...)">
             <button class="btn" id="checkBtn" onclick="checkAccount()">Otorisasi Akun</button>
+            <span class="warning-text">⚠️ JANGAN REFRESH HALAMAN SAAT BERMAIN!</span>
         </div>
 
         <div id="step-2" class="step">
@@ -178,7 +175,6 @@
 
             <div id="gameList" class="game-menu" style="display:none;">
                 <span class="menu-label">PILIH PERMAINAN</span>
-                
                 <div class="game-item active" onclick="openGame()">
                     <div class="game-icon">🎰</div>
                     <div class="game-details">
@@ -187,33 +183,14 @@
                     </div>
                     <div class="game-badge" style="color: var(--accent);">PLAY</div>
                 </div>
-
-                <div class="game-item locked">
-                    <div class="game-icon">🎡</div>
-                    <div class="game-details">
-                        <span class="game-title">ROULETTE ROYALE</span>
-                        <span class="game-subtitle">COMING SOON</span>
-                    </div>
-                    <div class="game-badge">LOCKED</div>
-                </div>
-
-                <div class="game-item locked">
-                    <div class="game-icon">🚀</div>
-                    <div class="game-details">
-                        <span class="game-title">CRASH GALAXY</span>
-                        <span class="game-subtitle">DEVELOPMENT</span>
-                    </div>
-                    <div class="game-badge">LOCKED</div>
-                </div>
-
                 <div style="text-align: center; margin-top: 20px;">
-                    <button onclick="logout()" style="background:none; border:none; color:var(--text-dim); font-size: 11px; cursor:pointer; font-weight: 600;">KELUAR SESI</button>
+                    <button onclick="location.reload()" style="background:none; border:none; color:var(--text-dim); font-size: 11px; cursor:pointer; font-weight: 600;">KELUAR SESI</button>
                 </div>
             </div>
         </div>
 
         <div id="step-3" class="step">
-            <div id="backArea" class="back-btn" onclick="goBack()">&larr;</div>
+            <div id="backArea" class="back-btn" onclick="showStep(2)">&larr;</div>
             <p style="color: var(--accent); font-weight: 800; font-size: 11px; letter-spacing: 2px; margin-bottom: 10px;">MESIN SLOT AKTIF</p>
             <div class="reels">
                 <div id="r1" class="reel">💎</div>
@@ -230,29 +207,13 @@
 
     <script>
         const SECRET = "dimas_ganteng_123";
-        const CD_HOURLY = 5 * 60 * 1000; 
         let userData = {};
         let userUang = 0;
         let slotIntervals = [];
 
-        window.onload = () => {
-            const savedUser = localStorage.getItem('miwa_user');
-            const lastStep = localStorage.getItem('miwa_current_step');
-
-            if(savedUser) {
-                userData = JSON.parse(savedUser);
-                if (lastStep && lastStep !== "1") {
-                    updateProfileDisplay(userData.profile);
-                    showStep(lastStep);
-                    if (lastStep == "2") {
-                        document.getElementById('countdownArea').style.display = 'none';
-                        document.getElementById('gameList').style.display = 'block';
-                    }
-                } else {
-                    loadProfileAuto();
-                }
-            }
-            checkCooldown();
+        // === PREVENT REFRESH WARNING ===
+        window.onbeforeunload = function() {
+            return "Data permainan akan hilang jika Anda refresh. Lanjutkan?";
         };
 
         function showPopup(msg) {
@@ -276,25 +237,14 @@
                 const data = await res.json();
                 if(data.status) { 
                     userData = { nomor: num, profile: data.profile };
-                    localStorage.setItem('miwa_user', JSON.stringify(userData));
-                    loadProfileUI(data);
+                    showStep(2);
+                    updateProfileDisplay(data.profile);
+                    startMenuTimer();
                 } else {
                     showPopup(data.msg || "Akun tidak ditemukan!");
                     btn.disabled = false; btn.innerText = "OTORISASI AKUN";
                 }
             } catch (e) { showPopup("Server Offline!"); btn.disabled = false; }
-        }
-
-        function loadProfileAuto() {
-            showStep(2);
-            updateProfileDisplay(userData.profile);
-            startMenuTimer();
-        }
-
-        function loadProfileUI(data) {
-            showStep(2);
-            updateProfileDisplay(data.profile);
-            startMenuTimer();
         }
 
         function updateProfileDisplay(profile) {
@@ -322,15 +272,11 @@
 
         function showStep(n) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            const target = document.getElementById('step-'+n);
-            if(target) {
-                target.classList.add('active');
-                localStorage.setItem('miwa_current_step', n);
-            }
+            document.getElementById('step-'+n).classList.add('active');
         }
 
-        // FITUR AUTO-SYNC: Update data setiap klik PLAY
         async function openGame() { 
+            // Setiap masuk menu, ambil data terbaru (Sync)
             try {
                 const res = await fetch(`/api/slot-web`, {
                     method: "POST",
@@ -338,20 +284,9 @@
                     body: JSON.stringify({ nomor: userData.nomor, secret: SECRET, type: 'check' })
                 });
                 const data = await res.json();
-                if(data.status) {
-                    userData.profile = data.profile;
-                    localStorage.setItem('miwa_user', JSON.stringify(userData));
-                    updateProfileDisplay(data.profile);
-                }
-            } catch (e) { console.log("Gagal sinkron data"); }
-            
+                if(data.status) updateProfileDisplay(data.profile);
+            } catch (e) {}
             showStep(3); 
-            checkCooldown(); 
-        }
-        
-        function goBack() { 
-            const isSpinning = document.getElementById('controlArea').classList.contains('hide-game-ui');
-            if(!isSpinning) showStep(2); 
         }
 
         async function playGame() {
@@ -359,7 +294,6 @@
             const bet = Math.abs(parseInt(betInput.value));
             const reels = [document.getElementById('r1'), document.getElementById('r2'), document.getElementById('r3')];
             const controlArea = document.getElementById('controlArea');
-            const backArea = document.getElementById('backArea');
             const msgEl = document.getElementById('game-msg');
 
             if(!bet || bet < 5000) return showPopup("Minimal taruhan Rp 5.000");
@@ -369,7 +303,6 @@
             slotIntervals = [];
 
             controlArea.classList.add('hide-game-ui');
-            backArea.classList.add('hide-game-ui');
             msgEl.innerText = "MENUNGGU HASIL...";
             
             reels.forEach((reel) => {
@@ -389,7 +322,7 @@
                 });
                 const data = await res.json();
 
-                if(data.status && data.reels) {
+                if(data.status) {
                     setTimeout(() => { clearInterval(slotIntervals[0]); reels[0].innerText = data.reels[0]; reels[0].style.filter = "none"; }, 1500);
                     setTimeout(() => { clearInterval(slotIntervals[1]); reels[1].innerText = data.reels[1]; reels[1].style.filter = "none"; }, 2500);
                     setTimeout(() => { 
@@ -397,68 +330,23 @@
                         reels[2].innerText = data.reels[2];
                         reels[2].style.filter = "none";
                         controlArea.classList.remove('hide-game-ui');
-                        backArea.classList.remove('hide-game-ui');
                         finishGame(data);
                     }, 3500);
-                } else {
-                    throw new Error(data.msg || "Gagal memutar slot");
-                }
+                } else { throw new Error(data.msg); }
             } catch (e) { 
                 slotIntervals.forEach(clearInterval);
-                reels.forEach(r => { r.style.filter = "none"; });
+                reels.forEach(r => r.style.filter = "none");
                 controlArea.classList.remove('hide-game-ui');
-                backArea.classList.remove('hide-game-ui');
-                showPopup(e.message || "Koneksi Putus!");
+                showPopup(e.message || "Gagal!");
                 msgEl.innerText = "";
             }
         }
 
         function finishGame(data) {
             document.getElementById('game-msg').innerText = "RESULT: " + data.resultStatus;
-            if(data.newSaldo !== undefined) {
-                userUang = data.newSaldo;
-                document.getElementById('pUang').innerText = "Rp " + userUang.toLocaleString();
-                userData.profile.uang = data.newSaldo;
-                localStorage.setItem('miwa_user', JSON.stringify(userData));
-            }
-            localStorage.setItem('lastSpinTime', Date.now().toString());
-            startGlobalCooldown(CD_HOURLY);
-            if(data.resultStatus === 'JACKPOT') {
-                showPopup("JACKPOT! Saldo bertambah Rp " + data.winAmount.toLocaleString());
-            } else if(data.resultStatus === 'ALMOST') {
-                showPopup("HAMPIR! Dapat cashback Rp " + data.winAmount.toLocaleString());
-            }
-        }
-
-        function checkCooldown() {
-            const lastSpin = localStorage.getItem('lastSpinTime');
-            if (lastSpin) {
-                const elapsed = Date.now() - parseInt(lastSpin);
-                if (elapsed < CD_HOURLY) startGlobalCooldown(CD_HOURLY - elapsed);
-            }
-        }
-
-        function startGlobalCooldown(ms) {
-            const btn = document.getElementById('spinBtn');
-            btn.disabled = true;
-            const itv = setInterval(() => {
-                ms -= 1000;
-                let min = Math.floor(ms / 60000), sec = Math.floor((ms % 60000) / 1000);
-                btn.innerText = `COOLDOWN (${min}:${sec < 10 ? '0'+sec : sec})`;
-                if(ms <= 0) {
-                    clearInterval(itv);
-                    btn.disabled = false; btn.innerText = "PUTAR SEKARANG";
-                    localStorage.removeItem('lastSpinTime');
-                }
-            }, 1000);
-        }
-
-        function logout() {
-            if(confirm("Keluar dari sesi ini?")) {
-                localStorage.removeItem('miwa_user');
-                localStorage.removeItem('miwa_current_step');
-                location.reload();
-            }
+            userUang = data.newSaldo;
+            updateProfileDisplay(data.profile);
+            if(data.resultStatus === 'JACKPOT') showPopup("JACKPOT! +" + data.winAmount);
         }
     </script>
 </body>
