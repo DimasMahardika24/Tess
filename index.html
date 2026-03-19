@@ -3,113 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIWA CASINO | Ultra Smooth</title>
-    <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>MIWA APP | Premium Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #ffcc00; --gold-dark: #b8860b; --bg-dark: #050505; 
-            --card-bg: #111111; --text: #ffffff; --border: #333333;
-        }
-        * { box-sizing: border-box; }
-        body { 
-            background-color: var(--bg-dark); 
-            background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%); 
-            color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; margin: 0; overflow: hidden; 
-        }
-        .container { 
-            background: var(--card-bg); width: 95%; max-width: 420px; 
-            border-radius: 40px; padding: 40px 30px; border: 2px solid var(--gold-dark); 
-            box-shadow: 0 0 50px rgba(0,0,0,1); text-align: center; position: relative; 
-        }
-        h1 { font-family: 'Goldman', cursive; font-size: 32px; color: var(--gold); text-shadow: 0 0 15px var(--gold-dark); margin-bottom: 20px; }
-        
-        /* SLOT MACHINE STYLES */
-        .slot-machine { 
-            background: #000; border: 4px solid var(--gold-dark); 
-            border-radius: 20px; padding: 20px 10px; margin: 20px 0; 
-            position: relative; overflow: hidden;
-            box-shadow: inset 0 0 30px rgba(255,204,0,0.2);
-        }
-        .reels-container { display: flex; gap: 10px; justify-content: center; height: 120px; overflow: hidden; position: relative; }
-        
-        /* Kunci animasi smooth ada di sini */
-        .reel-strip {
-            display: flex; flex-direction: column; width: 90px;
-            transition: transform 0.1s linear; /* Smooth linear motion */
-        }
-        .symbol {
-            height: 120px; line-height: 120px; font-size: 60px;
-            background: linear-gradient(to bottom, #222, #111, #222);
-            border: 1px solid #333; border-radius: 10px;
+            --soft-dark: #121212;
+            --card-modern: #1e1e1e;
+            --accent-blue: #3d85ff;
+            --gold: #ffcc00;
+            --gold-dark: #b8860b;
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
         }
 
-        /* UI ELEMENTS */
-        .profile-card { background: #1a1a1a; border-radius: 20px; padding: 15px; border: 1px solid var(--border); margin-bottom: 20px; display: none; }
-        .stat-box { background: rgba(0,0,0,0.5); padding: 10px; border-radius: 12px; border: 1px solid #222; flex: 1; }
-        .stat-box label { font-size: 10px; color: var(--gold); font-weight: 800; display: block; }
-        
-        input { width: 100%; background: #1a1a1a; border: 2px solid var(--border); padding: 18px; border-radius: 20px; color: #fff; margin-bottom: 15px; text-align: center; font-size: 18px; font-weight: bold; }
-        .btn-gold { width: 100%; padding: 18px; background: linear-gradient(to bottom, var(--gold), #b8860b); color: #000; border: none; border-radius: 20px; font-weight: 800; cursor: pointer; font-family: 'Goldman'; font-size: 16px; box-shadow: 0 5px 0 #7a5a00; text-transform: uppercase; transition: 0.2s; }
-        .btn-gold:disabled { background: #444 !important; box-shadow: 0 5px 0 #222 !important; color: #777 !important; cursor: not-allowed; transform: none; }
-        
-        #customPopup { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-200%); background: var(--gold); color: #000; padding: 15px 30px; border-radius: 50px; font-weight: 800; z-index: 1000; transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+        * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        body {
+            background-color: var(--soft-dark);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* TEMA DINAMIS */
+        body.casino-mode {
+            background: radial-gradient(circle at center, #1a0f00 0%, #050505 100%);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        /* STEP 1 & 2: MODERN SOFT DARK */
+        .modern-card {
+            background: var(--card-modern);
+            border-radius: 32px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* PROFILE DETAIL (STEP 2) */
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-avatar-wrapper {
+            position: relative;
+            padding: 5px;
+            background: linear-gradient(45deg, var(--accent-blue), #8000ff);
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        .profile-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid var(--card-modern);
+            object-fit: cover;
+        }
+
+        .online-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            background: #00ff88;
+            border: 3px solid var(--card-modern);
+            border-radius: 50%;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .info-item {
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .info-item label { font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 5px; }
+        .info-item span { font-weight: 700; font-size: 14px; }
+
+        /* BUTTONS */
+        .btn-modern {
+            width: 100%;
+            padding: 16px;
+            border-radius: 18px;
+            border: none;
+            background: var(--accent-blue);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn-casino-entry {
+            margin-top: 20px;
+            background: linear-gradient(90deg, #b8860b, #ffcc00);
+            color: #000;
+            font-family: 'Goldman';
+            letter-spacing: 1px;
+            box-shadow: 0 10px 20px rgba(184, 134, 11, 0.3);
+        }
+
+        /* STEP 3: CASINO THEME */
+        .casino-ui {
+            background: #111;
+            border: 3px solid var(--gold);
+            border-radius: 40px;
+            padding: 30px 20px;
+            box-shadow: 0 0 40px rgba(255,204,0,0.2);
+            display: none;
+        }
+
+        .slot-window {
+            height: 140px;
+            background: #000;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            overflow: hidden;
+            border: 2px solid #333;
+            margin-bottom: 25px;
+        }
+
+        .reel-column {
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.1s linear;
+        }
+
+        .slot-item {
+            height: 120px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+
+        /* HIDE UI SAAT SPIN */
+        .is-spinning .hide-on-spin {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+
+        #customPopup {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-200%);
+            background: var(--gold); color: #000; padding: 12px 25px;
+            border-radius: 50px; font-weight: 800; z-index: 9999;
+        }
         #customPopup.show { transform: translateX(-50%) translateY(0); }
-        
+
         .step { display: none; }
-        .active { display: block; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .step.active { display: block; animation: slideUp 0.6s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body>
+<body id="mainBody">
 
     <div id="customPopup">NOTIF</div>
 
     <div class="container">
-        <h1>MIWA CASINO</h1>
-        
         <div id="step-1" class="step active">
-            <input type="text" id="phoneInput" placeholder="628xxxxxxxx">
-            <button class="btn-gold" onclick="checkAccount()">ENTER LOBBY</button>
+            <div class="modern-card">
+                <h2 style="margin-top:0">Welcome back</h2>
+                <p style="color:var(--text-dim); font-size:14px">Masukkan nomor WhatsApp anda untuk memulai sesi.</p>
+                <input type="text" id="phoneInput" style="width:100%; background:#252525; border:1px solid #333; padding:15px; border-radius:15px; color:#fff; margin-bottom:20px" placeholder="628xxx">
+                <button class="btn-modern" id="loginBtn" onclick="checkAccount()">Continue</button>
+            </div>
         </div>
 
         <div id="step-2" class="step">
-            <div id="profileContent" class="profile-card">
-                <h3 id="pName" style="margin:0 0 10px 0; color:var(--gold)">...</h3>
-                <div style="display:flex; gap:10px;">
-                    <div class="stat-box"><label>CHIPS</label><span id="pUang">0</span></div>
-                    <div class="stat-box"><label>LIMIT</label><span id="pLimit">0</span></div>
+            <div class="modern-card">
+                <div class="profile-header">
+                    <div class="profile-avatar-wrapper">
+                        <img id="pImg" src="" class="profile-img">
+                        <div class="online-badge"></div>
+                    </div>
+                    <h2 id="pName" style="margin:5px 0">...</h2>
+                    <span style="color:var(--accent-blue); font-size:12px; font-weight:700">PREMIUM MEMBER</span>
                 </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>BALANCE</label>
+                        <span id="pUang" style="color:#00ff88">Rp 0</span>
+                    </div>
+                    <div class="info-item">
+                        <label>LIMIT</label>
+                        <span id="pLimit">0</span>
+                    </div>
+                </div>
+
+                <button class="btn-modern btn-casino-entry" onclick="goToCasino()">🎰 OPEN CASINO ROOM</button>
+                <p onclick="location.reload()" style="text-align:center; font-size:12px; color:var(--text-dim); margin-top:20px; cursor:pointer">Logout Account</p>
             </div>
-            <button class="btn-gold" onclick="showStep(3)">PLAY SLOT</button>
         </div>
 
         <div id="step-3" class="step">
-            <div class="slot-machine">
-                <div class="reels-container">
-                    <div id="strip1" class="reel-strip">
-                        <div class="symbol">💰</div><div class="symbol">🍒</div><div class="symbol">💎</div>
-                    </div>
-                    <div id="strip2" class="reel-strip">
-                        <div class="symbol">💰</div><div class="symbol">🍒</div><div class="symbol">💎</div>
-                    </div>
-                    <div id="strip3" class="reel-strip">
-                        <div class="symbol">💰</div><div class="symbol">🍒</div><div class="symbol">💎</div>
-                    </div>
+            <div id="casinoCard" class="casino-ui">
+                <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom:20px">
+                    <span onclick="goToLobby()" style="color:var(--gold); font-weight:800; cursor:pointer" class="hide-on-spin">&larr; EXIT</span>
+                    <h2 style="font-family:'Goldman'; color:var(--gold); margin:0">LAS VEGAS</h2>
+                    <span id="displayMoney" style="color:#00ff88; font-weight:800">Rp 0</span>
                 </div>
+
+                <div class="slot-window">
+                    <div id="reel1" class="reel-column"><div class="slot-item">💰</div></div>
+                    <div id="reel2" class="reel-column"><div class="slot-item">💰</div></div>
+                    <div id="reel3" class="reel-column"><div class="slot-item">💰</div></div>
+                </div>
+
+                <div class="hide-on-spin">
+                    <input type="number" id="betInput" style="width:100%; background:#222; border:2px solid var(--gold); padding:15px; border-radius:15px; color:#fff; text-align:center; font-weight:800; margin-bottom:15px" placeholder="BET AMOUNT">
+                    <button class="btn-modern btn-casino-entry" style="width:100%" onclick="playGame()">SPIN MACHINE</button>
+                </div>
+                
+                <div id="spinText" style="display:none; text-align:center; font-family:'Goldman'; color:var(--gold); font-size:20px; animation: pulse 1s infinite">ROLLING...</div>
             </div>
-            <input type="number" id="betInput" placeholder="Min 5,000">
-            <button class="btn-gold" id="spinBtn" onclick="playGame()">SPIN SEKARANG</button>
-            <p id="game-msg" style="font-weight: bold; margin-top: 15px; min-height: 20px; color: var(--gold);"></p>
         </div>
     </div>
 
     <script>
         const SECRET = "dimas_ganteng_123";
-        const SYMBOLS = ['💰','🍒','💎','7️⃣','⭐','🔔','🍋','🍇'];
+        const SYMS = ['💎','🍒','💰','🔔','7️⃣','⭐','🍇','🍉'];
         let userData = {};
-        let spinIntervals = [null, null, null];
+        let intervals = [null, null, null];
 
         function showPopup(msg) {
             const p = document.getElementById('customPopup');
@@ -127,51 +269,62 @@
                 });
                 const data = await res.json();
                 if(data.status) {
-                    userData = { nomor: num };
-                    document.getElementById('pName').innerText = data.profile.name;
-                    document.getElementById('pUang').innerText = "Rp " + data.profile.uang.toLocaleString();
-                    document.getElementById('pLimit').innerText = data.profile.limit;
-                    document.getElementById('profileContent').style.display = 'block';
+                    userData = { nomor: num, ...data.profile };
+                    updateUI(data.profile);
                     showStep(2);
                 } else { showPopup(data.msg); }
             } catch(e) { showPopup("SERVER ERROR"); }
         }
 
+        function updateUI(p) {
+            document.getElementById('pName').innerText = p.name;
+            document.getElementById('pUang').innerText = "Rp " + p.uang.toLocaleString();
+            document.getElementById('displayMoney').innerText = "Rp " + p.uang.toLocaleString();
+            document.getElementById('pLimit').innerText = p.limit;
+            document.getElementById('pImg').src = p.img;
+        }
+
         function showStep(n) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById('step-'+n).classList.add('active');
+            
+            // Perubahan Tema Body
+            if(n === 3) {
+                document.getElementById('mainBody').classList.add('casino-mode');
+                document.getElementById('casinoCard').style.display = 'block';
+            } else {
+                document.getElementById('mainBody').classList.remove('casino-mode');
+            }
         }
 
-        // FUNGSI ANIMASI BARU (ULTRA SMOOTH)
-        function startSmoothAnimate(reelIdx) {
-            const strip = document.getElementById('strip' + (reelIdx + 1));
+        function goToCasino() { showStep(3); }
+        function goToLobby() { showStep(2); }
+
+        function animateReel(idx) {
+            const reel = document.getElementById('reel' + (idx + 1));
             let pos = 0;
-            spinIntervals[reelIdx] = setInterval(() => {
-                pos -= 20; // Kecepatan gerak
-                if (pos <= -120) {
+            intervals[idx] = setInterval(() => {
+                pos -= 20;
+                if(pos <= -120) {
                     pos = 0;
-                    // Ganti simbol atas dengan random
-                    strip.children[0].innerText = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+                    reel.innerHTML = `<div class="slot-item">${SYMS[Math.floor(Math.random()*SYMS.length)]}</div>` + 
+                                     `<div class="slot-item">${SYMS[Math.floor(Math.random()*SYMS.length)]}</div>`;
                 }
-                strip.style.transform = `translateY(${pos}px)`;
-            }, 20); // 50 FPS
+                reel.style.transform = `translateY(${pos}px)`;
+            }, 30);
         }
 
         async function playGame() {
             const bet = parseInt(document.getElementById('betInput').value);
-            const btn = document.getElementById('spinBtn');
-            const msgEl = document.getElementById('game-msg');
-
             if(!bet || bet < 5000) return showPopup("MIN 5,000!");
 
-            btn.disabled = true;
-            btn.innerText = "ROLLING...";
-            msgEl.innerText = "";
+            // ACTIVATE SPINNING MODE
+            const casinoCard = document.getElementById('casinoCard');
+            const spinText = document.getElementById('spinText');
+            casinoCard.classList.add('is-spinning');
+            spinText.style.display = 'block';
 
-            // Start Animasi
-            startSmoothAnimate(0);
-            startSmoothAnimate(1);
-            startSmoothAnimate(2);
+            animateReel(0); animateReel(1); animateReel(2);
 
             try {
                 const res = await fetch(`/api/slot-web`, {
@@ -181,28 +334,26 @@
                 const data = await res.json();
 
                 if(data.status) {
-                    // Stop Bergantian agar terasa nyata
                     [0, 1, 2].forEach(i => {
                         setTimeout(() => {
-                            clearInterval(spinIntervals[i]);
-                            const strip = document.getElementById('strip' + (i + 1));
-                            strip.style.transform = "translateY(0)";
-                            strip.children[0].innerText = data.reels[i]; // Set Hasil
-                        }, 1200 + (i * 800));
+                            clearInterval(intervals[i]);
+                            const reel = document.getElementById('reel' + (i + 1));
+                            reel.style.transform = "translateY(0)";
+                            reel.innerHTML = `<div class="slot-item">${data.reels[i]}</div>`;
+                        }, 1500 + (i * 800));
                     });
 
                     setTimeout(() => {
-                        msgEl.innerText = "HASIL: " + data.resultStatus;
-                        btn.disabled = false;
-                        btn.innerText = "SPIN SEKARANG";
-                        checkAccount(); // Update saldo
-                    }, 3500);
-                } else {
-                    throw new Error(data.msg);
-                }
+                        casinoCard.classList.remove('is-spinning');
+                        spinText.style.display = 'none';
+                        showPopup(data.resultStatus);
+                        checkAccount(); // Sync saldo terbaru
+                    }, 3800);
+                } else { throw new Error(data.msg); }
             } catch(e) {
-                spinIntervals.forEach(itv => clearInterval(itv));
-                btn.disabled = false; btn.innerText = "SPIN SEKARANG";
+                intervals.forEach(clearInterval);
+                casinoCard.classList.remove('is-spinning');
+                spinText.style.display = 'none';
                 showPopup(e.message);
             }
         }
