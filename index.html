@@ -3,231 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIWA APP | Premium Experience</title>
-    <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <title>MIWA CASINO | IP Gateway</title>
+    <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --soft-dark: #121212;
-            --card-modern: #1e1e1e;
-            --accent-blue: #3d85ff;
-            --gold: #ffcc00;
-            --gold-dark: #b8860b;
-            --text-main: #ffffff;
-            --text-dim: #a0a0a0;
+            --soft-dark: #0f0f0f; --card-modern: #1a1a1a; --accent-blue: #007bff;
+            --gold: #ffcc00; --gold-dark: #b8860b; --text-main: #ffffff; --text-dim: #888;
         }
-
-        * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-
-        body {
-            background-color: var(--soft-dark);
-            color: var(--text-main);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-
-        /* TEMA DINAMIS */
-        body.casino-mode {
-            background: radial-gradient(circle at center, #1a0f00 0%, #050505 100%);
-        }
-
-        .container {
-            width: 90%;
-            max-width: 400px;
-            position: relative;
-        }
-
-        /* STEP 1 & 2: MODERN SOFT DARK */
-        .modern-card {
-            background: var(--card-modern);
-            border-radius: 32px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
+        * { box-sizing: border-box; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        body { background: var(--soft-dark); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        body.casino-mode { background: radial-gradient(circle at center, #1a0f00 0%, #050505 100%); }
+        .container { width: 90%; max-width: 400px; }
+        
+        /* MODERN CARD (STEP 1 & 2) */
+        .modern-card { background: var(--card-modern); border-radius: 35px; padding: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.03); text-align: center; }
+        
+        /* IP DISPLAY (GATEWAY) */
+        .ip-display { background: #222; padding: 25px; border-radius: 25px; border: 2px dashed #444; margin: 25px 0; cursor: pointer; position: relative; }
+        .ip-display:hover { border-color: var(--accent-blue); background: #252525; }
+        .ip-display label { font-size: 10px; color: var(--accent-blue); font-weight: 800; letter-spacing: 1px; display: block; margin-bottom: 8px; }
+        .ip-display span { font-family: 'Goldman', cursive; font-size: 22px; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.1); }
+        
         /* PROFILE DETAIL (STEP 2) */
-        .profile-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 25px;
-        }
+        .profile-box { margin-bottom: 25px; }
+        .profile-img { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--accent-blue); padding: 5px; margin-bottom: 15px; }
+        .balance-card { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .stat-item { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 20px; border: 1px solid #333; }
+        .stat-item small { font-size: 10px; color: var(--text-dim); display: block; }
+        .stat-item b { font-size: 15px; color: #00ff88; }
 
-        .profile-avatar-wrapper {
-            position: relative;
-            padding: 5px;
-            background: linear-gradient(45deg, var(--accent-blue), #8000ff);
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
+        /* CASINO UI (STEP 3) */
+        .casino-ui { background: #111; border: 4px solid var(--gold); border-radius: 40px; padding: 30px 20px; box-shadow: 0 0 40px rgba(255,204,0,0.15); display: none; }
+        .slot-window { height: 130px; background: #000; border-radius: 25px; display: flex; justify-content: center; gap: 10px; padding: 10px; overflow: hidden; border: 2px solid #222; margin-bottom: 25px; }
+        .reel-column { width: 85px; display: flex; flex-direction: column; }
+        .slot-item { height: 110px; min-height: 110px; display: flex; align-items: center; justify-content: center; font-size: 50px; }
 
-        .profile-img {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            border: 3px solid var(--card-modern);
-            object-fit: cover;
-        }
-
-        .online-badge {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            width: 18px;
-            height: 18px;
-            background: #00ff88;
-            border: 3px solid var(--card-modern);
-            border-radius: 50%;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            width: 100%;
-        }
-
-        .info-item {
-            background: rgba(255,255,255,0.03);
-            padding: 15px;
-            border-radius: 20px;
-            text-align: center;
-        }
-
-        .info-item label { font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 5px; }
-        .info-item span { font-weight: 700; font-size: 14px; }
-
-        /* BUTTONS */
-        .btn-modern {
-            width: 100%;
-            padding: 16px;
-            border-radius: 18px;
-            border: none;
-            background: var(--accent-blue);
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 15px;
-        }
-
-        .btn-casino-entry {
-            margin-top: 20px;
-            background: linear-gradient(90deg, #b8860b, #ffcc00);
-            color: #000;
-            font-family: 'Goldman';
-            letter-spacing: 1px;
-            box-shadow: 0 10px 20px rgba(184, 134, 11, 0.3);
-        }
-
-        /* STEP 3: CASINO THEME */
-        .casino-ui {
-            background: #111;
-            border: 3px solid var(--gold);
-            border-radius: 40px;
-            padding: 30px 20px;
-            box-shadow: 0 0 40px rgba(255,204,0,0.2);
-            display: none;
-        }
-
-        .slot-window {
-            height: 140px;
-            background: #000;
-            border-radius: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px;
-            overflow: hidden;
-            border: 2px solid #333;
-            margin-bottom: 25px;
-        }
-
-        .reel-column {
-            width: 80px;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.1s linear;
-        }
-
-        .slot-item {
-            height: 120px;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
-        }
-
-        /* HIDE UI SAAT SPIN */
-        .is-spinning .hide-on-spin {
-            opacity: 0;
-            transform: translateY(20px);
-            pointer-events: none;
-        }
-
-        #customPopup {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-200%);
-            background: var(--gold); color: #000; padding: 12px 25px;
-            border-radius: 50px; font-weight: 800; z-index: 9999;
-        }
+        .btn-action { width: 100%; padding: 18px; border-radius: 20px; border: none; font-weight: 800; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        .btn-blue { background: var(--accent-blue); color: white; }
+        .btn-gold { background: linear-gradient(to bottom, var(--gold), #b8860b); color: #000; font-family: 'Goldman'; text-transform: uppercase; }
+        
+        #customPopup { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-200%); background: var(--gold); color: #000; padding: 15px 30px; border-radius: 50px; font-weight: 800; z-index: 1000; }
         #customPopup.show { transform: translateX(-50%) translateY(0); }
-
         .step { display: none; }
-        .step.active { display: block; animation: slideUp 0.6s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .active { display: block; animation: zoomIn 0.5s ease; }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .is-spinning .hide-on-spin { opacity: 0; pointer-events: none; }
     </style>
 </head>
 <body id="mainBody">
 
-    <div id="customPopup">NOTIF</div>
+    <div id="customPopup">Copied!</div>
 
     <div class="container">
         <div id="step-1" class="step active">
             <div class="modern-card">
-                <h2 style="margin-top:0">Welcome back</h2>
-                <p style="color:var(--text-dim); font-size:14px">Masukkan nomor WhatsApp anda untuk memulai sesi.</p>
-                <input type="text" id="phoneInput" style="width:100%; background:#252525; border:1px solid #333; padding:15px; border-radius:15px; color:#fff; margin-bottom:20px" placeholder="628xxx">
-                <button class="btn-modern" id="loginBtn" onclick="checkAccount()">Continue</button>
+                <h2 style="margin:0; font-weight: 800;">Device Identity</h2>
+                <p style="color:var(--text-dim); font-size:14px; margin-top:10px">IP anda belum terdaftar. Silakan hubungkan ke Bot WhatsApp.</p>
+                
+                <div class="ip-display" onclick="copyIP()">
+                    <label>YOUR DEVICE IP (TAP TO COPY)</label>
+                    <span id="userIP">Detecting...</span>
+                </div>
+
+                <div style="text-align:left; background:rgba(0,123,255,0.05); padding:15px; border-radius:20px; font-size:12px; border:1px solid rgba(0,123,255,0.1)">
+                    <b style="color:var(--accent-blue)">Cara Daftar:</b><br>
+                    1. Salin IP di atas (klik kotaknya).<br>
+                    2. Ketik <code style="color:var(--gold)">.reg-webs [IP]</code> di Bot WA.<br>
+                    3. Klik tombol <b>Refresh Status</b> di bawah.
+                </div>
+                
+                <button class="btn-action btn-blue" onclick="checkRegistration()">Refresh Status</button>
             </div>
         </div>
 
         <div id="step-2" class="step">
             <div class="modern-card">
-                <div class="profile-header">
-                    <div class="profile-avatar-wrapper">
-                        <img id="pImg" src="" class="profile-img">
-                        <div class="online-badge"></div>
-                    </div>
-                    <h2 id="pName" style="margin:5px 0">...</h2>
-                    <span style="color:var(--accent-blue); font-size:12px; font-weight:700">PREMIUM MEMBER</span>
+                <div class="profile-box">
+                    <img id="pImg" src="" class="profile-img">
+                    <h2 id="pName" style="margin:0">...</h2>
+                    <span style="color:var(--accent-blue); font-size:11px; font-weight:800; letter-spacing:1px">VERIFIED DEVICE</span>
                 </div>
 
-                <div class="info-grid">
-                    <div class="info-item">
-                        <label>BALANCE</label>
-                        <span id="pUang" style="color:#00ff88">Rp 0</span>
-                    </div>
-                    <div class="info-item">
-                        <label>LIMIT</label>
-                        <span id="pLimit">0</span>
-                    </div>
+                <div class="balance-card">
+                    <div class="stat-item"><small>CHIPS</small><b id="pUang">Rp 0</b></div>
+                    <div class="stat-item"><small>LIMIT</small><b id="pLimit" style="color:white">0</b></div>
                 </div>
 
-                <button class="btn-modern btn-casino-entry" onclick="goToCasino()">🎰 OPEN CASINO ROOM</button>
-                <p onclick="location.reload()" style="text-align:center; font-size:12px; color:var(--text-dim); margin-top:20px; cursor:pointer">Logout Account</p>
+                <button class="btn-action btn-gold" style="margin-top:25px" onclick="openCasino()">🎰 START PLAYING</button>
+                <p onclick="location.reload()" style="font-size:12px; color:var(--text-dim); margin-top:20px; cursor:pointer">Re-sync Connection</p>
             </div>
         </div>
 
         <div id="step-3" class="step">
             <div id="casinoCard" class="casino-ui">
                 <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom:20px">
-                    <span onclick="goToLobby()" style="color:var(--gold); font-weight:800; cursor:pointer" class="hide-on-spin">&larr; EXIT</span>
-                    <h2 style="font-family:'Goldman'; color:var(--gold); margin:0">LAS VEGAS</h2>
+                    <span onclick="showStep(2)" style="color:var(--gold); font-weight:800; cursor:pointer" class="hide-on-spin">&larr; EXIT</span>
+                    <h2 style="font-family:'Goldman'; color:var(--gold); margin:0; letter-spacing:2px">LAS VEGAS</h2>
                     <span id="displayMoney" style="color:#00ff88; font-weight:800">Rp 0</span>
                 </div>
 
@@ -238,10 +109,9 @@
                 </div>
 
                 <div class="hide-on-spin">
-                    <input type="number" id="betInput" style="width:100%; background:#222; border:2px solid var(--gold); padding:15px; border-radius:15px; color:#fff; text-align:center; font-weight:800; margin-bottom:15px" placeholder="BET AMOUNT">
-                    <button class="btn-modern btn-casino-entry" style="width:100%" onclick="playGame()">SPIN MACHINE</button>
+                    <input type="number" id="betInput" style="width:100%; background:#1a1a1a; border:2px solid var(--gold); padding:18px; border-radius:20px; color:#fff; text-align:center; font-weight:800; margin-bottom:15px; font-size:18px" placeholder="BET AMOUNT">
+                    <button class="btn-action btn-gold" onclick="playGame()">SPIN MACHINE</button>
                 </div>
-                
                 <div id="spinText" style="display:none; text-align:center; font-family:'Goldman'; color:var(--gold); font-size:20px; animation: pulse 1s infinite">ROLLING...</div>
             </div>
         </div>
@@ -249,9 +119,27 @@
 
     <script>
         const SECRET = "dimas_ganteng_123";
-        const SYMS = ['💎','🍒','💰','🔔','7️⃣','⭐','🍇','🍉'];
-        let userData = {};
+        const SYMS = ['💎','🍒','💰','🔔','7️⃣','⭐'];
+        let userData = { ip: '' };
         let intervals = [null, null, null];
+
+        // 1. Ambil IP dulu
+        async function initIP() {
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                userData.ip = data.ip;
+                document.getElementById('userIP').innerText = data.ip;
+                checkRegistration(); // Langsung cek apakah IP ini sudah ada di DB Bot
+            } catch (e) {
+                document.getElementById('userIP').innerText = "Network Error";
+            }
+        }
+
+        function copyIP() {
+            navigator.clipboard.writeText(userData.ip);
+            showPopup("IP Copied to Clipboard!");
+        }
 
         function showPopup(msg) {
             const p = document.getElementById('customPopup');
@@ -259,21 +147,29 @@
             setTimeout(() => p.classList.remove('show'), 3000);
         }
 
-        async function checkAccount() {
-            const num = document.getElementById('phoneInput').value;
-            if(!num) return showPopup("MASUKKAN NOMOR!");
+        // 2. Fungsi Cek Registrasi (Gateway)
+        async function checkRegistration() {
+            if(!userData.ip) return;
             try {
                 const res = await fetch(`/api/slot-web`, {
-                    method: "POST", headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ nomor: num, secret: SECRET, type: 'check' })
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ type: 'checkIP', ip: userData.ip, secret: SECRET })
                 });
                 const data = await res.json();
+                
                 if(data.status) {
-                    userData = { nomor: num, ...data.profile };
+                    // JIKA TERDAFTAR: Tampilkan Step 2 (Lobby)
                     updateUI(data.profile);
                     showStep(2);
-                } else { showPopup(data.msg); }
-            } catch(e) { showPopup("SERVER ERROR"); }
+                } else {
+                    // JIKA BELUM: Tetap di Step 1
+                    showStep(1);
+                    if(event && event.type === 'click') showPopup("Belum Terdaftar di Bot!");
+                }
+            } catch(e) {
+                console.error("Server Down");
+            }
         }
 
         function updateUI(p) {
@@ -281,34 +177,27 @@
             document.getElementById('pUang').innerText = "Rp " + p.uang.toLocaleString();
             document.getElementById('displayMoney').innerText = "Rp " + p.uang.toLocaleString();
             document.getElementById('pLimit').innerText = p.limit;
-            document.getElementById('pImg').src = p.img;
+            document.getElementById('pImg').src = p.img || "https://telegra.ph/file/default.jpg";
         }
 
         function showStep(n) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById('step-'+n).classList.add('active');
-            
-            // Perubahan Tema Body
-            if(n === 3) {
-                document.getElementById('mainBody').classList.add('casino-mode');
-                document.getElementById('casinoCard').style.display = 'block';
-            } else {
-                document.getElementById('mainBody').classList.remove('casino-mode');
-            }
+            if(n === 3) document.getElementById('mainBody').classList.add('casino-mode');
+            else document.getElementById('mainBody').classList.remove('casino-mode');
         }
 
-        function goToCasino() { showStep(3); }
-        function goToLobby() { showStep(2); }
+        function openCasino() { showStep(3); }
 
+        // --- GAME LOGIC ---
         function animateReel(idx) {
             const reel = document.getElementById('reel' + (idx + 1));
             let pos = 0;
             intervals[idx] = setInterval(() => {
                 pos -= 20;
-                if(pos <= -120) {
+                if(pos <= -110) {
                     pos = 0;
-                    reel.innerHTML = `<div class="slot-item">${SYMS[Math.floor(Math.random()*SYMS.length)]}</div>` + 
-                                     `<div class="slot-item">${SYMS[Math.floor(Math.random()*SYMS.length)]}</div>`;
+                    reel.innerHTML = `<div class="slot-item">${SYMS[Math.floor(Math.random()*SYMS.length)]}</div>`;
                 }
                 reel.style.transform = `translateY(${pos}px)`;
             }, 30);
@@ -316,20 +205,18 @@
 
         async function playGame() {
             const bet = parseInt(document.getElementById('betInput').value);
-            if(!bet || bet < 5000) return showPopup("MIN 5,000!");
+            if(!bet || bet < 5000) return showPopup("MIN BET RP 5,000!");
 
-            // ACTIVATE SPINNING MODE
             const casinoCard = document.getElementById('casinoCard');
-            const spinText = document.getElementById('spinText');
             casinoCard.classList.add('is-spinning');
-            spinText.style.display = 'block';
+            document.getElementById('spinText').style.display = 'block';
 
             animateReel(0); animateReel(1); animateReel(2);
 
             try {
                 const res = await fetch(`/api/slot-web`, {
                     method: "POST", headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ nomor: userData.nomor, amount: bet, secret: SECRET })
+                    body: JSON.stringify({ type: 'playByIP', ip: userData.ip, amount: bet, secret: SECRET })
                 });
                 const data = await res.json();
 
@@ -340,23 +227,24 @@
                             const reel = document.getElementById('reel' + (i + 1));
                             reel.style.transform = "translateY(0)";
                             reel.innerHTML = `<div class="slot-item">${data.reels[i]}</div>`;
-                        }, 1500 + (i * 800));
+                        }, 1200 + (i * 800));
                     });
-
                     setTimeout(() => {
                         casinoCard.classList.remove('is-spinning');
-                        spinText.style.display = 'none';
+                        document.getElementById('spinText').style.display = 'none';
                         showPopup(data.resultStatus);
-                        checkAccount(); // Sync saldo terbaru
-                    }, 3800);
+                        updateUI(data.profile);
+                    }, 3500);
                 } else { throw new Error(data.msg); }
             } catch(e) {
                 intervals.forEach(clearInterval);
                 casinoCard.classList.remove('is-spinning');
-                spinText.style.display = 'none';
+                document.getElementById('spinText').style.display = 'none';
                 showPopup(e.message);
             }
         }
+
+        initIP(); // Start detecting
     </script>
 </body>
 </html>
