@@ -1,0 +1,18 @@
+<div class="modern-card">
+    <h2 style="margin:0; font-weight: 800; font-size: 26px;">Device Identity</h2>
+    <p style="color:var(--text-dim); font-size:13px; margin-top:8px">IP anda belum terhubung ke database bot.</p>
+    
+    <div class="ip-display" onclick="copyIP()">
+        <label>YOUR DEVICE IP (TAP TO COPY)</label>
+        <span id="userIP">Detecting...</span>
+    </div>
+
+    <div class="guide-box">
+        <b>Cara Aktivasi:</b><br>
+        1. Klik kotak IP di atas untuk menyalin.<br>
+        2. Kirim pesan <code style="color:var(--gold)">.reg-webs [IP]</code> ke Bot WA.<br>
+        3. Jika sudah, klik tombol <b>Refresh Status</b> di bawah.
+    </div>
+    
+    <button class="btn-blue" onclick="location.reload()">REFRESH STATUS</button>
+</div>
