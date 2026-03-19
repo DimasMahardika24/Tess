@@ -109,12 +109,37 @@
             } catch (e) { console.error(e); }
         }
 
-        function syncProfile() {
-            document.getElementById('pName').innerText = userData.profile.name;
-            document.getElementById('pUang').innerText = "Rp " + userData.profile.uang.toLocaleString();
-            document.getElementById('pLimit').innerText = userData.profile.limit;
-            document.getElementById('pImg').src = userData.profile.img || 'https://telegra.ph/file/default.jpg';
+                function syncProfile() {
+            const data = userData.profile;
+            const nameEl = document.getElementById('pName');
+            const uangEl = document.getElementById('pUang');
+            const limitEl = document.getElementById('pLimit');
+            const imgEl = document.getElementById('pImg');
+            const statusEl = document.getElementById('pStatus');
+
+            if(nameEl) nameEl.innerText = data.name;
+            if(uangEl) uangEl.innerText = "Rp " + data.uang.toLocaleString('id-ID');
+            if(limitEl) limitEl.innerText = data.limit;
+            if(imgEl) imgEl.src = data.img || 'https://telegra.ph/file/default.jpg';
+
+            // LOGIKA GANTI STATUS USER (MENGHAPUS "CHECKING STATUS")
+            if (statusEl) {
+                if (data.owner) {
+                    statusEl.innerText = "Owner Developer 👑";
+                    statusEl.style.color = "#ff3e3e"; // Warna Merah Owner
+                    if(imgEl) imgEl.style.borderColor = "#ff3e3e";
+                } else if (data.premium) {
+                    statusEl.innerText = "Premium User ✨";
+                    statusEl.style.color = "#ffcc00"; // Warna Gold Premium
+                    if(imgEl) imgEl.style.borderColor = "#ffcc00";
+                } else {
+                    statusEl.innerText = "Reguler User ✅";
+                    statusEl.style.color = "#00ff88"; // Warna Hijau User Biasa
+                    if(imgEl) imgEl.style.borderColor = "#333";
+                }
+            }
         }
+
 
         function copyIP() {
             navigator.clipboard.writeText(userData.ip);
