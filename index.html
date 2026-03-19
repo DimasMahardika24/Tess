@@ -336,57 +336,66 @@
         }
 
         async function playGame() {
-            const betInput = document.getElementById('betInput');
-            const bet = Math.abs(parseInt(betInput.value));
-            const reels = [document.getElementById('r1'), document.getElementById('r2'), document.getElementById('r3')];
-            const controlArea = document.getElementById('controlArea');
-            const backArea = document.getElementById('backArea');
-            const msgEl = document.getElementById('game-msg');
+    const betInput = document.getElementById('betInput');
+    const bet = Math.abs(parseInt(betInput.value));
+    const reels = [document.getElementById('r1'), document.getElementById('r2'), document.getElementById('r3')];
+    const controlArea = document.getElementById('controlArea');
+    const backArea = document.getElementById('backArea');
+    const msgEl = document.getElementById('game-msg');
 
-            if(!bet || bet < 5000) return showPopup("Minimal taruhan Rp 5.000");
-            if(bet > userUang) return showPopup("Saldo tidak cukup!");
-            
-            controlArea.classList.add('hide-game-ui');
-            backArea.classList.add('hide-game-ui');
-            msgEl.innerText = "MENUNGGU HASIL...";
-            
-            const anims = reels.map(r => setInterval(() => {
-                r.innerText = ['🍎','🍇','🍒','💎','🍋','🔔'][Math.floor(Math.random()*6)];
-            }, 70));
+    if(!bet || bet < 5000) return showPopup("Minimal taruhan Rp 5.000");
+    if(bet > userUang) return showPopup("Saldo tidak cukup!");
+    
+    // Matikan UI agar tidak spam klik
+    controlArea.classList.add('hide-game-ui');
+    backArea.classList.add('hide-game-ui');
+    msgEl.innerText = "MENUNGGU HASIL...";
+    
+    // Mulai Animasi
+    const anims = reels.map(r => setInterval(() => {
+        const symbols = ['🍎','🍇','🍒','💎','🍋','🔔'];
+        r.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+    }, 130));
 
-            try {
-                const res = await fetch(`/api/slot-web`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ nomor: userData.nomor, amount: bet, secret: SECRET })
-                });
-                const data = await res.json();
+    try {
+        const res = await fetch(`/api/slot-web`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nomor: userData.nomor, amount: bet, secret: SECRET })
+        });
+        const data = await res.json();
 
-if(data.status && data.reels && data.reels.length === 3) {
-                    setTimeout(() => { clearInterval(anims[0]); reels[0].innerText = data.reels[0]; }, 1000);
-                    setTimeout(() => { clearInterval(anims[1]); reels[1].innerText = data.reels[1]; }, 1800);
-                    setTimeout(() => { 
-                        clearInterval(anims[2]); 
-                        reels[2].innerText = data.reels[2];
-                        controlArea.classList.remove('hide-game-ui');
-                        backArea.classList.remove('hide-game-ui');
-                        finishGame(data);
-                    }, 2600);
-                } else {
-                    anims.forEach(a => clearInterval(a));
-                    controlArea.classList.remove('hide-game-ui');
-                    backArea.classList.remove('hide-game-ui');
-                    showPopup(data.msg || "Gagal memutar slot");
-                    msgEl.innerText = "";
-                }
-            } catch (e) { 
-                anims.forEach(a => clearInterval(a));
+        if(data.status && data.reels) {
+            // Berhenti bertahap (efek dramatis)
+            setTimeout(() => { clearInterval(anims[0]); reels[0].innerText = data.reels[0]; }, 1000);
+            setTimeout(() => { clearInterval(anims[1]); reels[1].innerText = data.reels[1]; }, 1800);
+            setTimeout(() => { 
+                clearInterval(anims[2]); 
+                reels[2].innerText = data.reels[2];
+                
+                // Kembalikan UI setelah animasi benar-benar selesai
                 controlArea.classList.remove('hide-game-ui');
                 backArea.classList.remove('hide-game-ui');
-                showPopup("Koneksi Putus!");
-                msgEl.innerText = "";
-            }
+                finishGame(data);
+            }, 2600);
+        } else {
+            // Jika status false dari API (Contoh: Saldo kurang di server)
+            anims.forEach(a => clearInterval(a)); 
+            controlArea.classList.remove('hide-game-ui');
+            backArea.classList.remove('hide-game-ui');
+            showPopup(data.msg || "Gagal memutar slot");
+            msgEl.innerText = "";
         }
+    } catch (e) { 
+        // Jika server mati atau koneksi internet putus
+        anims.forEach(a => clearInterval(a));
+        controlArea.classList.remove('hide-game-ui');
+        backArea.classList.remove('hide-game-ui');
+        showPopup("Koneksi ke API Putus!");
+        msgEl.innerText = "";
+    }
+}
+
 
         function finishGame(data) {
             document.getElementById('game-msg').innerText = "RESULT: " + data.resultStatus;
