@@ -362,7 +362,7 @@
                 });
                 const data = await res.json();
 
-                if(data.status && data.reels) {
+if(data.status && data.reels && data.reels.length === 3) {
                     setTimeout(() => { clearInterval(anims[0]); reels[0].innerText = data.reels[0]; }, 1000);
                     setTimeout(() => { clearInterval(anims[1]); reels[1].innerText = data.reels[1]; }, 1800);
                     setTimeout(() => { 
