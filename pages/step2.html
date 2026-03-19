@@ -6,34 +6,38 @@
         gap: 12px; 
         width: 100%;
         align-items: center;
+        background: #000; /* Pastikan background gelap */
+        padding: 20px;
+        min-height: 100vh;
     }
 
     /* CARD PROFIL */
     .profile-card {
-        background: var(--card-dark);
+        background: #1a1a1a;
         border-radius: 35px;
         padding: 25px 20px;
         width: 100%;
         text-align: center;
-        border: 1px solid rgba(255,255,255,0.03);
-        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        border: 1px solid rgba(255,255,255,0.05);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.6);
         margin-bottom: 5px;
     }
 
     #pImg {
-        width: 80px; height: 80px;
+        width: 85px; height: 85px;
         border-radius: 50%;
         border: 3px solid #333;
         object-fit: cover;
+        transition: 0.3s;
     }
 
-    #pName { margin: 10px 0 0 0; font-size: 18px; color: #fff; font-family: 'Goldman'; }
+    #pName { margin: 12px 0 0 0; font-size: 20px; color: #fff; font-family: 'Goldman', sans-serif; text-transform: lowercase; }
     
     .verify-tag {
-        font-size: 8px;
+        font-size: 9px;
         font-weight: 800;
         letter-spacing: 2px;
-        margin-top: 5px;
+        margin-top: 8px;
         text-transform: uppercase;
     }
 
@@ -41,82 +45,95 @@
     .stats-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 8px;
+        gap: 10px;
         width: 100%;
     }
 
     .stat-mini-box {
         background: #121212;
-        padding: 12px;
-        border-radius: 18px;
+        padding: 15px;
+        border-radius: 20px;
         border: 1px solid #222;
         text-align: center;
     }
 
-    .stat-label { font-size: 8px; color: #555; font-weight: 800; display: block; margin-bottom: 2px; }
-    .stat-value { font-family: 'Goldman'; font-size: 13px; }
+    .stat-label { font-size: 8px; color: #555; font-weight: 800; display: block; margin-bottom: 4px; letter-spacing: 1px; }
+    .stat-value { font-family: 'Goldman', sans-serif; font-size: 14px; }
 
     /* MENU GAME SELECTION */
     .menu-title {
         width: 100%;
         text-align: left;
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 800;
         color: #444;
-        letter-spacing: 1px;
-        margin: 10px 0 5px 5px;
+        letter-spacing: 1.5px;
+        margin: 15px 0 5px 5px;
     }
 
     .game-menu {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
         width: 100%;
     }
 
-    /* BUTTON GAYA BARU (CASINO GAMES) */
+    /* BUTTON GAYA BARU DENGAN IKON */
     .btn-game {
         width: 100%;
-        padding: 18px 20px;
-        border-radius: 20px;
+        padding: 15px 20px;
+        border-radius: 22px;
         border: 1px solid rgba(255,255,255,0.05);
         background: #161616;
         display: flex;
         justify-content: space-between;
         align-items: center;
         cursor: pointer;
-        transition: 0.3s;
+        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         text-decoration: none;
+    }
+
+    .game-info-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .game-icon {
+        width: 45px;
+        height: 45px;
+        object-fit: contain;
     }
 
     /* Game Ready Style */
     .game-ready {
         background: linear-gradient(135deg, #1a1a1a, #222);
-        border-left: 4px solid var(--gold);
+        border-left: 4px solid #ffcc00; /* Warna Gold */
     }
-    .game-ready:active { transform: scale(0.97); background: #222; }
-    .game-ready .game-name { color: var(--gold); font-family: 'Goldman'; font-size: 15px; }
-    .game-ready .status-text { color: #00ff88; font-size: 9px; font-weight: 800; }
+    .game-ready:active { transform: scale(0.96); background: #252525; }
+    .game-ready .game-name { color: #ffcc00; font-family: 'Goldman', sans-serif; font-size: 16px; }
+    .game-ready .status-text { color: #00ff88; font-size: 10px; font-weight: 800; }
 
     /* Game Coming Soon Style */
     .game-soon {
-        opacity: 0.5;
+        opacity: 0.4;
         cursor: not-allowed;
         filter: grayscale(1);
     }
-    .game-soon .game-name { color: #888; font-family: 'Goldman'; font-size: 15px; }
-    .game-soon .status-text { color: #555; font-size: 9px; font-weight: 800; border: 1px solid #333; padding: 2px 8px; border-radius: 10px; }
+    .game-soon .game-name { color: #888; font-family: 'Goldman', sans-serif; font-size: 16px; }
+    .game-soon .status-text { color: #555; font-size: 9px; font-weight: 800; border: 1px solid #333; padding: 3px 10px; border-radius: 12px; }
 
-    /* WARNA STATUS */
-    .status-owner { color: #ff3e3e !important; }
-    .status-premium { color: var(--gold) !important; }
+    /* WARNA STATUS KHUSUS */
+    .status-owner { color: #ff3e3e !important; text-shadow: 0 0 10px rgba(255,62,62,0.3); }
+    .status-premium { color: #ffcc00 !important; text-shadow: 0 0 10px rgba(255,204,0,0.3); }
+    .status-user { color: #00ff88 !important; }
 
 </style>
 
 <div class="lobby-wrapper">
     <div class="profile-card">
         <img id="pImg" src="https://telegra.ph/file/default.jpg">
-        <h2 id="pName">...</h2>
+        <h2 id="pName">loading...</h2>
         <div id="pStatus" class="verify-tag">ACCOUNT VERIFIED</div>
     </div>
 
@@ -132,50 +149,63 @@
     </div>
 
     <div class="menu-title">SELECT CATEGORY</div>
+
     <div class="game-menu">
         
         <div class="btn-game game-ready" onclick="navigateTo('step3')">
-            <div style="text-align: left;">
-                <span class="game-name">CASINO SLOT</span><br>
-                <small style="color: #666; font-size: 9px;">Classic 3-Reel Machine</small>
+            <div class="game-info-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/1055/1055823.png" class="game-icon" alt="Slot">
+                <div style="text-align: left;">
+                    <span class="game-name">CASINO SLOT</span><br>
+                    <small style="color: #666; font-size: 9px;">Classic 3-Reel Machine</small>
+                </div>
             </div>
             <span class="status-text">PLAY NOW ›</span>
         </div>
 
         <div class="btn-game game-soon">
-            <div style="text-align: left;">
-                <span class="game-name">ROULETTE ROYALE</span><br>
-                <small style="color: #444; font-size: 9px;">European Table Game</small>
+            <div class="game-info-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/2169/2169874.png" class="game-icon" alt="Roulette">
+                <div style="text-align: left;">
+                    <span class="game-name">ROULETTE ROYALE</span><br>
+                    <small style="color: #444; font-size: 9px;">European Table Game</small>
+                </div>
             </div>
             <span class="status-text">SOON</span>
         </div>
 
         <div class="btn-game game-soon">
-            <div style="text-align: left;">
-                <span class="game-name">ASTRONOT DESTROYER</span><br>
-                <small style="color: #444; font-size: 9px;">Multiplier Crash Game</small>
+            <div class="game-info-wrapper">
+                <img src="https://cdn-icons-png.flaticon.com/512/3590/3590323.png" class="game-icon" alt="Astronot">
+                <div style="text-align: left;">
+                    <span class="game-name">ASTRONOT DESTROYER</span><br>
+                    <small style="color: #444; font-size: 9px;">Multiplier Crash Game</small>
+                </div>
             </div>
             <span class="status-text">SOON</span>
         </div>
 
     </div>
 
-    <p style="font-size: 8px; color: #222; font-weight: 700; margin-top: 15px; letter-spacing: 2px;">MIWA MULTI-GAME ENGINE v1.0</p>
+    <p style="font-size: 8px; color: #333; font-weight: 700; margin-top: 20px; letter-spacing: 2px;">MIWA MULTI-GAME ENGINE v1.0</p>
 </div>
 
 <script>
     (function() {
+        // Asumsi variabel 'userData' dikirim dari sistem bot/backend kamu
         const user = userData.profile;
         const nameEl = document.getElementById('pName');
         const imgEl = document.getElementById('pImg');
         const statusTag = document.getElementById('pStatus');
 
-        nameEl.innerText = user.name || "User";
-        document.getElementById('pUang').innerText = "Rp " + user.uang.toLocaleString();
+        // Update data dasar
+        nameEl.innerText = user.name || "user";
+        document.getElementById('pUang').innerText = "Rp " + user.uang.toLocaleString('id-ID');
         document.getElementById('pLimit').innerText = user.limit;
+        
         if(user.pp) imgEl.src = user.pp;
 
-        // LOGIKA WARNA STATUS
+        // LOGIKA DINAMIS STATUS USER
         if (user.owner) {
             statusTag.innerText = "OWNER 👑";
             statusTag.className = "verify-tag status-owner";
@@ -183,9 +213,11 @@
         } else if (user.premium) {
             statusTag.innerText = "PREMIUM ✨";
             statusTag.className = "verify-tag status-premium";
-            imgEl.style.borderColor = "var(--gold)";
+            imgEl.style.borderColor = "#ffcc00";
         } else {
-            statusTag.style.color = "#555";
+            // Status untuk user biasa agar tetap terlihat "keren"
+            statusTag.innerText = "VERIFIED PLAYER ✅";
+            statusTag.className = "verify-tag status-user";
             imgEl.style.borderColor = "#333";
         }
     })();
