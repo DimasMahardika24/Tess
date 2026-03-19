@@ -1,0 +1,18 @@
+<div class="casino-ui">
+    <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom:20px">
+        <span onclick="navigateTo('step2')" style="cursor:pointer; font-size:12px; font-weight:800; color:var(--gold)">BACK</span>
+        <h2 style="font-family:'Goldman'; color:var(--gold); margin:0; font-size: 16px; letter-spacing: 2px;">MIWA SLOT</h2>
+        <span id="displayMoney" style="color:#00ff88; font-weight:800; font-size: 14px;">0</span>
+    </div>
+
+    <div class="slot-window">
+        <div class="reel-column"><div id="strip1" class="reel-strip"></div></div>
+        <div class="reel-column"><div id="strip2" class="reel-strip"></div></div>
+        <div class="reel-column"><div id="strip3" class="reel-strip"></div></div>
+    </div>
+
+    <div id="ui-controls">
+        <input type="number" id="betInput" style="width:100%; background:#111; border:1px solid #333; padding:15px; border-radius:20px; color:#fff; text-align:center; margin-bottom:12px; font-family:'Goldman'; font-size: 18px;" placeholder="BET AMOUNT">
+        <button class="btn-gold" id="spinBtn" onclick="playGame()">SPIN MACHINE</button>
+    </div>
+</div>
