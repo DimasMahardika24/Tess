@@ -140,69 +140,105 @@
             }
         }
 
-        async function playGame() {
+        let cooldownTimer = null; // Penjaga timer global
+
+async function playGame() {
     const betInput = document.getElementById('betInput');
     const bet = parseInt(betInput.value);
     const spinBtn = document.getElementById('spinBtn');
+    const controls = document.getElementById('ui-controls');
 
-    // --- LAPISAN 1: VALIDASI LOKAL (INSTAN) ---
+    // 1. CEK LOKAL (GAK PAKE LAMA)
+    if (spinBtn.classList.contains('cooldown-active')) return;
     if (!bet || bet < 5000) return showPopup("MIN BET Rp 5.000");
     if (userData.profile.uang < bet) return showPopup("SALDO TIDAK CUKUP!");
 
-    // Matikan tombol biar gak double click
     spinBtn.disabled = true;
 
     try {
-        // --- LAPISAN 2: CEK KE SERVER (COOLDOWN, LIMIT, DLL) ---
-        // Kita nanya dulu, jangan putar mesinnya dulu!
+        // 2. CEK SERVER (COOLDOWN & LIMIT)
         const res = await fetch(`/api/slot-web`, {
             method: "POST", 
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ 
-                type: 'playByIP', 
-                ip: userData.ip, 
-                amount: bet, 
-                secret: SECRET 
-            })
+            body: JSON.stringify({ type: 'playByIP', ip: userData.ip, amount: bet, secret: SECRET })
         });
         
         const data = await res.json();
 
-        // JIKA SERVER BILANG GAGAL (Cooldown/Limit/Saldo di Database kurang)
-        if (!data.status) {
-            spinBtn.disabled = false;
-            return showPopup(data.msg); // Langsung muncul pop-up error TANPA animasi
+        // JIKA KENA COOLDOWN DARI SERVER
+        if (!data.status && data.msg.includes('Tunggu')) {
+            const timeParts = data.msg.match(/\d+/g); 
+            let totalSeconds = (parseInt(timeParts[0]) * 60) + parseInt(timeParts[1]);
+            startCooldownButton(totalSeconds);
+            return;
         }
 
-        // --- LAPISAN 3: EKSEKUSI ANIMASI (HANYA JIKA LOLOS SERVER) ---
-        // Jalankan animasi muter
+        if (!data.status) {
+            spinBtn.disabled = false;
+            return showPopup(data.msg);
+        }
+
+        // --- 3. MULAI AKSI ---
+        controls.classList.add('hide-controls'); // Sembunyikan tombol
+
         for (let i = 1; i <= 3; i++) {
             document.getElementById('strip' + i).classList.add('spinning');
         }
 
-        // Berhenti berurutan sesuai hasil data.reels dari server
+        // Stop Reel Berurutan
         [0, 1, 2].forEach(i => {
             setTimeout(() => {
                 const strip = document.getElementById('strip' + (i + 1));
                 strip.classList.remove('spinning');
                 strip.querySelectorAll('.slot-item')[0].innerText = data.reels[i];
-            }, 1000 + (i * 800));
+            }, 1200 + (i * 800));
         });
 
-        // Selesai & Update UI
+        // SELESAI
         setTimeout(() => {
-            spinBtn.disabled = false;
-            userData.profile = data.profile; // Update saldo & limit terbaru
+            userData.profile = data.profile;
             document.getElementById('displayMoney').innerText = "Rp " + data.profile.uang.toLocaleString();
-            showPopup(data.resultStatus);
-        }, 3500);
+            
+            controls.classList.remove('hide-controls'); // Munculkan tombol
+            startCooldownButton(60); // Paksa cooldown 1 menit setelah main
+
+            setTimeout(() => {
+                showPopup(data.resultStatus);
+            }, 300);
+
+        }, 3800);
 
     } catch (e) {
-        // Jika internet putus atau server mati
+        controls.classList.remove('hide-controls');
         spinBtn.disabled = false;
         showPopup("Koneksi Error!");
     }
 }
+
+// FUNGSI TIMER TOMBOL
+function startCooldownButton(seconds) {
+    const spinBtn = document.getElementById('spinBtn');
+    if (cooldownTimer) clearInterval(cooldownTimer);
+    
+    spinBtn.disabled = true;
+    spinBtn.classList.add('cooldown-active');
+
+    let remaining = seconds;
+    cooldownTimer = setInterval(() => {
+        let m = Math.floor(remaining / 60);
+        let s = remaining % 60;
+        spinBtn.innerText = `WAIT (${m}:${s < 10 ? '0' + s : s})`;
+        remaining--;
+
+        if (remaining < 0) {
+            clearInterval(cooldownTimer);
+            spinBtn.disabled = false;
+            spinBtn.classList.remove('cooldown-active');
+            spinBtn.innerText = "SPIN MACHINE";
+        }
+    }, 1000);
+}
+
 
 
         startApp();
