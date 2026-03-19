@@ -3,36 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIWA CASINO | Premium Dashboard</title>
+    <title>MIWA CASINO | Ultra Smooth</title>
     <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #ffcc00; --gold-dark: #b8860b; --casino-red: #d40000;
-            --bg-dark: #050505; --card-bg: #111111; --text: #ffffff; --border: #333333;
+            --gold: #ffcc00; --gold-dark: #b8860b; --bg-dark: #050505; 
+            --card-bg: #111111; --text: #ffffff; --border: #333333;
         }
-        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        body { background-color: var(--bg-dark); background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow: hidden; }
-        .container { background: var(--card-bg); width: 95%; max-width: 420px; border-radius: 40px; padding: 40px 30px; border: 2px solid var(--gold-dark); box-shadow: 0 0 50px rgba(0,0,0,1); text-align: center; position: relative; }
-        h1 { font-family: 'Goldman', cursive; font-size: 35px; color: var(--gold); text-shadow: 0 0 15px var(--gold-dark); margin-bottom: 5px; }
-        .profile-card { background: linear-gradient(145deg, #1a1a1a, #0a0a0a); border-radius: 25px; padding: 20px; border: 1px solid var(--border); margin: 20px 0; display: none; }
-        .profile-img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--gold); margin-bottom: 10px; object-fit: cover; }
-        .balance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .stat-box { background: rgba(0,0,0,0.5); padding: 12px; border-radius: 15px; border: 1px solid #222; }
+        * { box-sizing: border-box; }
+        body { 
+            background-color: var(--bg-dark); 
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%); 
+            color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; margin: 0; overflow: hidden; 
+        }
+        .container { 
+            background: var(--card-bg); width: 95%; max-width: 420px; 
+            border-radius: 40px; padding: 40px 30px; border: 2px solid var(--gold-dark); 
+            box-shadow: 0 0 50px rgba(0,0,0,1); text-align: center; position: relative; 
+        }
+        h1 { font-family: 'Goldman', cursive; font-size: 32px; color: var(--gold); text-shadow: 0 0 15px var(--gold-dark); margin-bottom: 20px; }
+        
+        /* SLOT MACHINE STYLES */
+        .slot-machine { 
+            background: #000; border: 4px solid var(--gold-dark); 
+            border-radius: 20px; padding: 20px 10px; margin: 20px 0; 
+            position: relative; overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(255,204,0,0.2);
+        }
+        .reels-container { display: flex; gap: 10px; justify-content: center; height: 120px; overflow: hidden; position: relative; }
+        
+        /* Kunci animasi smooth ada di sini */
+        .reel-strip {
+            display: flex; flex-direction: column; width: 90px;
+            transition: transform 0.1s linear; /* Smooth linear motion */
+        }
+        .symbol {
+            height: 120px; line-height: 120px; font-size: 60px;
+            background: linear-gradient(to bottom, #222, #111, #222);
+            border: 1px solid #333; border-radius: 10px;
+        }
+
+        /* UI ELEMENTS */
+        .profile-card { background: #1a1a1a; border-radius: 20px; padding: 15px; border: 1px solid var(--border); margin-bottom: 20px; display: none; }
+        .stat-box { background: rgba(0,0,0,0.5); padding: 10px; border-radius: 12px; border: 1px solid #222; flex: 1; }
         .stat-box label { font-size: 10px; color: var(--gold); font-weight: 800; display: block; }
-        input { width: 100%; background: #1a1a1a; border: 2px solid var(--border); padding: 18px; border-radius: 20px; color: #fff; font-weight: 700; margin-bottom: 15px; outline: none; text-align: center; font-size: 16px; }
-        .btn-gold { width: 100%; padding: 18px; background: linear-gradient(to bottom, var(--gold), #b8860b); color: black; border: none; border-radius: 20px; font-weight: 800; cursor: pointer; font-family: 'Goldman', cursive; font-size: 16px; box-shadow: 0 5px 0 #7a5a00; text-transform: uppercase; }
-        .btn-gold:active { transform: translateY(3px); box-shadow: 0 2px 0 #7a5a00; }
-        .btn-gold:disabled { background: #444 !important; box-shadow: 0 5px 0 #222 !important; color: #777 !important; cursor: not-allowed; transform: none !important; }
-        .slot-machine { background: #111; border: 4px solid var(--gold-dark); border-radius: 30px; padding: 25px 15px; margin: 25px 0; position: relative; box-shadow: inset 0 0 20px #000; }
-        .reels { display: flex; gap: 10px; justify-content: center; }
-        .reel { width: 90px; height: 110px; background: linear-gradient(to bottom, #222, #000, #222); border-radius: 15px; font-size: 50px; line-height: 110px; border: 2px solid #333; }
-        .step { display: none; }
-        .active { display: block; animation: slideIn 0.5s ease; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        #customPopup { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-150%); background: var(--gold); color: #000; padding: 15px 30px; border-radius: 50px; font-weight: 800; z-index: 1000; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        
+        input { width: 100%; background: #1a1a1a; border: 2px solid var(--border); padding: 18px; border-radius: 20px; color: #fff; margin-bottom: 15px; text-align: center; font-size: 18px; font-weight: bold; }
+        .btn-gold { width: 100%; padding: 18px; background: linear-gradient(to bottom, var(--gold), #b8860b); color: #000; border: none; border-radius: 20px; font-weight: 800; cursor: pointer; font-family: 'Goldman'; font-size: 16px; box-shadow: 0 5px 0 #7a5a00; text-transform: uppercase; transition: 0.2s; }
+        .btn-gold:disabled { background: #444 !important; box-shadow: 0 5px 0 #222 !important; color: #777 !important; cursor: not-allowed; transform: none; }
+        
+        #customPopup { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-200%); background: var(--gold); color: #000; padding: 15px 30px; border-radius: 50px; font-weight: 800; z-index: 1000; transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
         #customPopup.show { transform: translateX(-50%) translateY(0); }
-        .back-btn { position: absolute; top: 30px; left: 25px; cursor: pointer; color: var(--gold); font-size: 18px; font-weight: 700; z-index: 10; }
-        .hide-ui { opacity: 0; pointer-events: none; }
+        
+        .step { display: none; }
+        .active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -40,91 +67,74 @@
     <div id="customPopup">NOTIF</div>
 
     <div class="container">
-        <h1 id="mainTitle">MIWA CASINO</h1>
+        <h1>MIWA CASINO</h1>
         
         <div id="step-1" class="step active">
-            <p style="color: #888; margin-bottom: 25px;">Masukkan Nomor WA Bot</p>
             <input type="text" id="phoneInput" placeholder="628xxxxxxxx">
-            <button class="btn-gold" id="loginBtn" onclick="checkAccount()">MASUK LOBBY</button>
+            <button class="btn-gold" onclick="checkAccount()">ENTER LOBBY</button>
         </div>
 
         <div id="step-2" class="step">
             <div id="profileContent" class="profile-card">
-                <img id="pImg" src="" class="profile-img">
-                <h2 id="pName" style="margin:0; font-family: 'Goldman'; color: var(--gold);">...</h2>
-                <div class="balance-grid">
+                <h3 id="pName" style="margin:0 0 10px 0; color:var(--gold)">...</h3>
+                <div style="display:flex; gap:10px;">
                     <div class="stat-box"><label>CHIPS</label><span id="pUang">0</span></div>
                     <div class="stat-box"><label>LIMIT</label><span id="pLimit">0</span></div>
                 </div>
             </div>
-            <div style="margin-top: 20px; text-align: left;">
-                <label style="font-size: 11px; color: var(--gold); font-weight: 800;">SELECT ROOM</label>
-                <div onclick="openGame()" style="background: #1a1a1a; padding: 20px; border-radius: 20px; border: 1px solid var(--gold-dark); cursor: pointer; margin-top: 10px; display: flex; align-items: center;">
-                    <div style="font-size: 30px; margin-right: 15px;">🎰</div>
-                    <div style="flex:1;"><span style="font-weight: 800;">VEGAS SLOT</span><br><small style="color:var(--gold)">ONLINE</small></div>
-                </div>
-            </div>
-            <button onclick="location.reload()" style="background:none; border:none; color:#555; margin-top: 30px; cursor:pointer; font-weight: 700;">LOGOUT</button>
+            <button class="btn-gold" onclick="showStep(3)">PLAY SLOT</button>
         </div>
 
         <div id="step-3" class="step">
-            <div id="backBtn" class="back-btn" onclick="showStep(2)">&larr; KEMBALI</div>
             <div class="slot-machine">
-                <div class="reels">
-                    <div id="r1" class="reel">💰</div>
-                    <div id="r2" class="reel">💰</div>
-                    <div id="r3" class="reel">💰</div>
+                <div class="reels-container">
+                    <div id="strip1" class="reel-strip">
+                        <div class="symbol">💰</div><div class="symbol">🍒</div><div class="symbol">💎</div>
+                    </div>
+                    <div id="strip2" class="reel-strip">
+                        <div class="symbol">💰</div><div class="symbol">🍒</div><div class="symbol">💎</div>
+                    </div>
+                    <div id="strip3" class="reel-strip">
+                        <div class="symbol">💰</div><div class="symbol">🍒</div><div class="symbol">💎</div>
+                    </div>
                 </div>
             </div>
-            <div id="controlArea">
-                <input type="number" id="betInput" placeholder="Jumlah Taruhan">
-                <button class="btn-gold" id="spinBtn" onclick="playGame()">SPIN SEKARANG</button>
-            </div>
-            <p id="game-msg" style="margin-top: 20px; font-weight: 800; min-height: 20px;"></p>
+            <input type="number" id="betInput" placeholder="Min 5,000">
+            <button class="btn-gold" id="spinBtn" onclick="playGame()">SPIN SEKARANG</button>
+            <p id="game-msg" style="font-weight: bold; margin-top: 15px; min-height: 20px; color: var(--gold);"></p>
         </div>
     </div>
 
     <script>
         const SECRET = "dimas_ganteng_123";
+        const SYMBOLS = ['💰','🍒','💎','7️⃣','⭐','🔔','🍋','🍇'];
         let userData = {};
-        let userUang = 0;
-        let slotIntervals = [];
-        let cdInterval = null;
-
-        window.onbeforeunload = () => "Sesi akan berakhir!";
+        let spinIntervals = [null, null, null];
 
         function showPopup(msg) {
             const p = document.getElementById('customPopup');
-            p.innerText = msg;
-            p.classList.add('show');
-            setTimeout(() => { p.classList.remove('show'); }, 3000);
+            p.innerText = msg; p.classList.add('show');
+            setTimeout(() => p.classList.remove('show'), 3000);
         }
 
         async function checkAccount() {
             const num = document.getElementById('phoneInput').value;
-            if(!num) return showPopup("ISI NOMOR!");
+            if(!num) return showPopup("MASUKKAN NOMOR!");
             try {
                 const res = await fetch(`/api/slot-web`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    method: "POST", headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ nomor: num, secret: SECRET, type: 'check' })
                 });
                 const data = await res.json();
                 if(data.status) {
                     userData = { nomor: num };
-                    updateProfile(data.profile);
+                    document.getElementById('pName').innerText = data.profile.name;
+                    document.getElementById('pUang').innerText = "Rp " + data.profile.uang.toLocaleString();
+                    document.getElementById('pLimit').innerText = data.profile.limit;
+                    document.getElementById('profileContent').style.display = 'block';
                     showStep(2);
                 } else { showPopup(data.msg); }
             } catch(e) { showPopup("SERVER ERROR"); }
-        }
-
-        function updateProfile(p) {
-            document.getElementById('profileContent').style.display = 'block';
-            document.getElementById('pName').innerText = p.name;
-            userUang = p.uang;
-            document.getElementById('pUang').innerText = "Rp " + p.uang.toLocaleString();
-            document.getElementById('pLimit').innerText = p.limit;
-            document.getElementById('pImg').src = p.img;
         }
 
         function showStep(n) {
@@ -132,86 +142,67 @@
             document.getElementById('step-'+n).classList.add('active');
         }
 
-        async function openGame() {
-            await checkAccount();
-            showStep(3);
-        }
-
-        function runCooldown(totalSeconds) {
-            const btn = document.getElementById('spinBtn');
-            btn.disabled = true;
-            if(cdInterval) clearInterval(cdInterval);
-
-            let remaining = totalSeconds;
-            cdInterval = setInterval(() => {
-                remaining--;
-                const m = Math.floor(remaining / 60);
-                const s = remaining % 60;
-                btn.innerText = `WAIT (${m}:${s < 10 ? '0'+s : s})`;
-                if(remaining <= 0) {
-                    clearInterval(cdInterval);
-                    btn.disabled = false;
-                    btn.innerText = "SPIN SEKARANG";
+        // FUNGSI ANIMASI BARU (ULTRA SMOOTH)
+        function startSmoothAnimate(reelIdx) {
+            const strip = document.getElementById('strip' + (reelIdx + 1));
+            let pos = 0;
+            spinIntervals[reelIdx] = setInterval(() => {
+                pos -= 20; // Kecepatan gerak
+                if (pos <= -120) {
+                    pos = 0;
+                    // Ganti simbol atas dengan random
+                    strip.children[0].innerText = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
                 }
-            }, 1000);
+                strip.style.transform = `translateY(${pos}px)`;
+            }, 20); // 50 FPS
         }
 
         async function playGame() {
             const bet = parseInt(document.getElementById('betInput').value);
-            const reels = [document.getElementById('r1'), document.getElementById('r2'), document.getElementById('r3')];
             const btn = document.getElementById('spinBtn');
             const msgEl = document.getElementById('game-msg');
 
-            if(!bet || bet < 5000) return showPopup("MIN 5K!");
-            if(bet > userUang) return showPopup("SALDO KURANG!");
+            if(!bet || bet < 5000) return showPopup("MIN 5,000!");
 
             btn.disabled = true;
-            btn.innerText = "SPINNING...";
-            document.getElementById('backBtn').classList.add('hide-ui');
+            btn.innerText = "ROLLING...";
             msgEl.innerText = "";
 
-            reels.forEach(r => {
-                const itv = setInterval(() => {
-                    const syms = ['💎','🍒','💰','🔔','7️⃣','⭐','🍇','🍉'];
-                    r.innerText = syms[Math.floor(Math.random()*syms.length)];
-                }, 100);
-                slotIntervals.push(itv);
-            });
+            // Start Animasi
+            startSmoothAnimate(0);
+            startSmoothAnimate(1);
+            startSmoothAnimate(2);
 
             try {
                 const res = await fetch(`/api/slot-web`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    method: "POST", headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ nomor: userData.nomor, amount: bet, secret: SECRET })
                 });
                 const data = await res.json();
 
                 if(data.status) {
-                    setTimeout(() => { clearInterval(slotIntervals[0]); reels[0].innerText = data.reels[0]; }, 1000);
-                    setTimeout(() => { clearInterval(slotIntervals[1]); reels[1].innerText = data.reels[1]; }, 2000);
-                    setTimeout(() => { 
-                        clearInterval(slotIntervals[2]); 
-                        reels[2].innerText = data.reels[2];
-                        document.getElementById('backBtn').classList.remove('hide-ui');
-                        msgEl.innerText = "RESULT: " + data.resultStatus;
-                        updateProfile(data.profile);
-                        runCooldown(300);
-                    }, 3000);
-                } else { throw new Error(data.msg); }
-            } catch(e) {
-                slotIntervals.forEach(clearInterval);
-                reels.forEach(r => r.innerText = '💰');
-                document.getElementById('backBtn').classList.remove('hide-ui');
-                if(e.message.includes("Tunggu")) {
-                    const timeMatch = e.message.match(/(\d+):(\d+)/);
-                    if(timeMatch) {
-                        const totalS = (parseInt(timeMatch[1]) * 60) + parseInt(timeMatch[2]);
-                        runCooldown(totalS);
-                    }
+                    // Stop Bergantian agar terasa nyata
+                    [0, 1, 2].forEach(i => {
+                        setTimeout(() => {
+                            clearInterval(spinIntervals[i]);
+                            const strip = document.getElementById('strip' + (i + 1));
+                            strip.style.transform = "translateY(0)";
+                            strip.children[0].innerText = data.reels[i]; // Set Hasil
+                        }, 1200 + (i * 800));
+                    });
+
+                    setTimeout(() => {
+                        msgEl.innerText = "HASIL: " + data.resultStatus;
+                        btn.disabled = false;
+                        btn.innerText = "SPIN SEKARANG";
+                        checkAccount(); // Update saldo
+                    }, 3500);
                 } else {
-                    btn.disabled = false;
-                    btn.innerText = "SPIN SEKARANG";
+                    throw new Error(data.msg);
                 }
+            } catch(e) {
+                spinIntervals.forEach(itv => clearInterval(itv));
+                btn.disabled = false; btn.innerText = "SPIN SEKARANG";
                 showPopup(e.message);
             }
         }
