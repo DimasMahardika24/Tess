@@ -141,44 +141,69 @@
         }
 
         async function playGame() {
-            const bet = parseInt(document.getElementById('betInput').value);
-            if(!bet || bet < 5000) return showPopup("MIN BET 5,000");
+    const betInput = document.getElementById('betInput');
+    const bet = parseInt(betInput.value);
+    const spinBtn = document.getElementById('spinBtn');
 
-            const spinBtn = document.getElementById('spinBtn');
-            spinBtn.disabled = true;
-            for(let i=1; i<=3; i++) document.getElementById('strip'+i).classList.add('spinning');
+    // --- LAPISAN 1: VALIDASI LOKAL (INSTAN) ---
+    if (!bet || bet < 5000) return showPopup("MIN BET Rp 5.000");
+    if (userData.profile.uang < bet) return showPopup("SALDO TIDAK CUKUP!");
 
-            try {
-                const res = await fetch(`/api/slot-web`, {
-                    method: "POST", headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ type: 'playByIP', ip: userData.ip, amount: bet, secret: SECRET })
-                });
-                const data = await res.json();
+    // Matikan tombol biar gak double click
+    spinBtn.disabled = true;
 
-                if(data.status) {
-                    [0, 1, 2].forEach(i => {
-                        setTimeout(() => {
-                            const strip = document.getElementById('strip'+(i+1));
-                            strip.classList.remove('spinning');
-                            strip.querySelectorAll('.slot-item')[0].innerText = data.reels[i];
-                            strip.style.transform = 'translateY(15px)';
-                            setTimeout(() => strip.style.transform = 'translateY(0)', 200);
-                        }, 1000 + (i * 800));
-                    });
+    try {
+        // --- LAPISAN 2: CEK KE SERVER (COOLDOWN, LIMIT, DLL) ---
+        // Kita nanya dulu, jangan putar mesinnya dulu!
+        const res = await fetch(`/api/slot-web`, {
+            method: "POST", 
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                type: 'playByIP', 
+                ip: userData.ip, 
+                amount: bet, 
+                secret: SECRET 
+            })
+        });
+        
+        const data = await res.json();
 
-                    setTimeout(() => {
-                        spinBtn.disabled = false;
-                        userData.profile = data.profile;
-                        document.getElementById('displayMoney').innerText = "Rp " + data.profile.uang.toLocaleString();
-                        showPopup(data.resultStatus);
-                    }, 3500);
-                } else { throw new Error(data.msg); }
-            } catch(e) {
-                for(let i=1; i<=3; i++) document.getElementById('strip'+i).classList.remove('spinning');
-                spinBtn.disabled = false;
-                showPopup(e.message);
-            }
+        // JIKA SERVER BILANG GAGAL (Cooldown/Limit/Saldo di Database kurang)
+        if (!data.status) {
+            spinBtn.disabled = false;
+            return showPopup(data.msg); // Langsung muncul pop-up error TANPA animasi
         }
+
+        // --- LAPISAN 3: EKSEKUSI ANIMASI (HANYA JIKA LOLOS SERVER) ---
+        // Jalankan animasi muter
+        for (let i = 1; i <= 3; i++) {
+            document.getElementById('strip' + i).classList.add('spinning');
+        }
+
+        // Berhenti berurutan sesuai hasil data.reels dari server
+        [0, 1, 2].forEach(i => {
+            setTimeout(() => {
+                const strip = document.getElementById('strip' + (i + 1));
+                strip.classList.remove('spinning');
+                strip.querySelectorAll('.slot-item')[0].innerText = data.reels[i];
+            }, 1000 + (i * 800));
+        });
+
+        // Selesai & Update UI
+        setTimeout(() => {
+            spinBtn.disabled = false;
+            userData.profile = data.profile; // Update saldo & limit terbaru
+            document.getElementById('displayMoney').innerText = "Rp " + data.profile.uang.toLocaleString();
+            showPopup(data.resultStatus);
+        }, 3500);
+
+    } catch (e) {
+        // Jika internet putus atau server mati
+        spinBtn.disabled = false;
+        showPopup("Koneksi Error!");
+    }
+}
+
 
         startApp();
     </script>
