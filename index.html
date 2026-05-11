@@ -329,6 +329,13 @@ p.classList.remove('show')
 
 }
 
+function copyIP() {
+
+navigator.clipboard.writeText(userData.ip)
+
+showPopup("IP berhasil disalin")
+}
+
 function showLoader(){
 
 const loader =
@@ -352,14 +359,11 @@ loader.style.display = 'none'
 
 }
 
-function renderSetupPage(){
+function renderSetupPage() {
 
 document.body.classList.remove('casino-mode')
 
-const app =
-document.getElementById('app-viewport')
-
-app.innerHTML = `
+document.getElementById('app-viewport').innerHTML = `
 <div class="modern-card">
 
 <h1 style="
@@ -374,10 +378,28 @@ MIWA CASINO
 <p style="
 font-size:13px;
 color:#888;
-margin-bottom:25px;
+margin-bottom:20px;
 ">
 Hubungkan API server slot kamu
 </p>
+
+<div class="guide-box">
+
+<b>IP kamu belum terdaftar</b><br><br>
+
+Tambahkan IP berikut ke database / whitelist API:
+
+</div>
+
+<div class="ip-display" onclick="copyIP()">
+
+<label>YOUR IP ADDRESS</label>
+
+<span id="userIP">
+${userData.ip || 'Loading...'}
+</span>
+
+</div>
 
 <input
 type="text"
@@ -387,18 +409,14 @@ placeholder="https://domain.com/api"
 value="${API_URL}"
 >
 
-<button
-class="btn-gold"
-onclick="saveAPI()"
->
+<button class="btn-gold" onclick="saveAPI()">
 CONNECT API
 </button>
 
 </div>
 `
 
-app.style.opacity = '1'
-
+document.getElementById('app-viewport').style.opacity = '1'
 }
 
 function saveAPI(){
@@ -420,6 +438,7 @@ API_URL = val
 localStorage.setItem(STORAGE_KEY,val)
 
 showPopup("API berhasil disimpan")
+
 
 startApp()
 
@@ -941,4 +960,4 @@ startApp()
 
 </script>
 </body>
-</html>
+    </html>
