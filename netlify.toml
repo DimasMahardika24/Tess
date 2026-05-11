@@ -1,5 +1,0 @@
-[[redirects]]
-  from = "/api/*"
-  to = "http://84.247.143.172:2437/api/:splat"
-  status = 200
-  force = true
