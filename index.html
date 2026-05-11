@@ -52,221 +52,359 @@
     <div id="customPopup">Alert</div>
     <div class="container" id="app-viewport"></div>
 
-    <script>
-        const SECRET = "dimas_ganteng_123";
-        const SYMS = ['🍇', '🍉', '🍋', '🍌', '🍎', '🍑', '🍒', '🫐', '🥥', '🥑'];
-        let userData = { ip: '', profile: {} };
+<script>
+    const SECRET = "dimas_ganteng_123";
 
-        async function navigateTo(page) {
-            const viewport = document.getElementById('app-viewport');
-            viewport.style.opacity = '0';
-            
-            try {
-                const res = await fetch(`pages/${page}.html`);
-                const html = await res.text();
-                
-                setTimeout(() => {
-                    viewport.innerHTML = html;
-                    viewport.style.opacity = '1';
-                    
-                    if (page === 'step1') {
-                        document.getElementById('userIP').innerText = userData.ip;
-                    }
-                    if (page === 'step2') syncProfile();
-                    if (page === 'step3') {
-                        initReels();
-                        document.getElementById('displayMoney').innerText = "Rp " + userData.profile.uang.toLocaleString();
-                        document.body.classList.add('casino-mode');
-                    } else {
-                        document.body.classList.remove('casino-mode');
-                    }
-                }, 400);
-            } catch (e) { console.error(e); }
-        }
+    const API_URL =
+    "https://scaling-channel-impose.ngrok-free.dev/api/slot-web";
 
-        async function startApp() {
-            try {
-                const resIp = await fetch('https://api.ipify.org?format=json');
-                const dataIp = await resIp.json();
-                userData.ip = dataIp.ip;
+    const SYMS = ['🍇', '🍉', '🍋', '🍌', '🍎', '🍑', '🍒', '🫐', '🥥', '🥑'];
 
-                const resAuth = await fetch(`/api/slot-web`, {
-                    method: "POST", headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ type: 'checkIP', ip: userData.ip, secret: SECRET })
-                });
-                const auth = await resAuth.json();
+    let userData = {
+        ip: '',
+        profile: {}
+    };
 
-                document.getElementById('main-loader').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('main-loader').style.display = 'none';
-                    if(auth.status) {
-                        userData.profile = auth.profile;
-                        navigateTo('step2');
-                    } else {
-                        navigateTo('step1');
-                    }
-                }, 1000);
-            } catch (e) { console.error(e); }
-        }
+    async function navigateTo(page) {
+        const viewport = document.getElementById('app-viewport');
+        viewport.style.opacity = '0';
 
-                function syncProfile() {
-            const data = userData.profile;
-            const nameEl = document.getElementById('pName');
-            const uangEl = document.getElementById('pUang');
-            const limitEl = document.getElementById('pLimit');
-            const imgEl = document.getElementById('pImg');
-            const statusEl = document.getElementById('pStatus');
+        try {
+            const res = await fetch(`pages/${page}.html`);
+            const html = await res.text();
 
-            if(nameEl) nameEl.innerText = data.name;
-            if(uangEl) uangEl.innerText = "Rp " + data.uang.toLocaleString('id-ID');
-            if(limitEl) limitEl.innerText = data.limit;
-            if(imgEl) imgEl.src = data.img || 'https://telegra.ph/file/default.jpg';
+            setTimeout(() => {
+                viewport.innerHTML = html;
+                viewport.style.opacity = '1';
 
-            // LOGIKA GANTI STATUS USER (MENGHAPUS "CHECKING STATUS")
-            if (statusEl) {
-                if (data.owner) {
-                    statusEl.innerText = "Owner Developer 👑";
-                    statusEl.style.color = "#ff3e3e"; // Warna Merah Owner
-                    if(imgEl) imgEl.style.borderColor = "#ff3e3e";
-                } else if (data.premium) {
-                    statusEl.innerText = "Premium User ✨";
-                    statusEl.style.color = "#ffcc00"; // Warna Gold Premium
-                    if(imgEl) imgEl.style.borderColor = "#ffcc00";
+                if (page === 'step1') {
+                    document.getElementById('userIP').innerText = userData.ip;
+                }
+
+                if (page === 'step2') {
+                    syncProfile();
+                }
+
+                if (page === 'step3') {
+                    initReels();
+
+                    document.getElementById('displayMoney').innerText =
+                        "Rp " + userData.profile.uang.toLocaleString();
+
+                    document.body.classList.add('casino-mode');
                 } else {
-                    statusEl.innerText = "Reguler User ✅";
-                    statusEl.style.color = "#00ff88"; // Warna Hijau User Biasa
-                    if(imgEl) imgEl.style.borderColor = "#333";
+                    document.body.classList.remove('casino-mode');
                 }
+
+            }, 400);
+
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function startApp() {
+        try {
+
+            const resIp = await fetch('https://api.ipify.org?format=json');
+            const dataIp = await resIp.json();
+
+            userData.ip = dataIp.ip;
+
+            const resAuth = await fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    type: 'checkIP',
+                    ip: userData.ip,
+                    secret: SECRET
+                })
+            });
+
+            const auth = await resAuth.json();
+
+            document.getElementById('main-loader').style.opacity = '0';
+
+            setTimeout(() => {
+
+                document.getElementById('main-loader').style.display = 'none';
+
+                if (auth.status) {
+
+                    userData.profile = auth.profile;
+
+                    navigateTo('step2');
+
+                } else {
+
+                    navigateTo('step1');
+
+                }
+
+            }, 1000);
+
+        } catch (e) {
+            console.error(e);
+            showPopup("Koneksi API Gagal!");
+        }
+    }
+
+    function syncProfile() {
+
+        const data = userData.profile;
+
+        const nameEl = document.getElementById('pName');
+        const uangEl = document.getElementById('pUang');
+        const limitEl = document.getElementById('pLimit');
+        const imgEl = document.getElementById('pImg');
+        const statusEl = document.getElementById('pStatus');
+
+        if (nameEl)
+            nameEl.innerText = data.name;
+
+        if (uangEl)
+            uangEl.innerText =
+            "Rp " + data.uang.toLocaleString('id-ID');
+
+        if (limitEl)
+            limitEl.innerText = data.limit;
+
+        if (imgEl)
+            imgEl.src =
+            data.img || 'https://telegra.ph/file/default.jpg';
+
+        if (statusEl) {
+
+            if (data.owner) {
+
+                statusEl.innerText = "Owner Developer 👑";
+                statusEl.style.color = "#ff3e3e";
+
+                if (imgEl)
+                    imgEl.style.borderColor = "#ff3e3e";
+
+            } else if (data.premium) {
+
+                statusEl.innerText = "Premium User ✨";
+                statusEl.style.color = "#ffcc00";
+
+                if (imgEl)
+                    imgEl.style.borderColor = "#ffcc00";
+
+            } else {
+
+                statusEl.innerText = "Reguler User ✅";
+                statusEl.style.color = "#00ff88";
+
+                if (imgEl)
+                    imgEl.style.borderColor = "#333";
+
             }
         }
+    }
 
+    function copyIP() {
+        navigator.clipboard.writeText(userData.ip);
+        showPopup("IP Copied!");
+    }
 
-        function copyIP() {
-            navigator.clipboard.writeText(userData.ip);
-            showPopup("IP Copied!");
-        }
+    function showPopup(msg) {
 
-        function showPopup(msg) {
-            const p = document.getElementById('customPopup');
-            p.innerText = msg; p.classList.add('show');
-            setTimeout(() => p.classList.remove('show'), 2500);
-        }
+        const p = document.getElementById('customPopup');
 
-        function initReels() {
-            for(let i=1; i<=3; i++) {
-                const strip = document.getElementById('strip'+i);
-                strip.innerHTML = '';
-                for(let j=0; j<15; j++) {
-                    const item = document.createElement('div');
-                    item.className = 'slot-item';
-                    item.innerText = SYMS[Math.floor(Math.random()*SYMS.length)];
-                    strip.appendChild(item);
-                }
-            }
-        }
+        p.innerText = msg;
 
-        let cooldownTimer = null; // Penjaga timer global
+        p.classList.add('show');
 
-async function playGame() {
-    const betInput = document.getElementById('betInput');
-    const bet = parseInt(betInput.value);
-    const spinBtn = document.getElementById('spinBtn');
-    const controls = document.getElementById('ui-controls');
+        setTimeout(() => {
+            p.classList.remove('show');
+        }, 2500);
+    }
 
-    // 1. CEK LOKAL (GAK PAKE LAMA)
-    if (spinBtn.classList.contains('cooldown-active')) return;
-    if (!bet || bet < 5000) return showPopup("MIN BET Rp 5.000");
-    if (userData.profile.uang < bet) return showPopup("SALDO TIDAK CUKUP!");
-
-    spinBtn.disabled = true;
-
-    try {
-        // 2. CEK SERVER (COOLDOWN & LIMIT)
-        const res = await fetch(`/api/slot-web`, {
-            method: "POST", 
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ type: 'playByIP', ip: userData.ip, amount: bet, secret: SECRET })
-        });
-        
-        const data = await res.json();
-
-        // JIKA KENA COOLDOWN DARI SERVER
-        if (!data.status && data.msg.includes('Tunggu')) {
-            const timeParts = data.msg.match(/\d+/g); 
-            let totalSeconds = (parseInt(timeParts[0]) * 60) + parseInt(timeParts[1]);
-            startCooldownButton(totalSeconds);
-            return;
-        }
-
-        if (!data.status) {
-            spinBtn.disabled = false;
-            return showPopup(data.msg);
-        }
-
-        // --- 3. MULAI AKSI ---
-        controls.classList.add('hide-controls'); // Sembunyikan tombol
+    function initReels() {
 
         for (let i = 1; i <= 3; i++) {
-            document.getElementById('strip' + i).classList.add('spinning');
+
+            const strip =
+                document.getElementById('strip' + i);
+
+            strip.innerHTML = '';
+
+            for (let j = 0; j < 15; j++) {
+
+                const item =
+                    document.createElement('div');
+
+                item.className = 'slot-item';
+
+                item.innerText =
+                    SYMS[Math.floor(Math.random() * SYMS.length)];
+
+                strip.appendChild(item);
+            }
         }
-
-        // Stop Reel Berurutan
-        [0, 1, 2].forEach(i => {
-            setTimeout(() => {
-                const strip = document.getElementById('strip' + (i + 1));
-                strip.classList.remove('spinning');
-                strip.querySelectorAll('.slot-item')[0].innerText = data.reels[i];
-            }, 1200 + (i * 800));
-        });
-
-        // SELESAI
-        setTimeout(() => {
-            userData.profile = data.profile;
-            document.getElementById('displayMoney').innerText = "Rp " + data.profile.uang.toLocaleString();
-            
-            controls.classList.remove('hide-controls'); // Munculkan tombol
-            startCooldownButton(60); // Paksa cooldown 1 menit setelah main
-
-            setTimeout(() => {
-                showPopup(data.resultStatus);
-            }, 300);
-
-        }, 3800);
-
-    } catch (e) {
-        controls.classList.remove('hide-controls');
-        spinBtn.disabled = false;
-        showPopup("Koneksi Error!");
     }
-}
 
-// FUNGSI TIMER TOMBOL
-function startCooldownButton(seconds) {
-    const spinBtn = document.getElementById('spinBtn');
-    if (cooldownTimer) clearInterval(cooldownTimer);
-    
-    spinBtn.disabled = true;
-    spinBtn.classList.add('cooldown-active');
+    let cooldownTimer = null;
 
-    let remaining = seconds;
-    cooldownTimer = setInterval(() => {
-        let m = Math.floor(remaining / 60);
-        let s = remaining % 60;
-        spinBtn.innerText = `WAIT (${m}:${s < 10 ? '0' + s : s})`;
-        remaining--;
+    async function playGame() {
 
-        if (remaining < 0) {
-            clearInterval(cooldownTimer);
+        const betInput =
+            document.getElementById('betInput');
+
+        const bet =
+            parseInt(betInput.value);
+
+        const spinBtn =
+            document.getElementById('spinBtn');
+
+        const controls =
+            document.getElementById('ui-controls');
+
+        if (spinBtn.classList.contains('cooldown-active'))
+            return;
+
+        if (!bet || bet < 5000)
+            return showPopup("MIN BET Rp 5.000");
+
+        if (userData.profile.uang < bet)
+            return showPopup("SALDO TIDAK CUKUP!");
+
+        spinBtn.disabled = true;
+
+        try {
+
+            const res = await fetch(API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    ip: userData.ip,
+                    amount: bet,
+                    secret: SECRET
+                })
+            });
+
+            const data = await res.json();
+
+            if (!data.status && data.msg.includes('Tunggu')) {
+
+                const timeParts =
+                    data.msg.match(/\d+/g);
+
+                let totalSeconds =
+                    parseInt(timeParts[0]);
+
+                startCooldownButton(totalSeconds);
+
+                return;
+            }
+
+            if (!data.status) {
+
+                spinBtn.disabled = false;
+
+                return showPopup(data.msg);
+            }
+
+            controls.classList.add('hide-controls');
+
+            for (let i = 1; i <= 3; i++) {
+                document
+                    .getElementById('strip' + i)
+                    .classList.add('spinning');
+            }
+
+            [0, 1, 2].forEach(i => {
+
+                setTimeout(() => {
+
+                    const strip =
+                        document.getElementById('strip' + (i + 1));
+
+                    strip.classList.remove('spinning');
+
+                    strip.querySelectorAll('.slot-item')[0]
+                        .innerText = data.reels[i];
+
+                }, 1200 + (i * 800));
+
+            });
+
+            setTimeout(() => {
+
+                userData.profile = data.profile;
+
+                document.getElementById('displayMoney').innerText =
+                    "Rp " + data.profile.uang.toLocaleString();
+
+                controls.classList.remove('hide-controls');
+
+                startCooldownButton(60);
+
+                setTimeout(() => {
+                    showPopup(data.resultStatus);
+                }, 300);
+
+            }, 3800);
+
+        } catch (e) {
+
+            console.error(e);
+
+            controls.classList.remove('hide-controls');
+
             spinBtn.disabled = false;
-            spinBtn.classList.remove('cooldown-active');
-            spinBtn.innerText = "SPIN MACHINE";
+
+            showPopup("Koneksi Error!");
         }
-    }, 1000);
-}
+    }
 
+    function startCooldownButton(seconds) {
 
+        const spinBtn =
+            document.getElementById('spinBtn');
 
-        startApp();
-    </script>
+        if (cooldownTimer)
+            clearInterval(cooldownTimer);
+
+        spinBtn.disabled = true;
+
+        spinBtn.classList.add('cooldown-active');
+
+        let remaining = seconds;
+
+        cooldownTimer = setInterval(() => {
+
+            let m =
+                Math.floor(remaining / 60);
+
+            let s =
+                remaining % 60;
+
+            spinBtn.innerText =
+                `WAIT (${m}:${s < 10 ? '0' + s : s})`;
+
+            remaining--;
+
+            if (remaining < 0) {
+
+                clearInterval(cooldownTimer);
+
+                spinBtn.disabled = false;
+
+                spinBtn.classList.remove('cooldown-active');
+
+                spinBtn.innerText = "SPIN MACHINE";
+            }
+
+        }, 1000);
+    }
+
+    startApp();
+</script>
 </body>
 </html>
