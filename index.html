@@ -1,291 +1,264 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIWA CASINO | Premium Slot</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIWA CASINO | Premium Slot</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --bg-dark: #080808;
-            --card-dark: #121212;
-            --accent-blue: #3d85ff;
-            --gold: #ffcc00;
-            --gold-dark: #b8860b;
-            --text-main: #e0e0e0;
-            --text-dim: #777;
-        }
+<style>
 
-        * {
-            box-sizing: border-box;
-        }
+:root{
+--bg-dark:#080808;
+--card-dark:#121212;
+--accent-blue:#3d85ff;
+--gold:#ffcc00;
+--gold-dark:#b8860b;
+--text-main:#e0e0e0;
+--text-dim:#777;
+}
 
-        body {
-            background: var(--bg-dark);
-            color: var(--text-main);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
+*{
+box-sizing:border-box;
+}
 
-        body.casino-mode {
-            background: radial-gradient(circle at center, #1a0f00 0%, #050505 100%);
-        }
+body{
+background:var(--bg-dark);
+color:var(--text-main);
+font-family:'Plus Jakarta Sans',sans-serif;
+margin:0;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+overflow:hidden;
+}
 
-        #main-loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-dark);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: 0.5s;
-        }
+body.casino-mode{
+background:radial-gradient(circle at center,#1a0f00 0%,#050505 100%);
+}
 
-        .liquid-ring {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 3px solid transparent;
-            border-top-color: var(--gold);
-            animation: rotate 1s linear infinite;
-        }
+#main-loader{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:var(--bg-dark);
+z-index:9999;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+transition:.5s;
+}
 
-        @keyframes rotate {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+.liquid-ring{
+width:60px;
+height:60px;
+border-radius:50%;
+border:3px solid transparent;
+border-top-color:var(--gold);
+animation:rotate 1s linear infinite;
+}
 
-        .container {
-            width: 92%;
-            max-width: 380px;
-            opacity: 0;
-            transition: 0.8s;
-        }
+@keyframes rotate{
+to{
+transform:rotate(360deg);
+}
+}
 
-        #customPopup {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(150%);
-            background: #fff;
-            color: #000;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: 800;
-            z-index: 10000;
-            transition: 0.3s;
-        }
+.container{
+width:92%;
+max-width:380px;
+opacity:0;
+transition:.8s;
+}
 
-        #customPopup.show {
-            transform: translateX(-50%) translateY(0);
-        }
+#customPopup{
+position:fixed;
+bottom:30px;
+left:50%;
+transform:translateX(-50%) translateY(150%);
+background:#fff;
+color:#000;
+padding:10px 20px;
+border-radius:50px;
+font-weight:800;
+z-index:10000;
+transition:.3s;
+}
 
-        .modern-card {
-            background: var(--card-dark);
-            border-radius: 40px;
-            padding: 40px 30px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            border: 1px solid rgba(255,255,255,0.03);
-            text-align: center;
-        }
+#customPopup.show{
+transform:translateX(-50%) translateY(0);
+}
 
-        .ip-display {
-            background: #181818;
-            padding: 25px;
-            border-radius: 25px;
-            border: 1px solid #222;
-            margin: 25px 0;
-            cursor: pointer;
-            position: relative;
-        }
+.modern-card{
+background:var(--card-dark);
+border-radius:40px;
+padding:40px 30px;
+box-shadow:0 30px 60px rgba(0,0,0,.8);
+border:1px solid rgba(255,255,255,.03);
+text-align:center;
+}
 
-        .ip-display label {
-            font-size: 10px;
-            color: var(--accent-blue);
-            font-weight: 800;
-            display: block;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-        }
+.btn-gold{
+width:100%;
+padding:20px;
+border-radius:25px;
+border:none;
+background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+color:#000;
+font-family:'Goldman';
+font-weight:800;
+cursor:pointer;
+}
 
-        .ip-display span {
-            font-family: 'Goldman';
-            font-size: 22px;
-            color: #fff;
-        }
+.btn-blue{
+width:100%;
+padding:18px;
+border-radius:20px;
+border:1px solid #333;
+background:#1a1a1a;
+color:var(--accent-blue);
+font-weight:800;
+cursor:pointer;
+font-size:14px;
+}
 
-        .guide-box {
-            text-align: left;
-            background: rgba(61, 133, 255, 0.05);
-            padding: 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            border: 1px solid rgba(61, 133, 255, 0.1);
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
+.api-input{
+width:100%;
+background:#181818;
+border:1px solid #222;
+border-radius:20px;
+padding:18px;
+color:white;
+outline:none;
+margin-bottom:18px;
+font-size:13px;
+}
 
-        .guide-box b {
-            color: var(--accent-blue);
-        }
+.casino-ui{
+background:#0a0a0a;
+border:3px solid var(--gold);
+border-radius:45px;
+padding:30px 20px;
+box-shadow:0 0 50px rgba(0,0,0,1);
+position:relative;
+}
 
-        .btn-gold {
-            width: 100%;
-            padding: 20px;
-            border-radius: 25px;
-            border: none;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: #000;
-            font-family: 'Goldman';
-            font-weight: 800;
-            cursor: pointer;
-        }
+.reel-strip{
+display:flex;
+flex-direction:column;
+align-items:center;
+position:absolute;
+width:100%;
+}
 
-        .btn-blue {
-            width: 100%;
-            padding: 18px;
-            border-radius: 20px;
-            border: 1px solid #333;
-            background: #1a1a1a;
-            color: var(--accent-blue);
-            font-weight: 800;
-            cursor: pointer;
-            font-size: 14px;
-        }
+.slot-item{
+height:120px;
+min-height:120px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:50px;
+}
 
-        .api-input {
-            width: 100%;
-            background: #181818;
-            border: 1px solid #222;
-            border-radius: 20px;
-            padding: 18px;
-            color: white;
-            outline: none;
-            margin-bottom: 18px;
-            font-size: 13px;
-        }
+@keyframes spin-loop{
+from{
+transform:translateY(0);
+}
+to{
+transform:translateY(-1200px);
+}
+}
 
-        .casino-ui {
-            background: #0a0a0a;
-            border: 3px solid var(--gold);
-            border-radius: 45px;
-            padding: 30px 20px;
-            box-shadow: 0 0 50px rgba(0,0,0,1);
-            position: relative;
-        }
+.spinning{
+animation:spin-loop .2s linear infinite;
+}
 
-        .slot-window {
-            height: 120px;
-            background: #000;
-            border-radius: 25px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 0 15px;
-            overflow: hidden;
-            border: 2px solid #222;
-            margin-bottom: 25px;
-            position: relative;
-        }
+.hide-controls{
+opacity:.4;
+pointer-events:none;
+}
 
-        .slot-window::before {
-            content: '';
-            position: absolute;
-            top:0;
-            left:0;
-            width:100%;
-            height:100%;
-            box-shadow: inset 0 20px 20px #000, inset 0 -20px 20px #000;
-            z-index: 2;
-            pointer-events: none;
-        }
+.slot-grid{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
 
-        .reel-strip {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: absolute;
-            width: 100%;
-        }
+.slot-col{
+flex:1;
+position:relative;
+overflow:hidden;
+height:120px;
+background:#111;
+border-radius:20px;
+border:1px solid #222;
+}
 
-        .slot-item {
-            height: 120px;
-            min-height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
-        }
+#betInput{
+width:100%;
+padding:18px;
+border-radius:20px;
+border:none;
+outline:none;
+background:#181818;
+color:white;
+margin-bottom:15px;
+text-align:center;
+font-size:16px;
+}
 
-        @keyframes spin-loop {
-            from {
-                transform: translateY(0);
-            }
-            to {
-                transform: translateY(-1200px);
-            }
-        }
+.game-grid{
+display:grid;
+gap:15px;
+margin-top:15px;
+}
 
-        .spinning {
-            animation: spin-loop 0.2s linear infinite;
-        }
+.profile-box{
+background:#181818;
+padding:20px;
+border-radius:25px;
+margin-bottom:25px;
+border:1px solid #222;
+text-align:left;
+}
 
-        .hide-controls {
-            opacity: .4;
-            pointer-events: none;
-        }
+.profile-top{
+display:flex;
+align-items:center;
+gap:15px;
+}
 
-        .slot-grid {
-            display:flex;
-            gap:10px;
-            margin-bottom:20px;
-        }
+.profile-top img{
+width:65px;
+height:65px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid var(--gold);
+}
 
-        .slot-col {
-            flex:1;
-            position:relative;
-            overflow:hidden;
-            height:120px;
-            background:#111;
-            border-radius:20px;
-            border:1px solid #222;
-        }
-
-        #betInput {
-            width:100%;
-            padding:18px;
-            border-radius:20px;
-            border:none;
-            outline:none;
-            background:#181818;
-            color:white;
-            margin-bottom:15px;
-            text-align:center;
-            font-size:16px;
-        }
-
-    </style>
+</style>
 </head>
 <body>
 
 <div id="main-loader">
-    <div class="liquid-ring"></div>
-    <p style="font-family:'Goldman'; color:var(--gold); margin-top:20px; font-size:10px; letter-spacing:3px">
-        AUTHENTICATING...
-    </p>
+
+<div class="liquid-ring"></div>
+
+<p style="
+font-family:'Goldman';
+color:var(--gold);
+margin-top:20px;
+font-size:10px;
+letter-spacing:3px;
+">
+AUTHENTICATING...
+</p>
+
 </div>
 
 <div id="customPopup">Alert</div>
@@ -308,25 +281,26 @@ const SYMS = [
 ]
 
 let userData = {
-    ip: '',
-    profile: {}
+ip:'',
+profile:{}
 }
 
-function showPopup(msg) {
+function showPopup(msg){
 
-    const p =
-    document.getElementById('customPopup')
+const p =
+document.getElementById('customPopup')
 
-    p.innerText = msg
+p.innerText = msg
 
-    p.classList.add('show')
+p.classList.add('show')
 
-    setTimeout(() => {
-        p.classList.remove('show')
-    }, 2500)
+setTimeout(()=>{
+p.classList.remove('show')
+},2500)
+
 }
 
-function renderSetupPage() {
+function renderSetupPage(){
 
 document.body.classList.remove('casino-mode')
 
@@ -366,17 +340,18 @@ CONNECT API
 `
 
 document.getElementById('app-viewport').style.opacity = '1'
+
 }
 
-function saveAPI() {
+function saveAPI(){
 
 const val =
 document.getElementById('apiInput').value.trim()
 
-if (!val)
+if(!val)
 return showPopup("URL API wajib diisi")
 
-if (
+if(
 !val.startsWith('http://') &&
 !val.startsWith('https://')
 )
@@ -384,14 +359,151 @@ return showPopup("URL tidak valid")
 
 API_URL = val
 
-localStorage.setItem(STORAGE_KEY, val)
+localStorage.setItem(STORAGE_KEY,val)
 
 showPopup("API berhasil disimpan")
 
 startApp()
+
 }
 
-function renderCasinoUI() {
+function renderDashboard(){
+
+document.body.classList.remove('casino-mode')
+
+document.getElementById('app-viewport').innerHTML = `
+<div class="modern-card">
+
+<h1 style="
+font-family:'Goldman';
+font-size:28px;
+margin-bottom:10px;
+color:var(--gold);
+">
+MIWA CASINO
+</h1>
+
+<p style="
+font-size:13px;
+color:#888;
+margin-bottom:25px;
+">
+Welcome back, ${userData.profile.name || 'Guest'}
+</p>
+
+<div class="profile-box">
+
+<div class="profile-top">
+
+<img
+src="${userData.profile.img || 'https://i.ibb.co/4pDNDk1/avatar.png'}"
+>
+
+<div>
+
+<div style="
+font-size:17px;
+font-weight:800;
+">
+${userData.profile.name || 'Unknown User'}
+</div>
+
+<div style="
+font-size:12px;
+color:#888;
+margin-top:4px;
+">
+IP: ${userData.ip}
+</div>
+
+</div>
+
+</div>
+
+<div style="
+margin-top:18px;
+padding-top:18px;
+border-top:1px solid #222;
+">
+
+<div style="
+font-size:13px;
+color:#888;
+">
+SALDO
+</div>
+
+<div style="
+font-size:28px;
+font-family:'Goldman';
+margin-top:8px;
+color:var(--gold);
+">
+Rp ${Number(userData.profile.uang || 0).toLocaleString('id-ID')}
+</div>
+
+</div>
+
+</div>
+
+<div style="
+text-align:left;
+font-size:13px;
+font-weight:700;
+color:#888;
+margin-bottom:12px;
+">
+PILIH GAME
+</div>
+
+<div class="game-grid">
+
+<button
+class="btn-gold"
+onclick="openSlotGame()"
+>
+🎰 SLOT 3x3
+</button>
+
+<button
+class="btn-blue"
+onclick="showPopup('Roulette Coming Soon')"
+>
+🎡 ROULETTE
+</button>
+
+<button
+class="btn-blue"
+onclick="showPopup('Crasher Coming Soon')"
+>
+📈 CRASHER
+</button>
+
+<button
+class="btn-blue"
+onclick="showPopup('Blackjack Coming Soon')"
+>
+🃏 BLACKJACK
+</button>
+
+</div>
+
+<button
+class="btn-blue"
+style="margin-top:20px"
+onclick="changeAPI()"
+>
+CHANGE API URL
+</button>
+
+</div>
+`
+
+document.getElementById('app-viewport').style.opacity = '1'
+
+}
+
+function openSlotGame(){
 
 document.body.classList.add('casino-mode')
 
@@ -415,7 +527,13 @@ margin-bottom:20px;
 border:1px solid #222;
 text-align:center;
 ">
-<div style="font-size:13px;color:#888;">SALDO</div>
+
+<div style="
+font-size:13px;
+color:#888;
+">
+SALDO
+</div>
 
 <div id="displayMoney" style="
 font-size:25px;
@@ -425,6 +543,7 @@ color:white;
 ">
 Rp ${userData.profile.uang.toLocaleString('id-ID')}
 </div>
+
 </div>
 
 <div class="slot-grid">
@@ -463,6 +582,14 @@ SPIN MACHINE
 <button
 class="btn-blue"
 style="margin-top:12px"
+onclick="renderDashboard()"
+>
+← BACK TO DASHBOARD
+</button>
+
+<button
+class="btn-blue"
+style="margin-top:12px"
 onclick="changeAPI()"
 >
 CHANGE API URL
@@ -476,18 +603,20 @@ CHANGE API URL
 document.getElementById('app-viewport').style.opacity = '1'
 
 initReels()
+
 }
 
-function changeAPI() {
+function changeAPI(){
 
 localStorage.removeItem(STORAGE_KEY)
 
 renderSetupPage()
+
 }
 
-async function startApp() {
+async function startApp(){
 
-try {
+try{
 
 const resIp =
 await fetch('https://api.ipify.org?format=json')
@@ -498,15 +627,15 @@ await resIp.json()
 userData.ip = dataIp.ip
 
 const resAuth =
-await fetch(API_URL, {
-method: "POST",
-headers: {
-"Content-Type": "application/json"
+await fetch(API_URL,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
 },
-body: JSON.stringify({
-type: 'checkIP',
-ip: userData.ip,
-secret: SECRET
+body:JSON.stringify({
+type:'checkIP',
+ip:userData.ip,
+secret:SECRET
 })
 })
 
@@ -515,27 +644,27 @@ await resAuth.json()
 
 document.getElementById('main-loader').style.opacity = '0'
 
-setTimeout(() => {
+setTimeout(()=>{
 
 document.getElementById('main-loader').style.display = 'none'
 
 document.getElementById('app-viewport').style.opacity = '1'
 
-if (auth.status) {
+if(auth.status){
 
 userData.profile = auth.profile
 
-renderCasinoUI()
+renderDashboard()
 
-} else {
+}else{
 
 renderSetupPage()
 
 }
 
-}, 1000)
+},1000)
 
-} catch (e) {
+}catch(e){
 
 console.error(e)
 
@@ -546,18 +675,19 @@ renderSetupPage()
 showPopup("API gagal terhubung")
 
 }
+
 }
 
-function initReels() {
+function initReels(){
 
-for (let i = 1; i <= 3; i++) {
+for(let i=1;i<=3;i++){
 
 const strip =
-document.getElementById('strip' + i)
+document.getElementById('strip'+i)
 
 strip.innerHTML = ''
 
-for (let j = 0; j < 15; j++) {
+for(let j=0;j<15;j++){
 
 const item =
 document.createElement('div')
@@ -565,16 +695,19 @@ document.createElement('div')
 item.className = 'slot-item'
 
 item.innerText =
-SYMS[Math.floor(Math.random() * SYMS.length)]
+SYMS[Math.floor(Math.random()*SYMS.length)]
 
 strip.appendChild(item)
+
 }
+
 }
+
 }
 
 let cooldownTimer = null
 
-async function playGame() {
+async function playGame(){
 
 const bet =
 parseInt(
@@ -587,71 +720,73 @@ document.getElementById('spinBtn')
 const controls =
 document.getElementById('ui-controls')
 
-if (spinBtn.classList.contains('cooldown-active'))
+if(spinBtn.classList.contains('cooldown-active'))
 return
 
-if (!bet || bet < 5000)
+if(!bet || bet < 5000)
 return showPopup("MIN BET Rp 5.000")
 
-if (userData.profile.uang < bet)
+if(userData.profile.uang < bet)
 return showPopup("SALDO TIDAK CUKUP!")
 
 spinBtn.disabled = true
 
-try {
+try{
 
 const res =
-await fetch(API_URL, {
-method: "POST",
-headers: {
-"Content-Type": "application/json"
+await fetch(API_URL,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
 },
-body: JSON.stringify({
-ip: userData.ip,
-amount: bet,
-secret: SECRET
+body:JSON.stringify({
+ip:userData.ip,
+amount:bet,
+secret:SECRET
 })
 })
 
 const data =
 await res.json()
 
-if (!data.status) {
+if(!data.status){
 
 spinBtn.disabled = false
 
 return showPopup(data.msg || "Spin gagal")
+
 }
 
 controls.classList.add('hide-controls')
 
-for (let i = 1; i <= 3; i++) {
+for(let i=1;i<=3;i++){
 
 document
-.getElementById('strip' + i)
+.getElementById('strip'+i)
 .classList.add('spinning')
+
 }
 
-;[0,1,2].forEach(i => {
+;[0,1,2].forEach(i=>{
 
-setTimeout(() => {
+setTimeout(()=>{
 
 const strip =
-document.getElementById('strip' + (i + 1))
+document.getElementById('strip'+(i+1))
 
 strip.classList.remove('spinning')
 
 const first =
 strip.querySelector('.slot-item')
 
-if (first)
+if(first)
 first.innerText = data.reels[i]
 
-}, 1200 + (i * 800))
+},1200 + (i*800))
 
 })
 
-setTimeout(() => {
+setTimeout(()=>{
 
 userData.profile = data.profile
 
@@ -663,13 +798,13 @@ controls.classList.remove('hide-controls')
 
 startCooldownButton(60)
 
-setTimeout(() => {
+setTimeout(()=>{
 showPopup(data.resultStatus || "Spin selesai")
-}, 300)
+},300)
 
-}, 3800)
+},3800)
 
-} catch (e) {
+}catch(e){
 
 console.error(e)
 
@@ -680,14 +815,15 @@ spinBtn.disabled = false
 showPopup("Koneksi Error!")
 
 }
+
 }
 
-function startCooldownButton(seconds) {
+function startCooldownButton(seconds){
 
 const spinBtn =
 document.getElementById('spinBtn')
 
-if (cooldownTimer)
+if(cooldownTimer)
 clearInterval(cooldownTimer)
 
 spinBtn.disabled = true
@@ -696,20 +832,20 @@ spinBtn.classList.add('cooldown-active')
 
 let remaining = seconds
 
-cooldownTimer = setInterval(() => {
+cooldownTimer = setInterval(()=>{
 
 let m =
-Math.floor(remaining / 60)
+Math.floor(remaining/60)
 
 let s =
-remaining % 60
+remaining%60
 
 spinBtn.innerText =
-`WAIT (${m}:${s < 10 ? '0' + s : s})`
+`WAIT (${m}:${s < 10 ? '0'+s : s})`
 
 remaining--
 
-if (remaining < 0) {
+if(remaining < 0){
 
 clearInterval(cooldownTimer)
 
@@ -718,9 +854,11 @@ spinBtn.disabled = false
 spinBtn.classList.remove('cooldown-active')
 
 spinBtn.innerText = "SPIN MACHINE"
+
 }
 
-}, 1000)
+},1000)
+
 }
 
 startApp()
