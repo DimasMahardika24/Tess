@@ -1,264 +1,291 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIWA CASINO | Premium Slot</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIWA CASINO | Premium Slot</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-<style>
+    <style>
+        :root {
+            --bg-dark: #080808;
+            --card-dark: #121212;
+            --accent-blue: #3d85ff;
+            --gold: #ffcc00;
+            --gold-dark: #b8860b;
+            --text-main: #e0e0e0;
+            --text-dim: #777;
+        }
 
-:root{
---bg-dark:#080808;
---card-dark:#121212;
---accent-blue:#3d85ff;
---gold:#ffcc00;
---gold-dark:#b8860b;
---text-main:#e0e0e0;
---text-dim:#777;
-}
+        * {
+            box-sizing: border-box;
+        }
 
-*{
-box-sizing:border-box;
-}
+        body {
+            background: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
 
-body{
-background:var(--bg-dark);
-color:var(--text-main);
-font-family:'Plus Jakarta Sans',sans-serif;
-margin:0;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-overflow:hidden;
-}
+        body.casino-mode {
+            background: radial-gradient(circle at center, #1a0f00 0%, #050505 100%);
+        }
 
-body.casino-mode{
-background:radial-gradient(circle at center,#1a0f00 0%,#050505 100%);
-}
+        #main-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: 0.5s;
+        }
 
-#main-loader{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:var(--bg-dark);
-z-index:9999;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-transition:.5s;
-}
+        .liquid-ring {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: var(--gold);
+            animation: rotate 1s linear infinite;
+        }
 
-.liquid-ring{
-width:60px;
-height:60px;
-border-radius:50%;
-border:3px solid transparent;
-border-top-color:var(--gold);
-animation:rotate 1s linear infinite;
-}
+        @keyframes rotate {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-@keyframes rotate{
-to{
-transform:rotate(360deg);
-}
-}
+        .container {
+            width: 92%;
+            max-width: 380px;
+            opacity: 0;
+            transition: 0.8s;
+        }
 
-.container{
-width:92%;
-max-width:380px;
-opacity:0;
-transition:.8s;
-}
+        #customPopup {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(150%);
+            background: #fff;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 800;
+            z-index: 10000;
+            transition: 0.3s;
+        }
 
-#customPopup{
-position:fixed;
-bottom:30px;
-left:50%;
-transform:translateX(-50%) translateY(150%);
-background:#fff;
-color:#000;
-padding:10px 20px;
-border-radius:50px;
-font-weight:800;
-z-index:10000;
-transition:.3s;
-}
+        #customPopup.show {
+            transform: translateX(-50%) translateY(0);
+        }
 
-#customPopup.show{
-transform:translateX(-50%) translateY(0);
-}
+        .modern-card {
+            background: var(--card-dark);
+            border-radius: 40px;
+            padding: 40px 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.03);
+            text-align: center;
+        }
 
-.modern-card{
-background:var(--card-dark);
-border-radius:40px;
-padding:40px 30px;
-box-shadow:0 30px 60px rgba(0,0,0,.8);
-border:1px solid rgba(255,255,255,.03);
-text-align:center;
-}
+        .ip-display {
+            background: #181818;
+            padding: 25px;
+            border-radius: 25px;
+            border: 1px solid #222;
+            margin: 25px 0;
+            cursor: pointer;
+            position: relative;
+        }
 
-.btn-gold{
-width:100%;
-padding:20px;
-border-radius:25px;
-border:none;
-background:linear-gradient(135deg,var(--gold),var(--gold-dark));
-color:#000;
-font-family:'Goldman';
-font-weight:800;
-cursor:pointer;
-}
+        .ip-display label {
+            font-size: 10px;
+            color: var(--accent-blue);
+            font-weight: 800;
+            display: block;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
 
-.btn-blue{
-width:100%;
-padding:18px;
-border-radius:20px;
-border:1px solid #333;
-background:#1a1a1a;
-color:var(--accent-blue);
-font-weight:800;
-cursor:pointer;
-font-size:14px;
-}
+        .ip-display span {
+            font-family: 'Goldman';
+            font-size: 22px;
+            color: #fff;
+        }
 
-.api-input{
-width:100%;
-background:#181818;
-border:1px solid #222;
-border-radius:20px;
-padding:18px;
-color:white;
-outline:none;
-margin-bottom:18px;
-font-size:13px;
-}
+        .guide-box {
+            text-align: left;
+            background: rgba(61, 133, 255, 0.05);
+            padding: 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            border: 1px solid rgba(61, 133, 255, 0.1);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
 
-.casino-ui{
-background:#0a0a0a;
-border:3px solid var(--gold);
-border-radius:45px;
-padding:30px 20px;
-box-shadow:0 0 50px rgba(0,0,0,1);
-position:relative;
-}
+        .guide-box b {
+            color: var(--accent-blue);
+        }
 
-.reel-strip{
-display:flex;
-flex-direction:column;
-align-items:center;
-position:absolute;
-width:100%;
-}
+        .btn-gold {
+            width: 100%;
+            padding: 20px;
+            border-radius: 25px;
+            border: none;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #000;
+            font-family: 'Goldman';
+            font-weight: 800;
+            cursor: pointer;
+        }
 
-.slot-item{
-height:120px;
-min-height:120px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:50px;
-}
+        .btn-blue {
+            width: 100%;
+            padding: 18px;
+            border-radius: 20px;
+            border: 1px solid #333;
+            background: #1a1a1a;
+            color: var(--accent-blue);
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 14px;
+        }
 
-@keyframes spin-loop{
-from{
-transform:translateY(0);
-}
-to{
-transform:translateY(-1200px);
-}
-}
+        .api-input {
+            width: 100%;
+            background: #181818;
+            border: 1px solid #222;
+            border-radius: 20px;
+            padding: 18px;
+            color: white;
+            outline: none;
+            margin-bottom: 18px;
+            font-size: 13px;
+        }
 
-.spinning{
-animation:spin-loop .2s linear infinite;
-}
+        .casino-ui {
+            background: #0a0a0a;
+            border: 3px solid var(--gold);
+            border-radius: 45px;
+            padding: 30px 20px;
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+            position: relative;
+        }
 
-.hide-controls{
-opacity:.4;
-pointer-events:none;
-}
+        .slot-window {
+            height: 120px;
+            background: #000;
+            border-radius: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 0 15px;
+            overflow: hidden;
+            border: 2px solid #222;
+            margin-bottom: 25px;
+            position: relative;
+        }
 
-.slot-grid{
-display:flex;
-gap:10px;
-margin-bottom:20px;
-}
+        .slot-window::before {
+            content: '';
+            position: absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            box-shadow: inset 0 20px 20px #000, inset 0 -20px 20px #000;
+            z-index: 2;
+            pointer-events: none;
+        }
 
-.slot-col{
-flex:1;
-position:relative;
-overflow:hidden;
-height:120px;
-background:#111;
-border-radius:20px;
-border:1px solid #222;
-}
+        .reel-strip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            width: 100%;
+        }
 
-#betInput{
-width:100%;
-padding:18px;
-border-radius:20px;
-border:none;
-outline:none;
-background:#181818;
-color:white;
-margin-bottom:15px;
-text-align:center;
-font-size:16px;
-}
+        .slot-item {
+            height: 120px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
 
-.game-grid{
-display:grid;
-gap:15px;
-margin-top:15px;
-}
+        @keyframes spin-loop {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-1200px);
+            }
+        }
 
-.profile-box{
-background:#181818;
-padding:20px;
-border-radius:25px;
-margin-bottom:25px;
-border:1px solid #222;
-text-align:left;
-}
+        .spinning {
+            animation: spin-loop 0.2s linear infinite;
+        }
 
-.profile-top{
-display:flex;
-align-items:center;
-gap:15px;
-}
+        .hide-controls {
+            opacity: .4;
+            pointer-events: none;
+        }
 
-.profile-top img{
-width:65px;
-height:65px;
-border-radius:50%;
-object-fit:cover;
-border:2px solid var(--gold);
-}
+        .slot-grid {
+            display:flex;
+            gap:10px;
+            margin-bottom:20px;
+        }
 
-</style>
+        .slot-col {
+            flex:1;
+            position:relative;
+            overflow:hidden;
+            height:120px;
+            background:#111;
+            border-radius:20px;
+            border:1px solid #222;
+        }
+
+        #betInput {
+            width:100%;
+            padding:18px;
+            border-radius:20px;
+            border:none;
+            outline:none;
+            background:#181818;
+            color:white;
+            margin-bottom:15px;
+            text-align:center;
+            font-size:16px;
+        }
+
+    </style>
 </head>
 <body>
 
 <div id="main-loader">
-
-<div class="liquid-ring"></div>
-
-<p style="
-font-family:'Goldman';
-color:var(--gold);
-margin-top:20px;
-font-size:10px;
-letter-spacing:3px;
-">
-AUTHENTICATING...
-</p>
-
+    <div class="liquid-ring"></div>
+    <p style="font-family:'Goldman'; color:var(--gold); margin-top:20px; font-size:10px; letter-spacing:3px">
+        AUTHENTICATING...
+    </p>
 </div>
 
 <div id="customPopup">Alert</div>
@@ -285,6 +312,8 @@ ip:'',
 profile:{}
 }
 
+let cooldownTimer = null
+
 function showPopup(msg){
 
 const p =
@@ -300,11 +329,37 @@ p.classList.remove('show')
 
 }
 
+function showLoader(){
+
+const loader =
+document.getElementById('main-loader')
+
+loader.style.display = 'flex'
+loader.style.opacity = '1'
+
+}
+
+function hideLoader(){
+
+const loader =
+document.getElementById('main-loader')
+
+loader.style.opacity = '0'
+
+setTimeout(()=>{
+loader.style.display = 'none'
+},500)
+
+}
+
 function renderSetupPage(){
 
 document.body.classList.remove('casino-mode')
 
-document.getElementById('app-viewport').innerHTML = `
+const app =
+document.getElementById('app-viewport')
+
+app.innerHTML = `
 <div class="modern-card">
 
 <h1 style="
@@ -332,14 +387,17 @@ placeholder="https://domain.com/api"
 value="${API_URL}"
 >
 
-<button class="btn-gold" onclick="saveAPI()">
+<button
+class="btn-gold"
+onclick="saveAPI()"
+>
 CONNECT API
 </button>
 
 </div>
 `
 
-document.getElementById('app-viewport').style.opacity = '1'
+app.style.opacity = '1'
 
 }
 
@@ -371,13 +429,16 @@ function renderDashboard(){
 
 document.body.classList.remove('casino-mode')
 
-document.getElementById('app-viewport').innerHTML = `
+const app =
+document.getElementById('app-viewport')
+
+app.innerHTML = `
 <div class="modern-card">
 
 <h1 style="
 font-family:'Goldman';
 font-size:28px;
-margin-bottom:10px;
+margin-bottom:8px;
 color:var(--gold);
 ">
 MIWA CASINO
@@ -385,18 +446,36 @@ MIWA CASINO
 
 <p style="
 font-size:13px;
-color:#888;
+color:#777;
 margin-bottom:25px;
 ">
-Welcome back, ${userData.profile.name || 'Guest'}
+Premium Gambling Experience
 </p>
 
-<div class="profile-box">
+<div style="
+background:#181818;
+border:1px solid #222;
+border-radius:25px;
+padding:20px;
+margin-bottom:20px;
+text-align:left;
+">
 
-<div class="profile-top">
+<div style="
+display:flex;
+align-items:center;
+gap:15px;
+">
 
 <img
 src="${userData.profile.img || 'https://i.ibb.co/4pDNDk1/avatar.png'}"
+style="
+width:65px;
+height:65px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid var(--gold);
+"
 >
 
 <div>
@@ -405,7 +484,7 @@ src="${userData.profile.img || 'https://i.ibb.co/4pDNDk1/avatar.png'}"
 font-size:17px;
 font-weight:800;
 ">
-${userData.profile.name || 'Unknown User'}
+${userData.profile.name || 'Unknown'}
 </div>
 
 <div style="
@@ -421,13 +500,13 @@ IP: ${userData.ip}
 </div>
 
 <div style="
-margin-top:18px;
+margin-top:20px;
 padding-top:18px;
 border-top:1px solid #222;
 ">
 
 <div style="
-font-size:13px;
+font-size:12px;
 color:#888;
 ">
 SALDO
@@ -436,8 +515,8 @@ SALDO
 <div style="
 font-size:28px;
 font-family:'Goldman';
-margin-top:8px;
 color:var(--gold);
+margin-top:6px;
 ">
 Rp ${Number(userData.profile.uang || 0).toLocaleString('id-ID')}
 </div>
@@ -450,13 +529,16 @@ Rp ${Number(userData.profile.uang || 0).toLocaleString('id-ID')}
 text-align:left;
 font-size:13px;
 font-weight:700;
-color:#888;
 margin-bottom:12px;
+color:#888;
 ">
 PILIH GAME
 </div>
 
-<div class="game-grid">
+<div style="
+display:grid;
+gap:12px;
+">
 
 <button
 class="btn-gold"
@@ -490,7 +572,7 @@ onclick="showPopup('Blackjack Coming Soon')"
 
 <button
 class="btn-blue"
-style="margin-top:20px"
+style="margin-top:18px"
 onclick="changeAPI()"
 >
 CHANGE API URL
@@ -499,7 +581,7 @@ CHANGE API URL
 </div>
 `
 
-document.getElementById('app-viewport').style.opacity = '1'
+app.style.opacity = '1'
 
 }
 
@@ -507,7 +589,10 @@ function openSlotGame(){
 
 document.body.classList.add('casino-mode')
 
-document.getElementById('app-viewport').innerHTML = `
+const app =
+document.getElementById('app-viewport')
+
+app.innerHTML = `
 <div class="casino-ui">
 
 <h2 style="
@@ -535,13 +620,16 @@ color:#888;
 SALDO
 </div>
 
-<div id="displayMoney" style="
+<div
+id="displayMoney"
+style="
 font-size:25px;
 font-family:'Goldman';
 margin-top:8px;
 color:white;
-">
-Rp ${userData.profile.uang.toLocaleString('id-ID')}
+"
+>
+Rp ${Number(userData.profile.uang).toLocaleString('id-ID')}
 </div>
 
 </div>
@@ -587,20 +675,12 @@ onclick="renderDashboard()"
 ← BACK TO DASHBOARD
 </button>
 
-<button
-class="btn-blue"
-style="margin-top:12px"
-onclick="changeAPI()"
->
-CHANGE API URL
-</button>
-
 </div>
 
 </div>
 `
 
-document.getElementById('app-viewport').style.opacity = '1'
+app.style.opacity = '1'
 
 initReels()
 
@@ -610,6 +690,8 @@ function changeAPI(){
 
 localStorage.removeItem(STORAGE_KEY)
 
+API_URL = ""
+
 renderSetupPage()
 
 }
@@ -617,6 +699,8 @@ renderSetupPage()
 async function startApp(){
 
 try{
+
+showLoader()
 
 const resIp =
 await fetch('https://api.ipify.org?format=json')
@@ -642,13 +726,7 @@ secret:SECRET
 const auth =
 await resAuth.json()
 
-document.getElementById('main-loader').style.opacity = '0'
-
-setTimeout(()=>{
-
-document.getElementById('main-loader').style.display = 'none'
-
-document.getElementById('app-viewport').style.opacity = '1'
+hideLoader()
 
 if(auth.status){
 
@@ -660,15 +738,15 @@ renderDashboard()
 
 renderSetupPage()
 
-}
+showPopup(auth.msg || "IP belum terdaftar")
 
-},1000)
+}
 
 }catch(e){
 
 console.error(e)
 
-document.getElementById('main-loader').style.display = 'none'
+hideLoader()
 
 renderSetupPage()
 
@@ -684,6 +762,8 @@ for(let i=1;i<=3;i++){
 
 const strip =
 document.getElementById('strip'+i)
+
+if(!strip) continue
 
 strip.innerHTML = ''
 
@@ -704,8 +784,6 @@ strip.appendChild(item)
 }
 
 }
-
-let cooldownTimer = null
 
 async function playGame(){
 
@@ -782,7 +860,7 @@ strip.querySelector('.slot-item')
 if(first)
 first.innerText = data.reels[i]
 
-},1200 + (i*800))
+},1200 + (i*700))
 
 })
 
@@ -792,17 +870,15 @@ userData.profile = data.profile
 
 document.getElementById('displayMoney').innerText =
 "Rp " +
-data.profile.uang.toLocaleString('id-ID')
+Number(data.profile.uang).toLocaleString('id-ID')
 
 controls.classList.remove('hide-controls')
 
 startCooldownButton(60)
 
-setTimeout(()=>{
 showPopup(data.resultStatus || "Spin selesai")
-},300)
 
-},3800)
+},3500)
 
 }catch(e){
 
@@ -835,10 +911,10 @@ let remaining = seconds
 cooldownTimer = setInterval(()=>{
 
 let m =
-Math.floor(remaining/60)
+Math.floor(remaining / 60)
 
 let s =
-remaining%60
+remaining % 60
 
 spinBtn.innerText =
 `WAIT (${m}:${s < 10 ? '0'+s : s})`
@@ -853,7 +929,7 @@ spinBtn.disabled = false
 
 spinBtn.classList.remove('cooldown-active')
 
-spinBtn.innerText = "SPIN MACHINE"
+spinBtn.innerText = "SPIN MACHINE" 
 
 }
 
