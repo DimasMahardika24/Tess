@@ -1,582 +1,596 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIWA CASINO | Premium Slot</title>
-    <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #080808; --card-dark: #121212; --accent-blue: #3d85ff;
-            --gold: #ffcc00; --gold-dark: #b8860b; --text-main: #e0e0e0; --text-dim: #777;
-        }
-        * { box-sizing: border-box; }
-        body { background: var(--bg-dark); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
-        body.casino-mode { background: radial-gradient(circle at center, #1a0f00 0%, #050505 100%); }
-        
-        #main-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.5s; }
-        .liquid-ring { width: 60px; height: 60px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--gold); animation: rotate 1s linear infinite; }
-        @keyframes rotate { to { transform: rotate(360deg); } }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-        .container { width: 92%; max-width: 380px; opacity: 0; transition: 0.8s; }
-        #customPopup { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(150%); background: #fff; color: #000; padding: 10px 20px; border-radius: 50px; font-weight: 800; z-index: 10000; transition: 0.3s; }
-        #customPopup.show { transform: translateX(-50%) translateY(0); }
+<title>MIWA CASINO | PREMIUM SLOT</title>
 
-        /* Styles Global untuk semua halaman */
-        .modern-card { background: var(--card-dark); border-radius: 40px; padding: 40px 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.03); text-align: center; }
-        .ip-display { background: #181818; padding: 25px; border-radius: 25px; border: 1px solid #222; margin: 25px 0; cursor: pointer; position: relative; }
-        .ip-display label { font-size: 10px; color: var(--accent-blue); font-weight: 800; display: block; margin-bottom: 8px; letter-spacing: 1px; }
-        .ip-display span { font-family: 'Goldman'; font-size: 22px; color: #fff; }
-        .guide-box { text-align: left; background: rgba(61, 133, 255, 0.05); padding: 15px; border-radius: 20px; font-size: 12px; border: 1px solid rgba(61, 133, 255, 0.1); margin-bottom: 20px; line-height: 1.6; }
-        .guide-box b { color: var(--accent-blue); }
-        .btn-gold { width: 100%; padding: 20px; border-radius: 25px; border: none; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #000; font-family: 'Goldman'; font-weight: 800; cursor: pointer; }
-        .btn-blue { width: 100%; padding: 18px; border-radius: 20px; border: 1px solid #333; background: #1a1a1a; color: var(--accent-blue); font-weight: 800; cursor: pointer; font-size: 14px; }
-        
-        /* Slot UI */
-        .casino-ui { background: #0a0a0a; border: 3px solid var(--gold); border-radius: 45px; padding: 30px 20px; box-shadow: 0 0 50px rgba(0,0,0,1); position: relative; }
-        .slot-window { height: 120px; background: #000; border-radius: 25px; display: flex; justify-content: center; gap: 10px; padding: 0 15px; overflow: hidden; border: 2px solid #222; margin-bottom: 25px; position: relative; }
-        .slot-window::before { content: ''; position: absolute; top:0; left:0; width:100%; height:100%; box-shadow: inset 0 20px 20px #000, inset 0 -20px 20px #000; z-index: 2; pointer-events: none; }
-        .reel-strip { display: flex; flex-direction: column; align-items: center; position: absolute; width: 100%; }
-        .slot-item { height: 120px; min-height: 120px; display: flex; align-items: center; justify-content: center; font-size: 50px; }
-        @keyframes spin-loop { from { transform: translateY(0); } to { transform: translateY(-1200px); } }
-        .spinning { animation: spin-loop 0.2s linear infinite; }
-    </style>
+<link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Plus Jakarta Sans',sans-serif;
+background:#0f0f12;
+color:white;
+overflow-x:hidden;
+}
+
+.container{
+width:100%;
+min-height:100vh;
+padding:20px;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.card{
+width:100%;
+max-width:430px;
+background:#17171c;
+border:1px solid #2c2c33;
+border-radius:24px;
+padding:24px;
+box-shadow:0 0 40px rgba(0,0,0,.4);
+}
+
+.logo{
+font-family:'Goldman',sans-serif;
+font-size:32px;
+text-align:center;
+margin-bottom:10px;
+color:#ffd700;
+}
+
+.subtitle{
+text-align:center;
+color:#aaa;
+font-size:14px;
+margin-bottom:25px;
+}
+
+.input-group{
+margin-bottom:18px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:8px;
+font-size:14px;
+font-weight:600;
+}
+
+.input{
+width:100%;
+padding:14px;
+border:none;
+outline:none;
+border-radius:14px;
+background:#24242d;
+color:white;
+font-size:14px;
+}
+
+.btn{
+width:100%;
+padding:14px;
+border:none;
+border-radius:14px;
+background:#ffd700;
+color:black;
+font-weight:800;
+font-size:15px;
+cursor:pointer;
+transition:.2s;
+}
+
+.btn:hover{
+transform:translateY(-2px);
+}
+
+.profile{
+background:#212129;
+padding:16px;
+border-radius:18px;
+margin-bottom:20px;
+}
+
+.profile h3{
+font-size:17px;
+margin-bottom:10px;
+}
+
+.profile p{
+font-size:14px;
+margin:4px 0;
+color:#ccc;
+}
+
+.slot-machine{
+margin-top:20px;
+}
+
+.reels{
+display:flex;
+justify-content:center;
+gap:12px;
+margin:25px 0;
+}
+
+.reel{
+width:90px;
+height:90px;
+background:#222;
+border-radius:18px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:45px;
+border:2px solid #333;
+transition:.2s;
+}
+
+.spin{
+animation:spin .12s linear infinite;
+}
+
+@keyframes spin{
+0%{
+transform:translateY(-5px);
+}
+50%{
+transform:translateY(5px);
+}
+100%{
+transform:translateY(-5px);
+}
+}
+
+.bet-box{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
+
+.bet-input{
+flex:1;
+padding:14px;
+border:none;
+outline:none;
+background:#24242d;
+color:white;
+border-radius:14px;
+}
+
+.message{
+margin-top:20px;
+padding:14px;
+border-radius:14px;
+text-align:center;
+font-weight:700;
+display:none;
+}
+
+.success{
+background:#113d21;
+color:#5cff9d;
+}
+
+.error{
+background:#3d1111;
+color:#ff7c7c;
+}
+
+.loading{
+text-align:center;
+padding:30px;
+font-size:15px;
+color:#aaa;
+}
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.7);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+padding:20px;
+}
+
+.popup-content{
+width:100%;
+max-width:350px;
+background:#1d1d24;
+border-radius:20px;
+padding:24px;
+text-align:center;
+}
+
+.popup-content h2{
+margin-bottom:10px;
+}
+
+.popup-content p{
+color:#bbb;
+font-size:14px;
+margin-bottom:20px;
+}
+
+.hidden{
+display:none;
+}
+</style>
 </head>
 <body>
 
-    <div id="main-loader">
-        <div class="liquid-ring"></div>
-        <p style="font-family:'Goldman'; color:var(--gold); margin-top:20px; font-size:10px; letter-spacing:3px">AUTHENTICATING...</p>
-    </div>
+<div class="container">
+<div id="app"></div>
+</div>
 
-    <div id="customPopup">Alert</div>
-    <div class="container" id="app-viewport"></div>
+<div class="popup" id="customPopup">
+<div class="popup-content">
+<h2 id="popupTitle">Info</h2>
+<p id="popupMessage">Message</p>
+<button class="btn" onclick="closePopup()">OK</button>
+</div>
+</div>
 
 <script>
 
-const SECRET = "dimas_ganteng_123"
+const SECRET = "MIWA_SECURE_KEY"
+const STORAGE_KEY = "MIWA_API"
 
-const SYMS = ['🍇','🍉','🍋','🍌','🍎','🍑','🍒','🫐','🥥','🥑']
-
-let API_URL = localStorage.getItem('MIWA_API') || ''
-
+let API_URL = localStorage.getItem(STORAGE_KEY) || ""
 let userData = {
-    ip:'',
-    profile:{}
+ip: null,
+profile: null
 }
 
-/* =========================
-   POPUP
-========================= */
+const app = document.getElementById('app')
 
-function showPopup(text){
-
-    const popup =
-    document.getElementById('popup')
-
-    popup.innerText = text
-
-    popup.classList.add('show')
-
-    setTimeout(()=>{
-        popup.classList.remove('show')
-    },2500)
+function showPopup(title, message){
+document.getElementById('popupTitle').innerText = title
+document.getElementById('popupMessage').innerText = message
+document.getElementById('customPopup').style.display = 'flex'
 }
 
-/* =========================
-   NAVIGATION STEP
-========================= */
-
-function navigateTo(step){
-
-    const app =
-    document.getElementById('app')
-
-    app.style.opacity = 0
-
-    setTimeout(()=>{
-
-        if(step === 'step1'){
-            renderApiInput()
-        }
-
-        if(step === 'step2'){
-            renderProfile()
-        }
-
-        if(step === 'step3'){
-            renderSlotPage()
-        }
-
-        app.style.opacity = 1
-
-    },300)
+function closePopup(){
+document.getElementById('customPopup').style.display = 'none'
 }
 
-/* =========================
-   STEP 1
-========================= */
+function renderSetupPage(){
+app.innerHTML = `
+<div class="card">
+<div class="logo">MIWA CASINO</div>
+<div class="subtitle">
+Hubungkan API server kamu terlebih dahulu
+</div>
 
-function renderApiInput(){
+<div class="input-group">
+<label>API URL</label>
+<input 
+type="text" 
+class="input" 
+id="apiInput"
+placeholder="https://domain.com/api"
+value="${API_URL}"
+>
+</div>
 
-    document.getElementById('app').innerHTML = `
-    <div class="card">
-
-        <div class="title">
-            MIWA CASINO
-        </div>
-
-        <div class="subtitle">
-            Masukkan URL API slot kamu terlebih dahulu untuk melanjutkan.
-        </div>
-
-        <div class="input-box">
-            <label>API URL</label>
-
-            <input
-            type="text"
-            id="apiInput"
-            placeholder="https://domain.com/api/slot-web"
-            value="${API_URL}"
-            >
-        </div>
-
-        <button class="btn btn-gold" onclick="saveApi()">
-            CONNECT API
-        </button>
-
-    </div>
-    `
+<button class="btn" onclick="saveAPI()">
+Hubungkan API
+</button>
+</div>
+`
 }
 
-/* =========================
-   STEP 2
-========================= */
+function saveAPI(){
+
+const val = document.getElementById('apiInput').value.trim()
+
+if(!val){
+return showPopup('Gagal','API URL wajib diisi')
+}
+
+if(
+!val.startsWith('http://') &&
+!val.startsWith('https://')
+){
+return showPopup('Invalid','URL harus diawali http:// atau https://')
+}
+
+API_URL = val
+
+localStorage.setItem(STORAGE_KEY,val)
+
+startApp()
+}
+
+async function startApp(){
+
+if(!API_URL){
+return renderSetupPage()
+}
+
+app.innerHTML = `
+<div class="loading">
+Menghubungkan server...
+</div>
+`
+
+try{
+
+const ipReq = await fetch('https://api.ipify.org?format=json')
+const ipData = await ipReq.json()
+
+userData.ip = ipData.ip
+
+let profile = null
+
+try{
+
+const res = await fetch(API_URL,{
+method:'POST',
+headers:{
+'Content-Type':'application/json'
+},
+body:JSON.stringify({
+type:'checkIP',
+ip:userData.ip,
+secret:SECRET
+})
+})
+
+profile = await res.json()
+
+}catch{
+
+profile = {
+username:'Guest User',
+balance:100000,
+vip:'Bronze'
+}
+
+}
+
+userData.profile = {
+username: profile.username || 'Guest User',
+balance: profile.balance || 100000,
+vip: profile.vip || 'Bronze'
+}
+
+renderSlotPage()
+
+}catch(err){
+
+console.log(err)
+
+showPopup(
+'Error',
+'Gagal menghubungkan server/API'
+)
+
+renderSetupPage()
+
+}
+}
 
 function renderProfile(){
 
-    const data = userData.profile
+return `
+<div class="profile">
+<h3>${userData.profile.username}</h3>
 
-    document.getElementById('app').innerHTML = `
-    <div class="card">
+<p>💰 Saldo: Rp ${Number(userData.profile.balance).toLocaleString('id-ID')}</p>
 
-        <div class="profile">
+<p>👑 VIP: ${userData.profile.vip}</p>
 
-            <img src="${data.img}" />
-
-            <h2>${data.name}</h2>
-
-            <div class="badge">
-                ${data.owner
-                ? 'OWNER 👑'
-                : data.premium
-                ? 'PREMIUM PLAYER ✨'
-                : 'REGULER PLAYER'}
-            </div>
-
-        </div>
-
-        <div class="stats">
-
-            <div class="stat">
-                <h3>SALDO</h3>
-
-                <p>
-                Rp ${Number(data.uang)
-                .toLocaleString('id-ID')}
-                </p>
-            </div>
-
-            <div class="stat">
-                <h3>LIMIT</h3>
-
-                <p>${data.limit}</p>
-            </div>
-
-        </div>
-
-        <button
-        class="btn btn-gold"
-        style="margin-top:25px"
-        onclick="navigateTo('step3')"
-        >
-        ENTER SLOT
-        </button>
-
-    </div>
-    `
+<p>🌐 IP: ${userData.ip}</p>
+</div>
+`
 }
-
-/* =========================
-   STEP 3
-========================= */
 
 function renderSlotPage(){
 
-    const data = userData.profile
+app.innerHTML = `
+<div class="card">
 
-    document.getElementById('app').innerHTML = `
-    <div class="card">
+<div class="logo">
+MIWA SLOT
+</div>
 
-        <div class="profile">
+${renderProfile()}
 
-            <img src="${data.img}" />
+<div class="slot-machine">
 
-            <h2>${data.name}</h2>
+<div class="reels">
+<div class="reel" id="reel1">🍒</div>
+<div class="reel" id="reel2">💎</div>
+<div class="reel" id="reel3">7️⃣</div>
+</div>
 
-            <div class="badge">
-                CASINO MODE 🎰
-            </div>
+<div class="bet-box">
+<input 
+type="number" 
+id="betInput"
+class="bet-input"
+placeholder="Masukkan bet"
+value="1000"
+>
+</div>
 
-        </div>
+<button 
+class="btn"
+id="spinBtn"
+onclick="playGame()"
+>
+SPIN SEKARANG
+</button>
 
-        <div class="stats">
+<div class="message" id="messageBox"></div>
 
-            <div class="stat">
-                <h3>SALDO</h3>
-
-                <p id="saldoText">
-                Rp ${Number(data.uang)
-                .toLocaleString('id-ID')}
-                </p>
-            </div>
-
-            <div class="stat">
-                <h3>LIMIT</h3>
-
-                <p>${data.limit}</p>
-            </div>
-
-        </div>
-
-        <div class="slot-box">
-
-            <div class="reels">
-
-                <div class="reel" id="r1">🎰</div>
-                <div class="reel" id="r2">🎰</div>
-                <div class="reel" id="r3">🎰</div>
-
-            </div>
-
-            <div class="bet-box input-box">
-
-                <label>BET AMOUNT</label>
-
-                <input
-                type="number"
-                id="betInput"
-                placeholder="Minimal 5000"
-                />
-
-            </div>
-
-            <button
-            class="btn btn-gold spin-btn"
-            id="spinBtn"
-            onclick="playGame()"
-            >
-            SPIN MACHINE
-            </button>
-
-            <button
-            class="btn"
-            style="
-            margin-top:15px;
-            background:#1a1a1a;
-            color:#fff;
-            border:1px solid #2a2a2a;
-            "
-            onclick="navigateTo('step2')"
-            >
-            BACK PROFILE
-            </button>
-
-        </div>
-
-    </div>
-    `
+</div>
+</div>
+`
 }
 
-/* =========================
-   SAVE API
-========================= */
+function setMessage(text,type='success'){
 
-function saveApi(){
+const box = document.getElementById('messageBox')
 
-    const val =
-    document.getElementById('apiInput')
-    .value.trim()
+box.style.display = 'block'
+box.className = `message ${type}`
+box.innerHTML = text
 
-    if(!val)
-    return showPopup('Masukkan API URL!')
-
-    API_URL = val
-
-    localStorage.setItem('MIWA_API',val)
-
-    location.reload()
 }
-
-/* =========================
-   START APP
-========================= */
- 
-async function startApp(){
-
-    try{
-
-        if(!API_URL){
-
-            document.getElementById('main-loader')
-            .style.display = 'none'
-
-            navigateTo('step1')
-
-            return
-        }
-
-        const resIp =
-        await fetch('https://api.ipify.org?format=json')
-
-        const dataIp =
-        await resIp.json()
-
-        userData.ip = dataIp.ip
-
-        const res =
-        await fetch(API_URL,{
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json'
-            },
-            body:JSON.stringify({
-                type:'checkIP',
-                ip:userData.ip,
-                secret:SECRET
-            })
-        })
-
-        const auth =
-        await res.json()
-
-        document.getElementById('main-loader')
-        .style.opacity = 0
-
-        setTimeout(()=>{
-
-            document.getElementById('main-loader')
-            .style.display = 'none'
-
-            if(auth.status){
-
-                userData.profile = auth.profile
-
-                navigateTo('step2')
-
-            } else {
-
-                navigateTo('step1')
-
-                showPopup(
-                    auth.msg ||
-                    'IP belum terdaftar'
-                )
-            }
-
-        },700)
-
-    } catch(err){
-
-        console.log(err)
-
-        const loader =
-        document.getElementById('main-loader')
-
-        loader.innerHTML = `
-        <div class="error-box">
-
-            <div class="error-icon">
-                ⚠️
-            </div>
-
-            <h2 class="error-title">
-                API FAILED
-            </h2>
-
-            <p class="error-desc">
-                Gagal terhubung ke server API.<br>
-                Pastikan URL API benar & server online.
-            </p>
-
-            <button
-            class="btn retry-btn"
-            onclick="resetApi()"
-            >
-            CHANGE API
-            </button>
-
-        </div>
-        `
-    }
-}
-
-/* =========================
-   RESET API
-========================= */
-
-function resetApi(){
-
-    localStorage.removeItem('MIWA_API')
-
-    location.reload()
-}
-
-/* =========================
-   PLAY GAME
-========================= */
-
-let cooldown = false
 
 async function playGame(){
 
-    if(cooldown)
-    return
+const bet = Number(
+document.getElementById('betInput').value
+)
 
-    const bet =
-    parseInt(
-        document.getElementById('betInput')
-        .value
-    )
-
-    if(!bet || bet < 5000)
-    return showPopup('Minimal bet Rp 5.000')
-
-    const spinBtn =
-    document.getElementById('spinBtn')
-
-    spinBtn.disabled = true
-
-    try{
-
-        let spin =
-        setInterval(()=>{
-
-            document.getElementById('r1')
-            .innerText =
-            SYMS[Math.floor(
-            Math.random()*SYMS.length)]
-
-            document.getElementById('r2')
-            .innerText =
-            SYMS[Math.floor(
-            Math.random()*SYMS.length)]
-
-            document.getElementById('r3')
-            .innerText =
-            SYMS[Math.floor(
-            Math.random()*SYMS.length)]
-
-        },100)
-
-        const res =
-        await fetch(API_URL,{
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json'
-            },
-            body:JSON.stringify({
-                ip:userData.ip,
-                amount:bet,
-                secret:SECRET
-            })
-        })
-
-        const data =
-        await res.json()
-
-        setTimeout(()=>{
-
-            clearInterval(spin)
-
-            if(!data.status){
-
-                spinBtn.disabled = false
-
-                return showPopup(data.msg)
-            }
-
-            document.getElementById('r1')
-            .innerText = data.reels[0]
-
-            document.getElementById('r2')
-            .innerText = data.reels[1]
-
-            document.getElementById('r3')
-            .innerText = data.reels[2]
-
-            userData.profile = data.profile
-
-            document.getElementById('saldoText')
-            .innerText =
-            'Rp ' +
-            Number(data.profile.uang)
-            .toLocaleString('id-ID')
-
-            showPopup(data.resultStatus)
-
-            startCooldown()
-
-        },2500)
-
-    } catch(err){
-
-        console.log(err)
-
-        spinBtn.disabled = false
-
-        showPopup('Koneksi Error!')
-    }
+if(!bet || bet <= 0){
+return showPopup(
+'Invalid',
+'Bet tidak valid'
+)
 }
 
-/* =========================
-   COOLDOWN
-========================= */
+if(bet > userData.profile.balance){
+return showPopup(
+'Saldo Kurang',
+'Saldo kamu tidak mencukupi'
+)
+}
 
-function startCooldown(){
+const btn = document.getElementById('spinBtn')
 
-    const btn =
-    document.getElementById('spinBtn')
+btn.disabled = true
+btn.innerText = 'SPINNING...'
 
-    cooldown = true
+const reel1 = document.getElementById('reel1')
+const reel2 = document.getElementById('reel2')
+const reel3 = document.getElementById('reel3')
 
-    let sec = 60
+reel1.classList.add('spin')
+reel2.classList.add('spin')
+reel3.classList.add('spin')
 
-    btn.classList.add('cooldown')
+const emoji = ['🍒','💎','7️⃣','🍋','🔥','🪙']
 
-    const timer =
-    setInterval(()=>{
+function randomEmoji(){
+return emoji[Math.floor(Math.random()*emoji.length)]
+}
 
-        btn.innerText =
-        `WAIT ${sec}s`
+const interval = setInterval(()=>{
 
-        sec--
+reel1.innerText = randomEmoji()
+reel2.innerText = randomEmoji()
+reel3.innerText = randomEmoji()
 
-        if(sec < 0){
+},100)
 
-            clearInterval(timer)
+let result = null
 
-            cooldown = false
+try{
 
-            btn.disabled = false
+const req = await fetch(API_URL,{
+method:'POST',
+headers:{
+'Content-Type':'application/json'
+},
+body:JSON.stringify({
+type:'spin',
+ip:userData.ip,
+amount:bet,
+secret:SECRET
+})
+})
 
-            btn.classList.remove('cooldown')
+result = await req.json()
 
-            btn.innerText =
-            'SPIN MACHINE'
-        }
+}catch{
 
-    },1000)
+const isWin = Math.random() > 0.5
+
+result = {
+win: isWin,
+amount: isWin ? bet * 2 : 0,
+balance: isWin
+? userData.profile.balance + bet
+: userData.profile.balance - bet,
+reels: isWin
+? ['💎','💎','💎']
+: ['🍒','🔥','🍋']
+}
+
+}
+
+setTimeout(()=>{
+
+clearInterval(interval)
+
+reel1.classList.remove('spin')
+reel2.classList.remove('spin')
+reel3.classList.remove('spin')
+
+reel1.innerText = result.reels[0]
+reel2.innerText = result.reels[1]
+reel3.innerText = result.reels[2]
+
+userData.profile.balance = result.balance
+
+if(result.win){
+
+setMessage(
+`🎉 Kamu menang Rp ${Number(result.amount).toLocaleString('id-ID')}`,
+'success'
+)
+
+}else{
+
+setMessage(
+`😢 Kamu kalah Rp ${Number(bet).toLocaleString('id-ID')}`,
+'error'
+)
+
+}
+
+renderSlotBalance()
+
+btn.disabled = false
+btn.innerText = 'SPIN SEKARANG'
+
+},2000)
+
+}
+
+function renderSlotBalance(){
+
+const profile = document.querySelector('.profile')
+
+profile.innerHTML = `
+<h3>${userData.profile.username}</h3>
+
+<p>💰 Saldo: Rp ${Number(userData.profile.balance).toLocaleString('id-ID')}</p>
+
+<p>👑 VIP: ${userData.profile.vip}</p>
+
+<p>🌐 IP: ${userData.ip}</p>
+`
 }
 
 startApp()
