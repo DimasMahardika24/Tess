@@ -1,497 +1,787 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIWA CASINO | Premium Slot</title>
-    <link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #080808; --card-dark: #121212; --accent-blue: #3d85ff;
-            --gold: #ffcc00; --gold-dark: #b8860b; --text-main: #e0e0e0; --text-dim: #777;
-        }
-        * { box-sizing: border-box; }
-        body { background: var(--bg-dark); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
-        body.casino-mode { background: radial-gradient(circle at center, #1a0f00 0%, #050505 100%); }
-        
-        #main-loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.5s; }
-        .liquid-ring { width: 60px; height: 60px; border-radius: 50%; border: 3px solid transparent; border-top-color: var(--gold); animation: rotate 1s linear infinite; }
-        @keyframes rotate { to { transform: rotate(360deg); } }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-        .container { width: 92%; max-width: 380px; opacity: 0; transition: 0.8s; }
-        #customPopup { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(150%); background: #fff; color: #000; padding: 10px 20px; border-radius: 50px; font-weight: 800; z-index: 10000; transition: 0.3s; }
-        #customPopup.show { transform: translateX(-50%) translateY(0); }
+<title>MIWA CASINO | PREMIUM SLOT</title>
 
-        /* Styles Global untuk semua halaman */
-        .modern-card { background: var(--card-dark); border-radius: 40px; padding: 40px 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.03); text-align: center; }
-        .ip-display { background: #181818; padding: 25px; border-radius: 25px; border: 1px solid #222; margin: 25px 0; cursor: pointer; position: relative; }
-        .ip-display label { font-size: 10px; color: var(--accent-blue); font-weight: 800; display: block; margin-bottom: 8px; letter-spacing: 1px; }
-        .ip-display span { font-family: 'Goldman'; font-size: 22px; color: #fff; }
-        .guide-box { text-align: left; background: rgba(61, 133, 255, 0.05); padding: 15px; border-radius: 20px; font-size: 12px; border: 1px solid rgba(61, 133, 255, 0.1); margin-bottom: 20px; line-height: 1.6; }
-        .guide-box b { color: var(--accent-blue); }
-        .btn-gold { width: 100%; padding: 20px; border-radius: 25px; border: none; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #000; font-family: 'Goldman'; font-weight: 800; cursor: pointer; }
-        .btn-blue { width: 100%; padding: 18px; border-radius: 20px; border: 1px solid #333; background: #1a1a1a; color: var(--accent-blue); font-weight: 800; cursor: pointer; font-size: 14px; }
-        
-        /* Slot UI */
-        .casino-ui { background: #0a0a0a; border: 3px solid var(--gold); border-radius: 45px; padding: 30px 20px; box-shadow: 0 0 50px rgba(0,0,0,1); position: relative; }
-        .slot-window { height: 120px; background: #000; border-radius: 25px; display: flex; justify-content: center; gap: 10px; padding: 0 15px; overflow: hidden; border: 2px solid #222; margin-bottom: 25px; position: relative; }
-        .slot-window::before { content: ''; position: absolute; top:0; left:0; width:100%; height:100%; box-shadow: inset 0 20px 20px #000, inset 0 -20px 20px #000; z-index: 2; pointer-events: none; }
-        .reel-strip { display: flex; flex-direction: column; align-items: center; position: absolute; width: 100%; }
-        .slot-item { height: 120px; min-height: 120px; display: flex; align-items: center; justify-content: center; font-size: 50px; }
-        @keyframes spin-loop { from { transform: translateY(0); } to { transform: translateY(-1200px); } }
-        .spinning { animation: spin-loop 0.2s linear infinite; }
-    </style>
+<link href="https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#050505;
+    --card:#111111;
+    --card2:#181818;
+    --gold:#ffcc00;
+    --gold2:#ff9100;
+    --blue:#3d85ff;
+    --red:#ff3e3e;
+    --green:#00ff88;
+    --text:#ffffff;
+    --soft:#9a9a9a;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:
+    radial-gradient(circle at top,#1a1100 0%,#050505 60%);
+    font-family:'Plus Jakarta Sans',sans-serif;
+    color:var(--text);
+    min-height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    width:92%;
+    max-width:420px;
+    opacity:0;
+    transition:.5s;
+}
+
+/* LOADER */
+
+#main-loader{
+    position:fixed;
+    inset:0;
+    background:#050505;
+    z-index:99999;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    transition:.4s;
+}
+
+.loader-logo{
+    width:120px;
+    height:120px;
+    border-radius:35px;
+    background:linear-gradient(135deg,var(--gold),var(--gold2));
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:50px;
+    color:#000;
+    box-shadow:
+    0 0 30px rgba(255,204,0,.4),
+    0 0 80px rgba(255,145,0,.2);
+    animation:float 2s infinite ease-in-out;
+}
+
+.loader-ring{
+    position:absolute;
+    width:170px;
+    height:170px;
+    border-radius:50%;
+    border:3px solid transparent;
+    border-top:3px solid var(--gold);
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+@keyframes float{
+    0%{
+        transform:translateY(0px);
+    }
+    50%{
+        transform:translateY(-8px);
+    }
+    100%{
+        transform:translateY(0px);
+    }
+}
+
+/* CARD */
+
+.card{
+    background:rgba(17,17,17,.96);
+    border:1px solid rgba(255,255,255,.04);
+    border-radius:35px;
+    padding:30px;
+    box-shadow:
+    0 0 40px rgba(0,0,0,.6),
+    inset 0 0 20px rgba(255,255,255,.02);
+    backdrop-filter:blur(20px);
+}
+
+.title{
+    font-family:'Goldman';
+    font-size:28px;
+    text-align:center;
+    background:linear-gradient(135deg,var(--gold),#fff0a6);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    text-align:center;
+    color:var(--soft);
+    font-size:13px;
+    margin-bottom:30px;
+    line-height:1.7;
+}
+
+/* INPUT */
+
+.input-box{
+    margin-bottom:18px;
+}
+
+.input-box label{
+    display:block;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:10px;
+    color:var(--gold);
+    letter-spacing:1px;
+}
+
+.input-box input{
+    width:100%;
+    height:58px;
+    border:none;
+    outline:none;
+    background:#1a1a1a;
+    border:1px solid #2a2a2a;
+    border-radius:18px;
+    padding:0 20px;
+    color:#fff;
+    font-size:15px;
+    transition:.3s;
+}
+
+.input-box input:focus{
+    border-color:var(--gold);
+    box-shadow:0 0 20px rgba(255,204,0,.15);
+}
+
+.btn{
+    width:100%;
+    height:58px;
+    border:none;
+    border-radius:20px;
+    font-family:'Goldman';
+    font-size:15px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn-gold{
+    background:linear-gradient(135deg,var(--gold),var(--gold2));
+    color:#000;
+    box-shadow:0 0 30px rgba(255,204,0,.2);
+}
+
+.btn-gold:hover{
+    transform:translateY(-2px);
+}
+
+/* PROFILE */
+
+.profile{
+    text-align:center;
+}
+
+.profile img{
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid var(--gold);
+    margin-bottom:15px;
+    box-shadow:0 0 30px rgba(255,204,0,.3);
+}
+
+.profile h2{
+    font-family:'Goldman';
+    margin-bottom:8px;
+}
+
+.badge{
+    display:inline-block;
+    padding:8px 16px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:800;
+    margin-top:8px;
+    background:rgba(255,204,0,.12);
+    color:var(--gold);
+    border:1px solid rgba(255,204,0,.2);
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-top:25px;
+}
+
+.stat{
+    background:#181818;
+    border-radius:20px;
+    padding:18px;
+    border:1px solid #222;
+}
+
+.stat h3{
+    font-size:11px;
+    color:#888;
+    margin-bottom:10px;
+}
+
+.stat p{
+    font-size:18px;
+    font-weight:800;
+}
+
+/* SLOT */
+
+.slot-box{
+    margin-top:25px;
+    background:#0a0a0a;
+    border-radius:30px;
+    border:2px solid rgba(255,204,0,.2);
+    padding:20px;
+}
+
+.reels{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+}
+
+.reel{
+    width:90px;
+    height:90px;
+    border-radius:20px;
+    background:#151515;
+    border:1px solid #2a2a2a;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:42px;
+    box-shadow:inset 0 0 15px rgba(255,255,255,.03);
+}
+
+.bet-box{
+    margin-top:20px;
+}
+
+.spin-btn{
+    margin-top:18px;
+}
+
+.cooldown{
+    opacity:.6;
+}
+
+/* POPUP */
+
+#popup{
+    position:fixed;
+    left:50%;
+    bottom:30px;
+    transform:translateX(-50%) translateY(200%);
+    background:#fff;
+    color:#000;
+    padding:14px 25px;
+    border-radius:999px;
+    font-weight:800;
+    z-index:999999;
+    transition:.3s;
+}
+
+#popup.show{
+    transform:translateX(-50%) translateY(0%);
+}
+
+/* ERROR */
+
+.error-box{
+    text-align:center;
+}
+
+.error-icon{
+    width:110px;
+    height:110px;
+    margin:auto;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(255,62,62,.08);
+    border:2px solid rgba(255,62,62,.15);
+    font-size:55px;
+    color:var(--red);
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+    0%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.08);
+    }
+    100%{
+        transform:scale(1);
+    }
+}
+
+.error-title{
+    margin-top:25px;
+    font-family:'Goldman';
+    color:var(--red);
+    letter-spacing:2px;
+}
+
+.error-desc{
+    margin-top:12px;
+    color:#999;
+    line-height:1.8;
+    font-size:13px;
+}
+
+.retry-btn{
+    margin-top:25px;
+    background:linear-gradient(135deg,#ff3e3e,#b80000);
+    color:#fff;
+}
+</style>
 </head>
 <body>
 
-    <div id="main-loader">
-        <div class="liquid-ring"></div>
-        <p style="font-family:'Goldman'; color:var(--gold); margin-top:20px; font-size:10px; letter-spacing:3px">AUTHENTICATING...</p>
+<div id="main-loader">
+    <div class="loader-ring"></div>
+
+    <div class="loader-logo">
+        🎰
     </div>
 
-    <div id="customPopup">Alert</div>
-    <div class="container" id="app-viewport"></div>
+    <p style="
+    margin-top:30px;
+    font-family:'Goldman';
+    letter-spacing:3px;
+    color:var(--gold);
+    font-size:11px;
+    ">
+    CONNECTING API...
+    </p>
+</div>
+
+<div class="container" id="app"></div>
+
+<div id="popup">Alert</div>
 
 <script>
-    const SECRET = "dimas_ganteng_123";
 
-    const API_URL =
-    "https://scaling-channel-impose.ngrok-free.dev/api/slot-web";
+const SECRET = "dimas_ganteng_123"
 
-    const SYMS = ['🍇', '🍉', '🍋', '🍌', '🍎', '🍑', '🍒', '🫐', '🥥', '🥑'];
+const SYMS = ['🍇','🍉','🍋','🍌','🍎','🍑','🍒','🫐','🥥','🥑']
 
-    let userData = {
-        ip: '',
-        profile: {}
-    };
+let API_URL = localStorage.getItem('MIWA_API') || ''
 
-    async function navigateTo(page) {
-        const viewport = document.getElementById('app-viewport');
-        viewport.style.opacity = '0';
+let userData = {
+    ip:'',
+    profile:{}
+}
 
-        try {
-            const res = await fetch(`pages/${page}.html`);
-            const html = await res.text();
+/* POPUP */
 
-            setTimeout(() => {
-                viewport.innerHTML = html;
-                viewport.style.opacity = '1';
+function showPopup(text){
 
-                if (page === 'step1') {
-                    document.getElementById('userIP').innerText = userData.ip;
-                }
+    const popup =
+    document.getElementById('popup')
 
-                if (page === 'step2') {
-                    syncProfile();
-                }
+    popup.innerText = text
 
-                if (page === 'step3') {
-                    initReels();
+    popup.classList.add('show')
 
-                    document.getElementById('displayMoney').innerText =
-                        "Rp " + userData.profile.uang.toLocaleString();
+    setTimeout(()=>{
+        popup.classList.remove('show')
+    },2500)
+}
 
-                    document.body.classList.add('casino-mode');
-                } else {
-                    document.body.classList.remove('casino-mode');
-                }
+/* PAGE */
 
-            }, 400);
+function renderApiInput(){
 
-        } catch (e) {
-            console.error(e);
-        }
-    }
+    document.getElementById('app').innerHTML = `
+    <div class="card">
 
-    async function startApp() {
-        try {
-
-            const resIp = await fetch('https://api.ipify.org?format=json');
-            const dataIp = await resIp.json();
-
-            userData.ip = dataIp.ip;
-
-            const resAuth = await fetch(API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    type: 'checkIP',
-                    ip: userData.ip,
-                    secret: SECRET
-                })
-            });
-
-            const auth = await resAuth.json();
-
-            document.getElementById('main-loader').style.opacity = '0';
-
-            setTimeout(() => {
-
-                document.getElementById('main-loader').style.display = 'none';
-
-                if (auth.status) {
-
-                    userData.profile = auth.profile;
-
-                    navigateTo('step2');
-
-                } else {
-
-                    navigateTo('step1');
-
-                }
-
-            }, 1000);
-
-        } catch (e) {
-
-    console.error(e);
-
-    const loader =
-        document.getElementById('main-loader');
-
-    loader.innerHTML = `
-    <div style="
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        justify-content:center;
-        text-align:center;
-        padding:30px;
-    ">
-
-        <div style="
-            width:90px;
-            height:90px;
-            border-radius:50%;
-            background:rgba(255,0,0,0.08);
-            border:2px solid rgba(255,0,0,0.2);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-size:45px;
-            color:#ff3e3e;
-            box-shadow:0 0 30px rgba(255,0,0,0.2);
-            animation:pulseError 1.5s infinite;
-        ">
-            ⚠️
+        <div class="title">
+            MIWA CASINO
         </div>
 
-        <h2 style="
-            margin-top:25px;
-            font-family:'Goldman';
-            color:#ff3e3e;
-            letter-spacing:2px;
-            font-size:20px;
-        ">
-            CONNECTION FAILED
-        </h2>
+        <div class="subtitle">
+            Masukkan URL API slot kamu terlebih dahulu untuk melanjutkan.
+        </div>
 
-        <p style="
-            color:#999;
-            font-size:13px;
-            line-height:1.7;
-            max-width:280px;
-            margin-top:10px;
-        ">
-            Gagal terhubung ke server API.<br>
-            Pastikan VPS/API sedang online.
-        </p>
+        <div class="input-box">
+            <label>API URL</label>
 
-        <button onclick="location.reload()" style="
-            margin-top:25px;
-            background:linear-gradient(135deg,#ff3e3e,#b80000);
-            border:none;
-            color:white;
-            padding:15px 35px;
-            border-radius:20px;
-            font-weight:800;
-            cursor:pointer;
-            font-family:'Goldman';
-            box-shadow:0 0 20px rgba(255,0,0,0.3);
-        ">
-            RETRY
+            <input
+            type="text"
+            id="apiInput"
+            placeholder="https://domain.com/api/slot-web"
+            value="${API_URL}"
+            >
+        </div>
+
+        <button class="btn btn-gold" onclick="saveApi()">
+            CONNECT API
         </button>
 
     </div>
+    `
 
-    <style>
-    @keyframes pulseError {
-        0% {
-            transform:scale(1);
-            box-shadow:0 0 20px rgba(255,0,0,0.2);
-        }
-        50% {
-            transform:scale(1.08);
-            box-shadow:0 0 40px rgba(255,0,0,0.5);
-        }
-        100% {
-            transform:scale(1);
-            box-shadow:0 0 20px rgba(255,0,0,0.2);
-        }
-    }
-    </style>
-    `;
-
+    document.getElementById('app').style.opacity = 1
 }
-    }
 
-    function syncProfile() {
+function renderProfile(){
 
-        const data = userData.profile;
+    const data = userData.profile
 
-        const nameEl = document.getElementById('pName');
-        const uangEl = document.getElementById('pUang');
-        const limitEl = document.getElementById('pLimit');
-        const imgEl = document.getElementById('pImg');
-        const statusEl = document.getElementById('pStatus');
+    document.getElementById('app').innerHTML = `
+    <div class="card">
 
-        if (nameEl)
-            nameEl.innerText = data.name;
+        <div class="profile">
 
-        if (uangEl)
-            uangEl.innerText =
-            "Rp " + data.uang.toLocaleString('id-ID');
+            <img src="${data.img}" />
 
-        if (limitEl)
-            limitEl.innerText = data.limit;
+            <h2>${data.name}</h2>
 
-        if (imgEl)
-            imgEl.src =
-            data.img || 'https://telegra.ph/file/default.jpg';
+            <div class="badge">
+                PREMIUM PLAYER
+            </div>
 
-        if (statusEl) {
+        </div>
 
-            if (data.owner) {
+        <div class="stats">
 
-                statusEl.innerText = "Owner Developer 👑";
-                statusEl.style.color = "#ff3e3e";
+            <div class="stat">
+                <h3>SALDO</h3>
+                <p>
+                Rp ${Number(data.uang).toLocaleString('id-ID')}
+                </p>
+            </div>
 
-                if (imgEl)
-                    imgEl.style.borderColor = "#ff3e3e";
+            <div class="stat">
+                <h3>LIMIT</h3>
+                <p>${data.limit}</p>
+            </div>
 
-            } else if (data.premium) {
+        </div>
 
-                statusEl.innerText = "Premium User ✨";
-                statusEl.style.color = "#ffcc00";
+        <div class="slot-box">
 
-                if (imgEl)
-                    imgEl.style.borderColor = "#ffcc00";
+            <div class="reels">
+
+                <div class="reel" id="r1">🎰</div>
+                <div class="reel" id="r2">🎰</div>
+                <div class="reel" id="r3">🎰</div>
+
+            </div>
+
+            <div class="bet-box input-box">
+
+                <label>BET AMOUNT</label>
+
+                <input
+                type="number"
+                id="betInput"
+                placeholder="Minimal 5000"
+                />
+
+            </div>
+
+            <button
+            class="btn btn-gold spin-btn"
+            id="spinBtn"
+            onclick="playGame()"
+            >
+            SPIN MACHINE
+            </button>
+
+        </div>
+
+    </div>
+    `
+}
+
+/* SAVE API */
+
+function saveApi(){
+
+    const val =
+    document.getElementById('apiInput').value.trim()
+
+    if(!val)
+    return showPopup('Masukkan API URL!')
+
+    API_URL = val
+
+    localStorage.setItem('MIWA_API',val)
+
+    location.reload()
+}
+
+/* START */
+
+async function startApp(){
+
+    try{
+
+        if(!API_URL){
+
+            document.getElementById('main-loader').style.display = 'none'
+
+            renderApiInput()
+
+            return
+        }
+
+        const resIp =
+        await fetch('https://api.ipify.org?format=json')
+
+        const dataIp =
+        await resIp.json()
+
+        userData.ip = dataIp.ip
+
+        const res =
+        await fetch(API_URL,{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                type:'checkIP',
+                ip:userData.ip,
+                secret:SECRET
+            })
+        })
+
+        const auth =
+        await res.json()
+
+        document.getElementById('main-loader').style.opacity = 0
+
+        setTimeout(()=>{
+
+            document.getElementById('main-loader').style.display = 'none'
+
+            if(auth.status){
+
+                userData.profile = auth.profile
+
+                renderProfile()
+
+                document.getElementById('app').style.opacity = 1
 
             } else {
 
-                statusEl.innerText = "Reguler User ✅";
-                statusEl.style.color = "#00ff88";
+                renderApiInput()
 
-                if (imgEl)
-                    imgEl.style.borderColor = "#333";
+                showPopup(auth.msg || 'IP belum terdaftar')
 
             }
+
+        },700)
+
+    } catch(err){
+
+        console.log(err)
+
+        const loader =
+        document.getElementById('main-loader')
+
+        loader.innerHTML = `
+        <div class="error-box">
+
+            <div class="error-icon">
+                ⚠️
+            </div>
+
+            <h2 class="error-title">
+                API FAILED
+            </h2>
+
+            <p class="error-desc">
+                Gagal terhubung ke server API.<br>
+                Pastikan URL API benar & server online.
+            </p>
+
+            <button
+            class="btn retry-btn"
+            onclick="resetApi()"
+            >
+            CHANGE API
+            </button>
+
+        </div>
+        `
+    }
+}
+
+/* RESET API */
+
+function resetApi(){
+
+    localStorage.removeItem('MIWA_API')
+
+    location.reload()
+}
+
+/* PLAY */
+
+let cooldown = false
+
+async function playGame(){
+
+    if(cooldown)
+    return
+
+    const bet =
+    parseInt(
+        document.getElementById('betInput').value
+    )
+
+    if(!bet || bet < 5000)
+    return showPopup('Minimal bet Rp 5.000')
+
+    const spinBtn =
+    document.getElementById('spinBtn')
+
+    spinBtn.disabled = true
+
+    try{
+
+        let spin =
+        setInterval(()=>{
+
+            document.getElementById('r1').innerText =
+            SYMS[Math.floor(Math.random()*SYMS.length)]
+
+            document.getElementById('r2').innerText =
+            SYMS[Math.floor(Math.random()*SYMS.length)]
+
+            document.getElementById('r3').innerText =
+            SYMS[Math.floor(Math.random()*SYMS.length)]
+
+        },100)
+
+        const res =
+        await fetch(API_URL,{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                ip:userData.ip,
+                amount:bet,
+                secret:SECRET
+            })
+        })
+
+        const data =
+        await res.json()
+
+        setTimeout(()=>{
+
+            clearInterval(spin)
+
+            if(!data.status){
+
+                spinBtn.disabled = false
+
+                return showPopup(data.msg)
+            }
+
+            document.getElementById('r1').innerText =
+            data.reels[0]
+
+            document.getElementById('r2').innerText =
+            data.reels[1]
+
+            document.getElementById('r3').innerText =
+            data.reels[2]
+
+            userData.profile = data.profile
+
+            renderProfile()
+
+            showPopup(data.resultStatus)
+
+            startCooldown()
+
+        },2500)
+
+    } catch(err){
+
+        console.log(err)
+
+        spinBtn.disabled = false
+
+        showPopup('Koneksi Error!')
+    }
+}
+
+/* COOLDOWN */
+
+function startCooldown(){
+
+    const btn =
+    document.getElementById('spinBtn')
+
+    cooldown = true
+
+    let sec = 60
+
+    btn.classList.add('cooldown')
+
+    const timer =
+    setInterval(()=>{
+
+        btn.innerText =
+        `WAIT ${sec}s`
+
+        sec--
+
+        if(sec < 0){
+
+            clearInterval(timer)
+
+            cooldown = false
+
+            btn.disabled = false
+
+            btn.classList.remove('cooldown')
+
+            btn.innerText =
+            'SPIN MACHINE'
         }
-    }
 
-    function copyIP() {
-        navigator.clipboard.writeText(userData.ip);
-        showPopup("IP Copied!");
-    }
+    },1000)
+}
 
-    function showPopup(msg) {
+startApp()
 
-        const p = document.getElementById('customPopup');
-
-        p.innerText = msg;
-
-        p.classList.add('show');
-
-        setTimeout(() => {
-            p.classList.remove('show');
-        }, 2500);
-    }
-
-    function initReels() {
-
-        for (let i = 1; i <= 3; i++) {
-
-            const strip =
-                document.getElementById('strip' + i);
-
-            strip.innerHTML = '';
-
-            for (let j = 0; j < 15; j++) {
-
-                const item =
-                    document.createElement('div');
-
-                item.className = 'slot-item';
-
-                item.innerText =
-                    SYMS[Math.floor(Math.random() * SYMS.length)];
-
-                strip.appendChild(item);
-            }
-        }
-    }
-
-    let cooldownTimer = null;
-
-    async function playGame() {
-
-        const betInput =
-            document.getElementById('betInput');
-
-        const bet =
-            parseInt(betInput.value);
-
-        const spinBtn =
-            document.getElementById('spinBtn');
-
-        const controls =
-            document.getElementById('ui-controls');
-
-        if (spinBtn.classList.contains('cooldown-active'))
-            return;
-
-        if (!bet || bet < 5000)
-            return showPopup("MIN BET Rp 5.000");
-
-        if (userData.profile.uang < bet)
-            return showPopup("SALDO TIDAK CUKUP!");
-
-        spinBtn.disabled = true;
-
-        try {
-
-            const res = await fetch(API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    ip: userData.ip,
-                    amount: bet,
-                    secret: SECRET
-                })
-            });
-
-            const data = await res.json();
-
-            if (!data.status && data.msg.includes('Tunggu')) {
-
-                const timeParts =
-                    data.msg.match(/\d+/g);
-
-                let totalSeconds =
-                    parseInt(timeParts[0]);
-
-                startCooldownButton(totalSeconds);
-
-                return;
-            }
-
-            if (!data.status) {
-
-                spinBtn.disabled = false;
-
-                return showPopup(data.msg);
-            }
-
-            controls.classList.add('hide-controls');
-
-            for (let i = 1; i <= 3; i++) {
-                document
-                    .getElementById('strip' + i)
-                    .classList.add('spinning');
-            }
-
-            [0, 1, 2].forEach(i => {
-
-                setTimeout(() => {
-
-                    const strip =
-                        document.getElementById('strip' + (i + 1));
-
-                    strip.classList.remove('spinning');
-
-                    strip.querySelectorAll('.slot-item')[0]
-                        .innerText = data.reels[i];
-
-                }, 1200 + (i * 800));
-
-            });
-
-            setTimeout(() => {
-
-                userData.profile = data.profile;
-
-                document.getElementById('displayMoney').innerText =
-                    "Rp " + data.profile.uang.toLocaleString();
-
-                controls.classList.remove('hide-controls');
-
-                startCooldownButton(60);
-
-                setTimeout(() => {
-                    showPopup(data.resultStatus);
-                }, 300);
-
-            }, 3800);
-
-        } catch (e) {
-
-            console.error(e);
-
-            controls.classList.remove('hide-controls');
-
-            spinBtn.disabled = false;
-
-            showPopup("Koneksi Error!");
-        }
-    }
-
-    function startCooldownButton(seconds) {
-
-        const spinBtn =
-            document.getElementById('spinBtn');
-
-        if (cooldownTimer)
-            clearInterval(cooldownTimer);
-
-        spinBtn.disabled = true;
-
-        spinBtn.classList.add('cooldown-active');
-
-        let remaining = seconds;
-
-        cooldownTimer = setInterval(() => {
-
-            let m =
-                Math.floor(remaining / 60);
-
-            let s =
-                remaining % 60;
-
-            spinBtn.innerText =
-                `WAIT (${m}:${s < 10 ? '0' + s : s})`;
-
-            remaining--;
-
-            if (remaining < 0) {
-
-                clearInterval(cooldownTimer);
-
-                spinBtn.disabled = false;
-
-                spinBtn.classList.remove('cooldown-active');
-
-                spinBtn.innerText = "SPIN MACHINE";
-            }
-
-        }, 1000);
-    }
-
-    startApp();
 </script>
 </body>
 </html>
